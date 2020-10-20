@@ -28,7 +28,7 @@ public class AddTask extends AppCompatActivity {
                 String newTaskDetails = taskDetails.getText().toString();
                 System.out.println(String.format("You have a new task called %s and you'll be %s all days long", newTaskName, newTaskDetails));
 
-                Toast.makeText(getApplicationContext(), "Task Added.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Submitted!", Toast.LENGTH_LONG).show();
 
                 Intent addTaskToAllTasks = new Intent(AddTask.this, AllTasks.class);
                 addTaskToAllTasks.putExtra("name", newTaskName);
