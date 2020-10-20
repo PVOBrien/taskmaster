@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -27,10 +28,13 @@ public class AddTask extends AppCompatActivity {
                 String newTaskDetails = taskDetails.getText().toString();
                 System.out.println(String.format("You have a new task called %s and you'll be %s all days long", newTaskName, newTaskDetails));
 
+                Toast.makeText(getApplicationContext(), "Task Added.", Toast.LENGTH_LONG).show();
+
                 Intent addTaskToAllTasks = new Intent(AddTask.this, AllTasks.class);
                 addTaskToAllTasks.putExtra("name", newTaskName);
                 addTaskToAllTasks.putExtra("details", newTaskDetails);
                 AddTask.this.startActivity(addTaskToAllTasks);
+
             }
         });
     }
