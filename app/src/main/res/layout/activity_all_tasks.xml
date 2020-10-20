@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".AllTasks">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="My Tasks"
+        android:text="All Tasks"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.2"
@@ -19,25 +19,14 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.101" />
 
-    <Button
-        android:id="@+id/addTask"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="68dp"
-        android:layout_marginTop="492dp"
-        android:text="Add Task"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <Button
-        android:id="@+id/allTasks"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="492dp"
-        android:text="All Tasks"
+    <androidx.constraintlayout.utils.widget.MockView
+        android:id="@+id/mockView"
+        android:layout_width="312dp"
+        android:layout_height="469dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.447"
-        app:layout_constraintStart_toEndOf="@+id/addTask"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.561" />
 </androidx.constraintlayout.widget.ConstraintLayout>
