@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="horizontal"
+    tools:context=".TaskDetail">
+
+    <TextView
+        android:id="@+id/taskDetailsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="52dp"
+        android:text="Task Details"
+        android:textSize="34dp"
+        app:layout_constraintBottom_toTopOf="@+id/descriptionTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/descriptionTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="108dp"
+        android:layout_marginBottom="4dp"
+        android:text="Description"
+        app:layout_constraintBottom_toTopOf="@+id/textView9"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="288dp"
+        android:layout_height="374dp"
+        android:layout_marginBottom="152dp"
+        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Blandit turpis cursus in hac habitasse platea dictumst. Semper viverra nam libero justo laoreet sit. Egestas tellus rutrum tellus pellentesque eu tincidunt. Bibendum arcu vitae elementum curabitur vitae nunc. Tempus urna et pharetra pharetra massa massa ultricies. In hac habitasse platea dictumst quisque sagittis purus sit. Dui sapien eget mi proin sed. Dolor magna eget est lorem ipsum dolor sit amet. Scelerisque fermentum dui faucibus in ornare quam viverra. Mauris pellentesque pulvinar pellentesque habitant morbi tristique senectus et. Aliquam ultrices sagittis orci a.  Leo integer malesuada nunc vel risus commodo viverra maecenas accumsan. Magnis dis parturient montes nascetur ridiculus mus mauris. Lectus sit amet est placerat in egestas erat. Amet aliquam id diam maecenas ultricies mi eget mauris pharetra. Curabitur vitae nunc sed velit dignissim. Tincidunt dui ut ornare lectus sit amet est placerat. Consectetur adipiscing elit pellentesque habitant morbi tristique. Nulla facilisi nullam vehicula ipsum a arcu cursus. Ornare massa eget egestas purus viverra accumsan. Facilisi etiam dignissim diam quis enim lobortis scelerisque fermentum dui. Porttitor rhoncus dolor purus non enim praesent elementum facilisis. Mattis ullamcorper velit sed ullamcorper. Tincidunt tortor aliquam nulla facilisi cras fermentum odio eu. Ac feugiat sed lectus vestibulum mattis ullamcorper velit sed. Senectus et netus et malesuada fames ac turpis egestas integer. Nulla facilisi morbi tempus iaculis urna id volutpat. At augue eget arcu dictum varius duis at consectetur. Nec ullamcorper sit amet risus nullam eget felis."
+        android:textSize="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
