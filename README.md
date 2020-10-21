@@ -9,7 +9,7 @@ A task app to learn the ins and outs of Android app building.
 ### 2020-10-20
 
 =======
-<br/><br/>
+
 - Main Activity updated with buttons w onClick listeners, passing key value pairs via sharedPreferences.
 - Main Activity dynamically updated title via Settings' username key value.
 <img src="https://github.com/PVOBrien/taskmaster/blob/main/screenshots/tm_MainActivity_v2.png?raw=true" alt="drawing" width="200"/>
