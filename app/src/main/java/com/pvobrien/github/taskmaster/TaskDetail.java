@@ -7,30 +7,21 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.TextView;
 
-public class Settings extends AppCompatActivity {
+public class TaskDetail extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
+        setContentView(R.layout.activity_task_detail);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        TextView taskDetailsTitle = TaskDetail.this.findViewById(R.id.taskDetailsTitle);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        final SharedPreferences.Editor preferenceEditor = preferences.edit();
-
-        findViewById(R.id.saveSettingButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EditText username = findViewById(R.id.usernameText);
-                preferenceEditor.putString("savedUsername", username.getText().toString());
-                preferenceEditor.apply();
-            }
-        });
+        String displayTaskTitle = preferences.getString("taskName", "taskDetails");
+        taskDetailsTitle.setText(displayTaskTitle);
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -38,5 +29,4 @@ public class Settings extends AppCompatActivity {
         startActivityForResult(mtIntent, 0);
         return true;
     }
-
 }

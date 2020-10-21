@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Taskmaster">
         <activity android:name=".Settings"></activity>
-        <activity android:name=".taskDetail" />
+        <activity android:name=".TaskDetail" />
         <activity android:name=".AllTasks" />
         <activity android:name=".MainActivity">
             <intent-filter>

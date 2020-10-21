@@ -24,7 +24,6 @@
         android:text="My Tasks"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -52,29 +51,27 @@
         app:layout_constraintTop_toBottomOf="@+id/myTasksTitle" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/taskOneButton"
         android:layout_width="285dp"
         android:layout_height="47dp"
         android:layout_marginTop="253dp"
         android:text="Task the First"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/taskTwoButton"
         android:layout_width="285dp"
         android:layout_height="47dp"
         android:text="Task the Second"
-        app:layout_constraintBottom_toTopOf="@+id/button3"
+        app:layout_constraintBottom_toTopOf="@+id/taskThreeButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button1" />
+        app:layout_constraintTop_toBottomOf="@+id/taskOneButton" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/taskThreeButton"
         android:layout_width="285dp"
         android:layout_height="47dp"
         android:layout_marginBottom="297dp"
