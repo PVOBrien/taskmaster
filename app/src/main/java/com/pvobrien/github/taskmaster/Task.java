@@ -3,9 +3,9 @@ package com.pvobrien.github.taskmaster;
 public class Task {
         public String taskTitle;
         public String taskDetails;
-        public float taskStateOfDoing; // TODO: make this a state
+        public String taskStateOfDoing;
 
-    public Task(String taskTitle, String taskDetails, float taskStateOfDoing) {
+    public Task(String taskTitle, String taskDetails, String taskStateOfDoing) {
         this.taskTitle = taskTitle;
         this.taskDetails = taskDetails;
         this.taskStateOfDoing = taskStateOfDoing;

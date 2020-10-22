@@ -11,11 +11,9 @@
         android:id="@+id/taskNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
+        android:layout_marginStart="41dp"
         android:layout_marginTop="16dp"
         android:text="Task Name"
-        app:layout_constraintEnd_toStartOf="@+id/taskDetailTextView"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -23,10 +21,12 @@
         android:id="@+id/taskDetailTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="39dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="68dp"
         android:text="TaskDetails"
         app:layout_constraintEnd_toStartOf="@+id/taskStateTextView"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/taskNameTextView"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,9 +35,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="52dp"
         android:text="Task State"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/taskDetailTextView"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

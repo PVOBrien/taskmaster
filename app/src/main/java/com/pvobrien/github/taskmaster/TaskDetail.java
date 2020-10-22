@@ -9,6 +9,8 @@ import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 public class TaskDetail extends AppCompatActivity {
 
     @Override
@@ -18,7 +20,6 @@ public class TaskDetail extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
         Intent intent = getIntent();
         System.out.println(intent.getExtras().getString("taskTitle"));
         System.out.println(intent.getExtras().getString("taskDetails"));
@@ -26,16 +27,12 @@ public class TaskDetail extends AppCompatActivity {
 
         TextView taskTitleTv = TaskDetail.this.findViewById(R.id.taskDetailsTitle);
         TextView taskDetailsTv = TaskDetail.this.findViewById(R.id.taskDescriptionTv);
-        // TODO: add one for the state.
+        TextView taskStateTv = TaskDetail.this.findViewById(R.id.statusTv);
 
         taskTitleTv.setText(intent.getExtras().getString("taskTitle"));
         taskDetailsTv.setText(intent.getExtras().getString("taskDetails"));
+        taskStateTv.setText(intent.getExtras().getString("taskState"));
 
-        // These four lines are if they're stored in SharedPreferences, as opposed to in the intent via getExtra().
-//        TextView taskDetailsTitle = TaskDetail.this.findViewById(R.id.taskDetailsTitle);
-//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-//        String displayTaskTitle = preferences.getString("taskName", "taskDetails");
-//        taskDetailsTitle.setText(displayTaskTitle);
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {

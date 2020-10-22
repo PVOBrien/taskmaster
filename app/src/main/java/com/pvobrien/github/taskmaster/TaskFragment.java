@@ -1,10 +1,12 @@
 package com.pvobrien.github.taskmaster;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -15,13 +17,11 @@ import android.view.ViewGroup;
  */
 public class TaskFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "taskName";
     private static final String ARG_PARAM2 = "taskBodyDetails";
     private static final String ARG_PARAM3 = "taskState";
 
-    // TODO: Rename and change types of parameters
     private String mTaskName;
     private String mTaskBodyDetails;
     private String mTaskState;
@@ -39,7 +39,6 @@ public class TaskFragment extends Fragment {
      * @param taskState Parameter 3.
      * @return A new instance of fragment TaskFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static TaskFragment newInstance(String theActualThing, String howMany, String taskState) {
         TaskFragment fragment = new TaskFragment();
         Bundle args = new Bundle();
@@ -70,4 +69,5 @@ public class TaskFragment extends Fragment {
     // TODO: two more lifecycle methods of a fragment in RV...
     // onAttach - to set listeners
     // onDetach = good for tracking user details.
+
 }

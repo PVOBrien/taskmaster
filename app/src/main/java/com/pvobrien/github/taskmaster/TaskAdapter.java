@@ -67,7 +67,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TasksToDoViewH
         TextView taskState = holder.itemView.findViewById(R.id.taskStateTextView);
         taskNameTextView.setText(holder.tasks.taskTitle);
         taskDetailsTextView.setText(holder.tasks.taskDetails);
-//        taskState.setText(holder.tasks.someNumbersOfThing); //TODO: load the thing right.
+        taskState.setText(holder.tasks.taskStateOfDoing);
     }
 
     @Override

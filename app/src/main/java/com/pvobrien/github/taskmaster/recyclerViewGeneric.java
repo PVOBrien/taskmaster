@@ -18,9 +18,9 @@ public class recyclerViewGeneric extends AppCompatActivity implements TaskAdapte
 
         ArrayList<Task> tasks = new ArrayList<>();
 
-        Task thingOne = new Task("a thing, one", "do the one thing", 1.00f);
-        Task thingTwo = new Task("Second thing, one", "get to #2", 2.20f);
-        Task thingThree = new Task("That Third", "3 is waiting 4 u", 3.30f);
+        Task thingOne = new Task("a thing, one", "do the one thing", "In Progress");
+        Task thingTwo = new Task("Second thing, one", "get to #2", "Completed");
+        Task thingThree = new Task("That Third", "3 is waiting 4 u", "Not Started");
 
         tasks.add(thingOne);
         tasks.add(thingTwo);

@@ -2,10 +2,22 @@
 
 ## Overview
 
-A task app to learn the ins and outs of Android app building.
+A task app to learn the ins and outs of Android app development.
 
 ## Ongoing Work:
 
+### 2020-10-21
+
+=======
+- Main Activity updated with RecycleView of all tasks (hardcoded atm)
+<img src="https://github.com/PVOBrien/taskmaster/blob/main/screenshots/2020-10-21%20tm_HomeScreen_MainActivity.png?raw=true" alt="drawing" width="200"/>
+=======
+<br/><br/>
+=======
+- RecycleViewer wired, necessary fragment created, placed in activities accordingly.
+<img src="https://github.com/PVOBrien/taskmaster/blob/main/screenshots/2020-10-21%20tm_DetailsPage.png?raw=true" alt="drawing" width="200"/>
+=======
+<br/><br/>
 ### 2020-10-20
 
 =======
