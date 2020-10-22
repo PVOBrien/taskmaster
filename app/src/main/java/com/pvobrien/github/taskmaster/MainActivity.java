@@ -1,6 +1,9 @@
 package com.pvobrien.github.taskmaster;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -10,7 +13,9 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInteractWithTasksToDoListener {
 
     @Override
     public void onResume() {
@@ -20,6 +25,20 @@ public class MainActivity extends AppCompatActivity {
         String greeting = String.format("%s's tasks", preferences.getString("savedUsername", "My Tasks"));
         myTaskTitle.setText(greeting);
         SharedPreferences.Editor preferenceEditor = preferences.edit();
+
+        ArrayList<Task> tasks = new ArrayList<>();
+
+        Task thingOne = new Task("a thing, one", "do the one thing", "In Progress");
+        Task thingTwo = new Task("Second thing, one", "get to #2", "Completed");
+        Task thingThree = new Task("That Third", "3 is waiting 4 u", "Not Started");
+
+        tasks.add(thingOne);
+        tasks.add(thingTwo);
+        tasks.add(thingThree);
+
+        RecyclerView recyclerView = findViewById(R.id.tasksRv);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(new TaskAdapter(tasks, this));
     }
 
     @Override
@@ -40,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         Button goToAllTasks = MainActivity.this.findViewById(R.id.allTasks);
         goToAllTasks.setOnClickListener((view) -> {
             System.out.println("Seeing all the tasks now.");
-            Intent goToAllTasksNow = new Intent(MainActivity.this, AllTasks.class);
+            Intent goToAllTasksNow = new Intent(MainActivity.this, recyclerViewGeneric.class);
             MainActivity.this.startActivity(goToAllTasksNow);
         });
 
@@ -61,8 +80,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = new Intent(MainActivity.this, TaskDetail.class);
                 Button taskOneButton = findViewById(R.id.taskOneButton);
-                preferenceEditor.putString("taskName", taskOneButton.getText().toString());
-                preferenceEditor.apply();
+                i.putExtra("taskTitle", taskOneButton.getText().toString());
+                i.putExtra("body", taskOneButton.getText().toString());
+                i.putExtra("state",taskOneButton.getText().toString());
                 MainActivity.this.startActivity(i);
             }
         });
@@ -73,8 +93,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = new Intent(MainActivity.this, TaskDetail.class);
                 Button taskTwoButton = findViewById(R.id.taskTwoButton);
-                preferenceEditor.putString("taskName", taskTwoButton.getText().toString());
-                preferenceEditor.apply();
+                i.putExtra("taskTitle", taskTwoButton.getText().toString());
+                i.putExtra("body", taskTwoButton.getText().toString());
+                i.putExtra("state",taskTwoButton.getText().toString());
                 MainActivity.this.startActivity(i);
             }
         });
@@ -85,10 +106,20 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = new Intent(MainActivity.this, TaskDetail.class);
                 Button taskThreeButton = findViewById(R.id.taskThreeButton);
-                preferenceEditor.putString("taskName", taskThreeButton.getText().toString());
-                preferenceEditor.apply();
+                i.putExtra("taskTitle", taskThreeButton.getText().toString());
+                i.putExtra("body", taskThreeButton.getText().toString());
+                i.putExtra("state",taskThreeButton.getText().toString());
                 MainActivity.this.startActivity(i);
             }
         });
+    }
+
+    @Override
+    public void tasksToDoListener(Task task) {
+        Intent intent = new Intent(MainActivity.this, TaskDetail.class);
+        intent.putExtra("taskTitle", task.taskTitle);
+        intent.putExtra("taskDetails", task.taskDetails);
+        intent.putExtra("taskState", task.taskStateOfDoing);
+        this.startActivity(intent);
     }
 }

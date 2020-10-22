@@ -6,12 +6,23 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/tasksRv"
+        android:layout_width="400dp"
+        android:layout_height="236dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.669" />
+
     <ImageButton
         android:id="@+id/homeToSettingsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="39dp"
-        android:layout_marginBottom="94dp"
+        android:layout_marginEnd="60dp"
+        android:layout_marginBottom="28dp"
         android:contentDescription="to settings save button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,38 +38,28 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.102" />
+        app:layout_constraintVertical_bias="0.05" />
 
     <Button
         android:id="@+id/addTask"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
-        android:layout_marginTop="368dp"
+        android:layout_marginBottom="89dp"
         android:text="Add Task"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/myTasksTitle" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/allTasks"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="368dp"
+        android:layout_marginBottom="89dp"
         android:text="All Tasks"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.48"
-        app:layout_constraintStart_toEndOf="@+id/addTask"
-        app:layout_constraintTop_toBottomOf="@+id/myTasksTitle" />
-
-    <Button
-        android:id="@+id/taskOneButton"
-        android:layout_width="285dp"
-        android:layout_height="47dp"
-        android:layout_marginTop="253dp"
-        android:text="Task the First"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="0.427"
+        app:layout_constraintStart_toEndOf="@+id/addTask" />
 
     <Button
         android:id="@+id/taskTwoButton"
@@ -68,16 +69,28 @@
         app:layout_constraintBottom_toTopOf="@+id/taskThreeButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/taskOneButton" />
+        app:layout_constraintTop_toBottomOf="@+id/taskOneButton"
+        app:layout_constraintVertical_bias="0.466" />
+
+    <Button
+        android:id="@+id/taskOneButton"
+        android:layout_width="285dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="88dp"
+        android:text="Task the First"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/taskThreeButton"
         android:layout_width="285dp"
         android:layout_height="47dp"
-        android:layout_marginBottom="297dp"
+        android:layout_marginBottom="432dp"
         android:text="Task the Third"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.476"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
