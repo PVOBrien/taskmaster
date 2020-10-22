@@ -26,11 +26,11 @@
         android:layout_marginStart="108dp"
         android:layout_marginBottom="4dp"
         android:text="Description"
-        app:layout_constraintBottom_toTopOf="@+id/textView9"
+        app:layout_constraintBottom_toTopOf="@+id/taskDescriptionTv"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/taskDescriptionTv"
         android:layout_width="288dp"
         android:layout_height="374dp"
         android:layout_marginBottom="152dp"

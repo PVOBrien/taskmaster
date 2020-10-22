@@ -10,23 +10,23 @@ import android.view.ViewGroup;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link AnAbleThingFragment#newInstance} factory method to
+ * Use the {@link TaskFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AnAbleThingFragment extends Fragment {
+public class TaskFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "theActualThing";
-    private static final String ARG_PARAM2 = "howMany";
-    private static final String ARG_PARAM3 = "someNumbersOfThing";
+    private static final String ARG_PARAM1 = "taskName";
+    private static final String ARG_PARAM2 = "taskBodyDetails";
+    private static final String ARG_PARAM3 = "taskState";
 
     // TODO: Rename and change types of parameters
-    private String mtheActualThing;
-    private String mhowMany;
-    private String msomeNumbersOfThing;
+    private String mTaskName;
+    private String mTaskBodyDetails;
+    private String mTaskState;
 
-    public AnAbleThingFragment() {
+    public TaskFragment() {
         // Required empty public constructor
     }
 
@@ -36,16 +36,16 @@ public class AnAbleThingFragment extends Fragment {
      *
      * @param theActualThing Parameter 1.
      * @param howMany Parameter 2.
-     * @param someNumbersOfThing Parameter 3.
-     * @return A new instance of fragment AnAbleThingFragment.
+     * @param taskState Parameter 3.
+     * @return A new instance of fragment TaskFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AnAbleThingFragment newInstance(String theActualThing, String howMany, String someNumbersofThing) {
-        AnAbleThingFragment fragment = new AnAbleThingFragment();
+    public static TaskFragment newInstance(String theActualThing, String howMany, String taskState) {
+        TaskFragment fragment = new TaskFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, theActualThing);
         args.putString(ARG_PARAM2, howMany);
-        args.putString(ARG_PARAM2, someNumbersofThing);
+        args.putString(ARG_PARAM3, taskState);
         fragment.setArguments(args);
         return fragment;
     }
@@ -54,9 +54,9 @@ public class AnAbleThingFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mtheActualThing = getArguments().getString(ARG_PARAM1);
-            mhowMany = getArguments().getString(ARG_PARAM2);
-            msomeNumbersofThing = getArguments().getString(ARG_PARAM3);
+            mTaskName = getArguments().getString(ARG_PARAM1);
+            mTaskBodyDetails = getArguments().getString(ARG_PARAM2);
+            mTaskState = getArguments().getString(ARG_PARAM3);
         }
     }
 
@@ -64,7 +64,7 @@ public class AnAbleThingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_an_able_thing, container, false);
+        return inflater.inflate(R.layout.fragment_tasks, container, false);
     }
 
     // TODO: two more lifecycle methods of a fragment in RV...

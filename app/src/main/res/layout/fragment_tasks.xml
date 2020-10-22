@@ -5,39 +5,39 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    tools:context=".AnAbleThingFragment">
+    tools:context=".TaskFragment">
 
     <TextView
-        android:id="@+id/thingableName"
+        android:id="@+id/taskNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="52dp"
         android:layout_marginTop="16dp"
-        android:text="thingableName"
-        app:layout_constraintEnd_toStartOf="@+id/thingableQuantityTV"
+        android:text="Task Name"
+        app:layout_constraintEnd_toStartOf="@+id/taskDetailTextView"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/thingableQuantityTV"
+        android:id="@+id/taskDetailTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Quantity"
-        app:layout_constraintEnd_toStartOf="@+id/howMuchThingableTV"
+        android:text="TaskDetails"
+        app:layout_constraintEnd_toStartOf="@+id/taskStateTextView"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/thingableName"
+        app:layout_constraintStart_toEndOf="@+id/taskNameTextView"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/howMuchThingableTV"
+        android:id="@+id/taskStateTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="How much"
+        android:text="Task State"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/thingableQuantityTV"
+        app:layout_constraintStart_toEndOf="@+id/taskDetailTextView"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

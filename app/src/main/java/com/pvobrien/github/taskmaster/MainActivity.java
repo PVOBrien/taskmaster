@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         Button goToAllTasks = MainActivity.this.findViewById(R.id.allTasks);
         goToAllTasks.setOnClickListener((view) -> {
             System.out.println("Seeing all the tasks now.");
-            Intent goToAllTasksNow = new Intent(MainActivity.this, AllTasks.class);
+            Intent goToAllTasksNow = new Intent(MainActivity.this, recyclerViewGeneric.class);
             MainActivity.this.startActivity(goToAllTasksNow);
         });
 

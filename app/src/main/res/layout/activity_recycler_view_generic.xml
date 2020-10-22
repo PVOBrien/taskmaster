@@ -7,7 +7,7 @@
     tools:context=".recyclerViewGeneric">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/thingableRV"
+        android:id="@+id/tasksRv"
         android:layout_width="285dp"
         android:layout_height="559dp"
         app:layout_constraintBottom_toBottomOf="parent"
