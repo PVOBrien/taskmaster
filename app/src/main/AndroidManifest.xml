@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Taskmaster">
-        <activity android:name=".recyclerViewGeneric"></activity>
+        <activity android:name=".RecyclerViewGeneric"></activity>
         <activity android:name=".Settings" />
         <activity android:name=".TaskDetail" />
         <activity android:name=".AllTasks" />

@@ -8,14 +8,14 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/tasksRv"
-        android:layout_width="400dp"
-        android:layout_height="236dp"
+        android:layout_width="380dp"
+        android:layout_height="448dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintHorizontal_bias="0.516"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.669" />
+        app:layout_constraintVertical_bias="0.353" />
 
     <ImageButton
         android:id="@+id/homeToSettingsButton"
@@ -26,7 +26,7 @@
         android:contentDescription="to settings save button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_save" />
+        app:srcCompat="@android:drawable/ic_menu_preferences" />
 
     <TextView
         android:id="@+id/myTasksTitle"
@@ -60,37 +60,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.427"
         app:layout_constraintStart_toEndOf="@+id/addTask" />
-
-    <Button
-        android:id="@+id/taskTwoButton"
-        android:layout_width="285dp"
-        android:layout_height="47dp"
-        android:text="Task the Second"
-        app:layout_constraintBottom_toTopOf="@+id/taskThreeButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/taskOneButton"
-        app:layout_constraintVertical_bias="0.466" />
-
-    <Button
-        android:id="@+id/taskOneButton"
-        android:layout_width="285dp"
-        android:layout_height="47dp"
-        android:layout_marginTop="88dp"
-        android:text="Task the First"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/taskThreeButton"
-        android:layout_width="285dp"
-        android:layout_height="47dp"
-        android:layout_marginBottom="432dp"
-        android:text="Task the Third"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.476"
-        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
