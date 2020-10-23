@@ -1,0 +1,24 @@
+package com.pvobrien.github.taskmaster;
+
+import androidx.room.Dao;
+import androidx.room.Insert;
+import androidx.room.Query;
+
+import java.util.List;
+
+@Dao
+public interface TaskDao {
+
+    @Insert
+    public void saveTheThing(Task task);
+
+    @Query("SELECT * FROM Task")
+    public List<Task> getAllTasks();
+
+    @Query("SELECT * FROM Task ORDER BY id DESC")
+    public List<Task> getAllTasksReversed();
+
+
+}
+
+// https://developer.android.com/jetpack/androidx/releases/room

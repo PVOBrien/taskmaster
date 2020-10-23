@@ -37,4 +37,13 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+// This is for Room / Persistent Storage. We back in databases, oh yeah!=//
+    def room_version = "2.2.5" // a nice way to swap in verions.         //
+    implementation "androidx.room:room-runtime:$room_version"            //
+    annotationProcessor "androidx.room:room-compiler:$room_version"      //
+    implementation "androidx.room:room-rxjava2:$room_version"            //
+    implementation "androidx.room:room-guava:$room_version"              //
+    testImplementation "androidx.room:room-testing:$room_version"        //
+//=======================================================================//
 }

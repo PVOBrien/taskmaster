@@ -9,12 +9,16 @@ import android.os.Bundle;
 
 import java.util.ArrayList;
 
-public class recyclerViewGeneric extends AppCompatActivity implements TaskAdapter.OnInteractWithTasksToDoListener {
+public class RecyclerViewGeneric extends AppCompatActivity implements TaskAdapter.OnInteractWithTasksToDoListener {
+
+    androidx.room.Database database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recycler_view_generic);
+
+        Task taskToDb = new Task("into thedb", "do it!", "working on it");
 
         ArrayList<Task> tasks = new ArrayList<>();
 
@@ -33,7 +37,7 @@ public class recyclerViewGeneric extends AppCompatActivity implements TaskAdapte
 
     @Override
     public void tasksToDoListener(Task task) {
-        Intent intent = new Intent(recyclerViewGeneric.this, TaskDetail.class);
+        Intent intent = new Intent(RecyclerViewGeneric.this, TaskDetail.class);
         intent.putExtra("taskTitle", task.taskTitle);
         intent.putExtra("taskDetails", task.taskDetails);
         intent.putExtra("taskState", task.taskStateOfDoing);

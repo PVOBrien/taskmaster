@@ -3,6 +3,7 @@ package com.pvobrien.github.taskmaster;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,6 +18,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInteractWithTasksToDoListener {
 
+    YourUniqueDatabase yourUniqueDatabase;
+
     @Override
     public void onResume() {
         super.onResume();
@@ -26,15 +29,11 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
         myTaskTitle.setText(greeting);
         SharedPreferences.Editor preferenceEditor = preferences.edit();
 
-        ArrayList<Task> tasks = new ArrayList<>();
+        yourUniqueDatabase = Room.databaseBuilder(getApplicationContext(), YourUniqueDatabase.class, "taskDatabase")
+                .allowMainThreadQueries()
+                .build();
 
-        Task thingOne = new Task("a thing, one", "do the one thing", "In Progress");
-        Task thingTwo = new Task("Second thing, one", "get to #2", "Completed");
-        Task thingThree = new Task("That Third", "3 is waiting 4 u", "Not Started");
-
-        tasks.add(thingOne);
-        tasks.add(thingTwo);
-        tasks.add(thingThree);
+        ArrayList<Task> tasks = (ArrayList<Task>) yourUniqueDatabase.taskDao().getAllTasks();
 
         RecyclerView recyclerView = findViewById(R.id.tasksRv);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -59,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
         Button goToAllTasks = MainActivity.this.findViewById(R.id.allTasks);
         goToAllTasks.setOnClickListener((view) -> {
             System.out.println("Seeing all the tasks now.");
-            Intent goToAllTasksNow = new Intent(MainActivity.this, recyclerViewGeneric.class);
+            Intent goToAllTasksNow = new Intent(MainActivity.this, RecyclerViewGeneric.class);
             MainActivity.this.startActivity(goToAllTasksNow);
         });
 
@@ -74,44 +73,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         final SharedPreferences.Editor preferenceEditor = preferences.edit();
 
-        Button selectTaskOneButton = MainActivity.this.findViewById(R.id.taskOneButton);
-        selectTaskOneButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this, TaskDetail.class);
-                Button taskOneButton = findViewById(R.id.taskOneButton);
-                i.putExtra("taskTitle", taskOneButton.getText().toString());
-                i.putExtra("body", taskOneButton.getText().toString());
-                i.putExtra("state",taskOneButton.getText().toString());
-                MainActivity.this.startActivity(i);
-            }
-        });
-
-        Button selectTaskTwoButton = MainActivity.this.findViewById(R.id.taskTwoButton);
-        selectTaskTwoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this, TaskDetail.class);
-                Button taskTwoButton = findViewById(R.id.taskTwoButton);
-                i.putExtra("taskTitle", taskTwoButton.getText().toString());
-                i.putExtra("body", taskTwoButton.getText().toString());
-                i.putExtra("state",taskTwoButton.getText().toString());
-                MainActivity.this.startActivity(i);
-            }
-        });
-
-        Button selectTaskThreeButton = MainActivity.this.findViewById(R.id.taskThreeButton);
-        selectTaskThreeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this, TaskDetail.class);
-                Button taskThreeButton = findViewById(R.id.taskThreeButton);
-                i.putExtra("taskTitle", taskThreeButton.getText().toString());
-                i.putExtra("body", taskThreeButton.getText().toString());
-                i.putExtra("state",taskThreeButton.getText().toString());
-                MainActivity.this.startActivity(i);
-            }
-        });
     }
 
     @Override
