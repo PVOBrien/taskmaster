@@ -3,6 +3,7 @@ package com.pvobrien.github.taskmaster;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -19,6 +20,8 @@ public class AddTask extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_task);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         yourUniqueDatabase = Room.databaseBuilder(getApplicationContext(), YourUniqueDatabase.class, "taskDatabase") // this YourUniqueDatabase.class is looking for YOUR yourUniqueDatabase class name/potato.
                     .allowMainThreadQueries()
@@ -58,5 +61,11 @@ public class AddTask extends AppCompatActivity {
 
             }
         });
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent mtIntent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivityForResult(mtIntent, 0);
+        return true;
     }
 }
