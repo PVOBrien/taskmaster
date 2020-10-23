@@ -10,8 +10,18 @@ import static org.junit.Assert.*;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 public class ExampleUnitTest {
+
     @Test
-    public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
+    public void emptyTaskTest(){
+        Task testTask = null;
+        assertNull("nothing here", testTask);
+    }
+
+    @Test
+    public void taskCreatorTest(){
+        Task testTask = new Task("a task", "something to do", "In Progress");
+        assertEquals("a task title should be present", "a task", testTask.taskTitle);
+        assertEquals("task details should be present", "something to do", testTask.taskDetails);
+        assertEquals("task status should be present", "In Progress", testTask.taskStateOfDoing);
     }
 }
