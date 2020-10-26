@@ -9,10 +9,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.amplifyframework.AmplifyException;
+import com.amplifyframework.core.Amplify;
 
 import java.util.ArrayList;
 
@@ -44,6 +48,17 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Amazon AWS Setup details ===============================
+
+        try {
+            Amplify.configure(getApplicationContext());
+            Log.i("MyAmplifyApp", "Initialized Amplify");
+        } catch (AmplifyException error) {
+            Log.e("MyAmplifyApp", "Could not initialize Amplify", error);
+        }
+
+        // AWS Setup ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
         Button goToAddTask = MainActivity.this.findViewById(R.id.addTask);
         goToAddTask.setOnClickListener(new View.OnClickListener() {
