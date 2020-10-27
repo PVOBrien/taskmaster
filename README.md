@@ -6,6 +6,15 @@ A task app to learn the ins and outs of Android app development.
 
 ## Ongoing Work:
 
+### 2020-10-26
+====
+<br/><br/>
+- [x] Espresso test now incorporated for:
+    - Save settings persisting
+    - New task able to be added, persists via Room db persistence.
+    - Task details persisting, viewable on Task Details activity view.
+====
+
 ### 2020-10-22
 =======
 - Main Activity updated with RecycleView now being populated from wired Room database
