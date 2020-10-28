@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.pvobrien.github.taskmaster">
+    package="com.pvobrien.github.taskmaster"
+    >
+
+    <uses-permission android:name="android.permission.WAKE_LOCK" /> // Added for AWS amplify
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> // Added for AWS amplify
 
     <application
         android:allowBackup="true"
@@ -24,3 +28,5 @@
     </application>
 
 </manifest>
+
+<!--    android:name=".MainActivity" TODO: what is the name to go here?-->

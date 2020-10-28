@@ -23,6 +23,7 @@ android {
         }
     }
     compileOptions {
+        coreLibraryDesugaringEnabled true // added for AWS purposes
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -47,4 +48,12 @@ dependencies {
     implementation "androidx.room:room-guava:$room_version"              //
     testImplementation "androidx.room:room-testing:$room_version"        //
 //=======================================================================//
+
+    // Amplify core dependency
+    implementation 'com.amplifyframework:core:1.4.1'
+    implementation 'com.amplifyframework:aws-api:1.4.1'
+
+    // Support for Java 8 features
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.0.10'
+
 }
