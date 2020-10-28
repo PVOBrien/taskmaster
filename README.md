@@ -2,7 +2,7 @@
 
 ## Overview
 
-A task app to learn the ins and outs of Android app development.
+A taskLocal app to learn the ins and outs of Android app development.
 
 ## Ongoing Work:
 
@@ -11,7 +11,7 @@ A task app to learn the ins and outs of Android app development.
 <br/><br/>
 - [x] Espresso test now incorporated for:
     - Save settings persisting
-    - New task able to be added, persists via Room db persistence.
+    - New taskLocal able to be added, persists via Room db persistence.
     - Task details persisting, viewable on Task Details activity view.
 ====
 
@@ -22,13 +22,13 @@ A task app to learn the ins and outs of Android app development.
 =======
 <br/><br/>
 =======
-- Add Task Page task status field added, now creates Task object and then adds into database upon Add Task button onclick.
+- Add Task Page taskLocal status field added, now creates Task object and then adds into database upon Add Task button onclick.
 <img src="https://github.com/PVOBrien/taskmaster/blob/main/screenshots/2020-10-22%20tm%20Add%20Task.png?raw=true" alt="drawing" width="200"/>
 =======
 <br/><br/>
 ### 2020-10-21
 =======
-- Main Activity updated with RecycleView of all tasks (hardcoded atm)
+- Main Activity updated with RecycleView of all taskLocals (hardcoded atm)
 <img src="https://github.com/PVOBrien/taskmaster/blob/main/screenshots/2020-10-21%20tm_HomeScreen_MainActivity.png?raw=true" alt="drawing" width="200"/>
 =======
 <br/><br/>
@@ -68,7 +68,7 @@ A task app to learn the ins and outs of Android app development.
 <br/><br/>
 =======
 
-- Created Add Tasks activity and a Toast notification when a task is added (then moves to the All Tasks activity)
+- Created Add Tasks activity and a Toast notification when a taskLocal is added (then moves to the All Tasks activity)
 
 <img src="https://github.com/PVOBrien/taskmaster/blob/main/screenshots/Screenshot_1603175498.png" alt="drawing" width="200"/>
 =======

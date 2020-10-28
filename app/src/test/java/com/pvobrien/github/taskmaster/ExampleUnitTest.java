@@ -13,15 +13,15 @@ public class ExampleUnitTest {
 
     @Test
     public void emptyTaskTest(){
-        Task testTask = null;
-        assertNull("nothing here", testTask);
+        TaskLocal testTaskLocal = null;
+        assertNull("nothing here", testTaskLocal);
     }
 
     @Test
     public void taskCreatorTest(){
-        Task testTask = new Task("a task", "something to do", "In Progress");
-        assertEquals("a task title should be present", "a task", testTask.taskTitle);
-        assertEquals("task details should be present", "something to do", testTask.taskDetails);
-        assertEquals("task status should be present", "In Progress", testTask.taskStateOfDoing);
+        TaskLocal testTaskLocal = new TaskLocal("a task", "something to do", "In Progress");
+        assertEquals("a task title should be present", "a task", testTaskLocal.taskTitle);
+        assertEquals("task details should be present", "something to do", testTaskLocal.taskDetails);
+        assertEquals("task status should be present", "In Progress", testTaskLocal.taskStateOfDoing);
     }
 }

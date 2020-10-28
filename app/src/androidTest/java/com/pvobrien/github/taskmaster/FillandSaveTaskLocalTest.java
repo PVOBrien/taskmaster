@@ -30,7 +30,7 @@ import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class FillandSaveTaskTest {
+public class FillandSaveTaskLocalTest {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
@@ -38,7 +38,7 @@ public class FillandSaveTaskTest {
     @Test
     public void fillandSaveTaskTest() {
         ViewInteraction materialButton = onView(
-                allOf(withId(R.id.addTask), withText("Add Task"),
+                allOf(withId(R.id.addTask), withText("Add TaskLocal"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
@@ -55,7 +55,7 @@ public class FillandSaveTaskTest {
                                         0),
                                 3),
                         isDisplayed()));
-        textInputEditText.perform(replaceText("New Task!"), closeSoftKeyboard());
+        textInputEditText.perform(replaceText("New TaskLocal!"), closeSoftKeyboard());
 
         ViewInteraction textInputEditText2 = onView(
                 allOf(withId(R.id.taskDetails),
@@ -78,7 +78,7 @@ public class FillandSaveTaskTest {
         textInputEditText3.perform(replaceText("next up!"), closeSoftKeyboard());
 
         ViewInteraction materialButton2 = onView(
-                allOf(withId(R.id.addTaskButton), withText("Add Task"),
+                allOf(withId(R.id.addTaskButton), withText("Add TaskLocal"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
@@ -88,11 +88,11 @@ public class FillandSaveTaskTest {
         materialButton2.perform(click());
 
         ViewInteraction textView = onView(
-                allOf(withId(R.id.taskNameTextView), withText("New Task!"),
+                allOf(withId(R.id.taskNameTextView), withText("New TaskLocal!"),
                         withParent(allOf(withId(R.id.frameLayout),
                                 withParent(withId(R.id.tasksRv)))),
                         isDisplayed()));
-        textView.check(matches(withText("New Task!")));
+        textView.check(matches(withText("New TaskLocal!")));
 
         ViewInteraction textView2 = onView(
                 allOf(withId(R.id.taskDetailTextView), withText("to Do"),

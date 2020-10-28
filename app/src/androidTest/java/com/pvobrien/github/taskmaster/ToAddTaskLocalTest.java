@@ -28,7 +28,7 @@ import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class ToAddTaskTest {
+public class ToAddTaskLocalTest {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
@@ -36,7 +36,7 @@ public class ToAddTaskTest {
     @Test
     public void toAddTaskTest() {
         ViewInteraction materialButton = onView(
-                allOf(withId(R.id.addTask), withText("Add Task"),
+                allOf(withId(R.id.addTask), withText("Add TaskLocal"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
@@ -46,10 +46,10 @@ public class ToAddTaskTest {
         materialButton.perform(click());
 
         ViewInteraction textView = onView(
-                allOf(withId(R.id.addTaskTv), withText("Add Task"),
+                allOf(withId(R.id.addTaskTv), withText("Add TaskLocal"),
                         withParent(withParent(withId(android.R.id.content))),
                         isDisplayed()));
-        textView.check(matches(withText("Add Task")));
+        textView.check(matches(withText("Add TaskLocal")));
     }
 
     private static Matcher<View> childAtPosition(
