@@ -1,13 +1,19 @@
 package com.pvobrien.github.taskmaster;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
@@ -18,32 +24,29 @@ import android.widget.TextView;
 import com.amplifyframework.AmplifyException;
 import com.amplifyframework.api.aws.AWSApiPlugin;
 import com.amplifyframework.api.graphql.model.ModelMutation;
+import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.core.Amplify;
+import com.amplifyframework.datastore.generated.model.Task;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInteractWithTasksToDoListener {
 
     YourUniqueDatabase yourUniqueDatabase;
+    NotificationChannel channel;
+    NotificationManager notificationManager;
+    ArrayList<Task> tasks;
+    RecyclerView recyclerView;
 
     @Override
     public void onResume() {
         super.onResume();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         TextView myTaskTitle = findViewById(R.id.myTasksTitle);
-        String greeting = String.format("%s's tasks", preferences.getString("savedUsername", "My Tasks"));
+        String greeting = String.format("%s's taskLocals", preferences.getString("savedUsername", "My Tasks"));
         myTaskTitle.setText(greeting);
-        SharedPreferences.Editor preferenceEditor = preferences.edit();
+//        SharedPreferences.Editor preferenceEditor = preferences.edit();
 
-        yourUniqueDatabase = Room.databaseBuilder(getApplicationContext(), YourUniqueDatabase.class, "taskDatabase")
-                .allowMainThreadQueries()
-                .build();
-
-        ArrayList<Task> tasks = (ArrayList<Task>) yourUniqueDatabase.taskDao().getAllTasks();
-
-        RecyclerView recyclerView = findViewById(R.id.tasksRv);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new TaskAdapter(tasks, this));
     }
 
     @Override
@@ -55,27 +58,47 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
 
         // this can be reconfigured to callback functions.
 
-
         try {
             Amplify.addPlugin(new AWSApiPlugin());  // this is provided by implementation 'com.amplifyframework:aws-api:1.4.1'
             Amplify.configure(getApplicationContext());
             Log.i("MyAmplifyApp", "Initialized Amplify");
 
-            // CREATE TASK via Task.builder()...
-            
-            com.amplifyframework.datastore.generated.model.Task newTask = com.amplifyframework.datastore.generated.model.Task.builder()
-                    .taskDetails("get these things done")
-                    .taskStateOfDoing("In Progress")
-                    .taskTitle("Thing to do it")
-                    .build();
-
-            Amplify.API.mutate(ModelMutation.create(newTask)),
-                response -> Log.i("Amplify", "success!")
-
-
         } catch (AmplifyException error) {
             Log.e("MyAmplifyApp", "Could not initialize Amplify", error);
         }
+
+        yourUniqueDatabase = Room.databaseBuilder(getApplicationContext(), YourUniqueDatabase.class, "taskDatabase")
+                .fallbackToDestructiveMigration()
+                .allowMainThreadQueries()
+                .build();
+
+        ArrayList<Task> tasks = (ArrayList<Task>) yourUniqueDatabase.taskDao().getAllTasks();
+
+        RecyclerView recyclerView = findViewById(R.id.tasksRv);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(new TaskAdapter(tasks, this));
+
+        Handler handler = new Handler(Looper.getMainLooper(),
+
+                new Handler.Callback() {
+                    @Override
+                    public boolean handleMessage(@NonNull Message message) {
+                        recyclerView.getAdapter().notifyDataSetChanged();
+                        return false;
+                    }
+                });
+
+        Amplify.API.query(
+                ModelQuery.list(Task.class),
+                response -> {
+                    for (Task task : response.getData()) {
+                        tasks.add(task);
+                    }
+                    handler.sendEmptyMessage(1);
+                    Log.i("amplify.queryItems", "Got this many: " + tasks.size());
+                },
+                error -> Log.i("Ampligy.queryItems", "Did not receive tasks"));
+
 
         // AWS Setup ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -83,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
         goToAddTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("head to the tasks...");
+                System.out.println("head to the taskLocals...");
                 Intent goToAddTasks = new Intent(MainActivity.this, AddTask.class);
                 MainActivity.this.startActivity(goToAddTasks);
             }
@@ -91,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
 
         Button goToAllTasks = MainActivity.this.findViewById(R.id.allTasks);
         goToAllTasks.setOnClickListener((view) -> {
-            System.out.println("Seeing all the tasks now.");
+            System.out.println("Seeing all the taskLocals now.");
             Intent goToAllTasksNow = new Intent(MainActivity.this, RecyclerViewGeneric.class);
             MainActivity.this.startActivity(goToAllTasksNow);
         });
@@ -112,9 +135,9 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
     @Override
     public void tasksToDoListener(Task task) {
         Intent intent = new Intent(MainActivity.this, TaskDetail.class);
-        intent.putExtra("taskTitle", task.taskTitle);
-        intent.putExtra("taskDetails", task.taskDetails);
-        intent.putExtra("taskState", task.taskStateOfDoing);
+        intent.putExtra("taskTitle", task.getTaskTitle());
+        intent.putExtra("taskDetails", task.getTaskDetails());
+        intent.putExtra("taskState", task.getTaskStateOfDoing());
         this.startActivity(intent);
     }
 }

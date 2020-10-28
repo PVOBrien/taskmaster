@@ -5,7 +5,10 @@ import java.util.List;
 import java.util.UUID;
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
 import androidx.core.util.ObjectsCompat;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 import com.amplifyframework.core.model.Model;
 import com.amplifyframework.core.model.annotations.Index;
@@ -15,35 +18,37 @@ import com.amplifyframework.core.model.query.predicate.QueryField;
 
 import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 
-/** This is an auto generated class representing the Task type in your schema. */
+/** This is an auto generated class representing the TaskLocal type in your schema. */
 @SuppressWarnings("all")
+@Entity
 @ModelConfig(pluralName = "Tasks")
 public final class Task implements Model {
   public static final QueryField ID = field("id");
   public static final QueryField TASK_DETAILS = field("taskDetails");
   public static final QueryField TASK_TITLE = field("taskTitle");
   public static final QueryField TASK_STATE_OF_DOING = field("taskStateOfDoing");
-  private final @ModelField(targetType="ID", isRequired = true) String id;
-  private final @ModelField(targetType="String", isRequired = true) String taskDetails;
-  private final @ModelField(targetType="String") String taskTitle;
-  private final @ModelField(targetType="String") String taskStateOfDoing;
+
+  @NonNull
+  @PrimaryKey
+  public final @ModelField(targetType="ID", isRequired = true) String id;
+  public final @ModelField(targetType="String", isRequired = true) String taskDetails;
+  public final @ModelField(targetType="String") String taskTitle;
+  public final @ModelField(targetType="String") String taskStateOfDoing;
+
   public String getId() {
       return id;
   }
-  
   public String getTaskDetails() {
       return taskDetails;
   }
-  
   public String getTaskTitle() {
       return taskTitle;
   }
-  
   public String getTaskStateOfDoing() {
       return taskStateOfDoing;
   }
   
-  private Task(String id, String taskDetails, String taskTitle, String taskStateOfDoing) {
+  public Task(String id, String taskDetails, String taskTitle, String taskStateOfDoing) {
     this.id = id;
     this.taskDetails = taskDetails;
     this.taskTitle = taskTitle;
@@ -79,7 +84,7 @@ public final class Task implements Model {
   @Override
    public String toString() {
     return new StringBuilder()
-      .append("Task {")
+      .append("TaskLocal {")
       .append("id=" + String.valueOf(getId()) + ", ")
       .append("taskDetails=" + String.valueOf(getTaskDetails()) + ", ")
       .append("taskTitle=" + String.valueOf(getTaskTitle()) + ", ")

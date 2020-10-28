@@ -103,10 +103,10 @@ public class SettingsSaveTest {
         appCompatImageButton3.perform(click());
 
         ViewInteraction textView = onView(
-                allOf(withId(R.id.myTasksTitle), withText("pal's tasks"),
+                allOf(withId(R.id.myTasksTitle), withText("pal's taskLocals"),
                         withParent(withParent(withId(android.R.id.content))),
                         isDisplayed()));
-        textView.check(matches(withText("pal's tasks")));
+        textView.check(matches(withText("pal's taskLocals")));
     }
 
     private static Matcher<View> childAtPosition(

@@ -36,7 +36,7 @@ import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class FillOutTask {
+public class FillOutTaskLocal {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
@@ -44,7 +44,7 @@ public class FillOutTask {
     @Test
     public void fillOutTask() {
         ViewInteraction materialButton = onView(
-                allOf(withId(R.id.addTask), withText("Add Task"),
+                allOf(withId(R.id.addTask), withText("Add TaskLocal"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
@@ -94,7 +94,7 @@ public class FillOutTask {
         textInputEditText4.perform(replaceText("in progress"), closeSoftKeyboard());
 
         ViewInteraction materialButton2 = onView(
-                allOf(withId(R.id.addTaskButton), withText("Add Task"),
+                allOf(withId(R.id.addTaskButton), withText("Add TaskLocal"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),

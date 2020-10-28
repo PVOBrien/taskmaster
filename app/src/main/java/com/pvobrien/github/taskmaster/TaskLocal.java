@@ -4,7 +4,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity
-public class Task {
+public class TaskLocal {
 
     @PrimaryKey(autoGenerate = true)
     long id;
@@ -13,7 +13,7 @@ public class Task {
     public String taskDetails;
     public String taskStateOfDoing;
 
-    public Task(String taskTitle, String taskDetails, String taskStateOfDoing) {
+    public TaskLocal(String taskTitle, String taskDetails, String taskStateOfDoing) {
         this.taskTitle = taskTitle;
         this.taskDetails = taskDetails;
         this.taskStateOfDoing = taskStateOfDoing;

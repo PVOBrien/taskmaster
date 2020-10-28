@@ -30,7 +30,7 @@ import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class SaveTaskTest {
+public class SaveTaskLocalTest {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
@@ -38,7 +38,7 @@ public class SaveTaskTest {
     @Test
     public void saveTaskTest() {
         ViewInteraction materialButton = onView(
-                allOf(withId(R.id.addTask), withText("Add Task"),
+                allOf(withId(R.id.addTask), withText("Add TaskLocal"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
@@ -88,7 +88,7 @@ public class SaveTaskTest {
         textInputEditText4.perform(replaceText("In Progress"), closeSoftKeyboard());
 
         ViewInteraction materialButton2 = onView(
-                allOf(withId(R.id.addTaskButton), withText("Add Task"),
+                allOf(withId(R.id.addTaskButton), withText("Add TaskLocal"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
