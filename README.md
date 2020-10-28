@@ -6,6 +6,12 @@ A taskLocal app to learn the ins and outs of Android app development.
 
 ## Ongoing Work:
 
+### 2020-10-27
+====
+<br/><br/>
+- [x] ```To Do``` tasks now fully wired (both adding and getting) via aws api Dynamo db.
+====
+
 ### 2020-10-26
 ====
 <br/><br/>
