@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
                 new Handler.Callback() {
                     @Override
                     public boolean handleMessage(@NonNull Message message) {
-                        recyclerView.getAdapter().notifyDataSetChanged();;
+                        recyclerView.getAdapter().notifyDataSetChanged();
                         return false;
                     }
                 });
