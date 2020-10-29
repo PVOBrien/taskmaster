@@ -1,10 +1,10 @@
-package com.pvobrien.github.taskmaster;
+//package com.pvobrien.github.taskmaster;
 
 import androidx.room.RoomDatabase;
 
 import com.amplifyframework.datastore.generated.model.Task;
 
-@androidx.room.Database(entities = {Task.class}, version = 2)
-public abstract class YourUniqueDatabase extends RoomDatabase {
-    public abstract TaskDao taskDao();
-}
+//@androidx.room.Database(entities = {Task.class}, version = 2)
+//public abstract class YourUniqueDatabase extends RoomDatabase {
+//    public abstract TaskDao taskDao();
+//}

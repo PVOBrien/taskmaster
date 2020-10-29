@@ -6,6 +6,22 @@ A taskLocal app to learn the ins and outs of Android app development.
 
 ## Ongoing Work:
 
+### 2020-10-28
+=======
+- Main Activity now showing only selected team's tasks
+<img src="https://github.com/PVOBrien/taskmaster/blob/main/screenshots/2020-10-29%20HOME.png?raw=true" alt="drawing" width="200"/>
+=======
+<br/><br/>
+=======
+- Add Task Activity has (working) option to assign task to a team.
+<img src="https://github.com/PVOBrien/taskmaster/blob/main/screenshots/2020-10-29%20%20ADD_TASK.png?raw=true" alt="drawing" width="200"/>
+=======
+<br/><br/>
+=======
+- Settings Activity now saves user's team preference.
+<img src="https://github.com/PVOBrien/taskmaster/blob/main/screenshots/2020-10-29%20SETTINGS.png?raw=true" alt="drawing" width="200"/>
+=======
+
 ### 2020-10-27
 ====
 <br/><br/>

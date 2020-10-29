@@ -1,5 +1,6 @@
 package com.amplifyframework.datastore.generated.model;
 
+import com.amplifyframework.core.model.annotations.BelongsTo;
 
 import java.util.List;
 import java.util.UUID;
@@ -18,7 +19,7 @@ import com.amplifyframework.core.model.query.predicate.QueryField;
 
 import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 
-/** This is an auto generated class representing the TaskLocal type in your schema. */
+/** This is an auto generated class representing the Task type in your schema. */
 @SuppressWarnings("all")
 @Entity
 @ModelConfig(pluralName = "Tasks")
@@ -27,6 +28,7 @@ public final class Task implements Model {
   public static final QueryField TASK_DETAILS = field("taskDetails");
   public static final QueryField TASK_TITLE = field("taskTitle");
   public static final QueryField TASK_STATE_OF_DOING = field("taskStateOfDoing");
+  public static final QueryField APART_OF = field("taskApartOfId");
 
   @NonNull
   @PrimaryKey
@@ -34,25 +36,20 @@ public final class Task implements Model {
   public final @ModelField(targetType="String", isRequired = true) String taskDetails;
   public final @ModelField(targetType="String") String taskTitle;
   public final @ModelField(targetType="String") String taskStateOfDoing;
+  public final @ModelField(targetType="Team") @BelongsTo(targetName = "taskApartOfId", type = Team.class) Team apartOf;
 
-  public String getId() {
-      return id;
-  }
-  public String getTaskDetails() {
-      return taskDetails;
-  }
-  public String getTaskTitle() {
-      return taskTitle;
-  }
-  public String getTaskStateOfDoing() {
-      return taskStateOfDoing;
-  }
-  
-  public Task(String id, String taskDetails, String taskTitle, String taskStateOfDoing) {
+  public String getId() { return id; }
+  public String getTaskDetails() { return taskDetails; }
+  public String getTaskTitle() { return taskTitle; }
+  public String getTaskStateOfDoing() { return taskStateOfDoing; }
+  public Team getApartOf() { return apartOf; }
+
+  public Task(String id, String taskDetails, String taskTitle, String taskStateOfDoing, Team apartOf) {
     this.id = id;
     this.taskDetails = taskDetails;
     this.taskTitle = taskTitle;
     this.taskStateOfDoing = taskStateOfDoing;
+    this.apartOf = apartOf;
   }
   
   @Override
@@ -66,7 +63,8 @@ public final class Task implements Model {
       return ObjectsCompat.equals(getId(), task.getId()) &&
               ObjectsCompat.equals(getTaskDetails(), task.getTaskDetails()) &&
               ObjectsCompat.equals(getTaskTitle(), task.getTaskTitle()) &&
-              ObjectsCompat.equals(getTaskStateOfDoing(), task.getTaskStateOfDoing());
+              ObjectsCompat.equals(getTaskStateOfDoing(), task.getTaskStateOfDoing()) &&
+              ObjectsCompat.equals(getApartOf(), task.getApartOf());
       }
   }
   
@@ -77,6 +75,7 @@ public final class Task implements Model {
       .append(getTaskDetails())
       .append(getTaskTitle())
       .append(getTaskStateOfDoing())
+      .append(getApartOf())
       .toString()
       .hashCode();
   }
@@ -84,11 +83,12 @@ public final class Task implements Model {
   @Override
    public String toString() {
     return new StringBuilder()
-      .append("TaskLocal {")
+      .append("Task {")
       .append("id=" + String.valueOf(getId()) + ", ")
       .append("taskDetails=" + String.valueOf(getTaskDetails()) + ", ")
       .append("taskTitle=" + String.valueOf(getTaskTitle()) + ", ")
-      .append("taskStateOfDoing=" + String.valueOf(getTaskStateOfDoing()))
+      .append("taskStateOfDoing=" + String.valueOf(getTaskStateOfDoing()) + ", ")
+      .append("apartOf=" + String.valueOf(getApartOf()))
       .append("}")
       .toString();
   }
@@ -120,6 +120,7 @@ public final class Task implements Model {
       id,
       null,
       null,
+      null,
       null
     );
   }
@@ -128,7 +129,8 @@ public final class Task implements Model {
     return new CopyOfBuilder(id,
       taskDetails,
       taskTitle,
-      taskStateOfDoing);
+      taskStateOfDoing,
+      apartOf);
   }
   public interface TaskDetailsStep {
     BuildStep taskDetails(String taskDetails);
@@ -140,6 +142,7 @@ public final class Task implements Model {
     BuildStep id(String id) throws IllegalArgumentException;
     BuildStep taskTitle(String taskTitle);
     BuildStep taskStateOfDoing(String taskStateOfDoing);
+    BuildStep apartOf(Team apartOf);
   }
   
 
@@ -148,6 +151,7 @@ public final class Task implements Model {
     private String taskDetails;
     private String taskTitle;
     private String taskStateOfDoing;
+    private Team apartOf;
     @Override
      public Task build() {
         String id = this.id != null ? this.id : UUID.randomUUID().toString();
@@ -156,7 +160,8 @@ public final class Task implements Model {
           id,
           taskDetails,
           taskTitle,
-          taskStateOfDoing);
+          taskStateOfDoing,
+          apartOf);
     }
     
     @Override
@@ -175,6 +180,12 @@ public final class Task implements Model {
     @Override
      public BuildStep taskStateOfDoing(String taskStateOfDoing) {
         this.taskStateOfDoing = taskStateOfDoing;
+        return this;
+    }
+    
+    @Override
+     public BuildStep apartOf(Team apartOf) {
+        this.apartOf = apartOf;
         return this;
     }
     
@@ -201,11 +212,12 @@ public final class Task implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String taskDetails, String taskTitle, String taskStateOfDoing) {
+    private CopyOfBuilder(String id, String taskDetails, String taskTitle, String taskStateOfDoing, Team apartOf) {
       super.id(id);
       super.taskDetails(taskDetails)
         .taskTitle(taskTitle)
-        .taskStateOfDoing(taskStateOfDoing);
+        .taskStateOfDoing(taskStateOfDoing)
+        .apartOf(apartOf);
     }
     
     @Override
@@ -221,6 +233,11 @@ public final class Task implements Model {
     @Override
      public CopyOfBuilder taskStateOfDoing(String taskStateOfDoing) {
       return (CopyOfBuilder) super.taskStateOfDoing(taskStateOfDoing);
+    }
+    
+    @Override
+     public CopyOfBuilder apartOf(Team apartOf) {
+      return (CopyOfBuilder) super.apartOf(apartOf);
     }
   }
   
