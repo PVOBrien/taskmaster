@@ -65,6 +65,25 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
 //                chosenTeam = teams.get(i);
 //            }
 //        }
+
+        System.out.println("About to Query database.");
+        Amplify.API.query(
+                ModelQuery.list(Task.class),
+                response -> {
+                    tasks.clear(); // keeps the same array list, but empties it.
+                    for (Task task : response.getData()) {
+                        if (preferences.contains("savedTeam")) {
+                            if (task.getApartOf().getName().equals(preferences.getString("savedTeam", "NA"))) {
+                                tasks.add(task);
+                            }
+                        } else { tasks.add(task); }
+                    }
+                    handler.sendEmptyMessage(1);
+                    Log.i("amplify.queryItems", "Got this many: " + tasks.size());
+                },
+                error -> Log.i("Amplify.queryItems", "Did not receive tasks")
+        );
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -73,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Handler handler = new Handler(Looper.getMainLooper(),
+        handler = new Handler(Looper.getMainLooper(),
 
                 new Handler.Callback() {
                     @Override
@@ -93,7 +112,11 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
 //            setupTheTeams();
 
         } catch (AmplifyException error) {
+            if (error.getMessage().equals("message=The client tried to add a plugin after calling configure()., cause=null, recoverySuggestion=Plugins may not be added or removed after configure(...) is called.")) {
+                Log.i("MyAmplifyApp", "Tried reinitializing Amplify."); //TODO find the actual string or use contains().
+            } else {
             Log.e("MyAmplifyApp", "Could not initialize Amplify", error);
+            }
         }
 
         tasks = new ArrayList<Task>();
@@ -114,21 +137,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
         );
 
 
-        Amplify.API.query(
-                ModelQuery.list(Task.class),
-                response -> {
-                    for (Task task : response.getData()) {
-                        if (preferences.contains("savedTeam")) {
-                            if (task.getApartOf().getName().equals(preferences.getString("savedTeam", "NA"))) {
-                                tasks.add(task);
-                            }
-                        } else { tasks.add(task); }
-                    }
-                    handler.sendEmptyMessage(1);
-                    Log.i("amplify.queryItems", "Got this many: " + tasks.size());
-                },
-                error -> Log.i("Amplify.queryItems", "Did not receive tasks")
-        );
+
 
         recyclerView = findViewById(R.id.tasksRv);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -154,19 +163,20 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
 
 // ===== AWS subscription detail =====================
 
-//        ApiOperation subscription = Amplify.API.subscribe(
-//                ModelSubscription.onCreate(Task.class),
-//                onEstablished -> Log.i("Sub works", "Sub connected"),
-//                taskDiscovered -> {
-//                    Log.i("ApiQuickStart", "Here's the ticking work: " + ((Task) taskDiscovered.getData()).getTaskTitle()
-//                    );
-//                    Task newTask = (Task) taskDiscovered.getData();
-//                    tasks.add(newTask);
-//                    handlerOfThisSingleItemAdded.sendEmptyMessage(1);
-//                },
-//                onFailure -> Log.e("ApiQuickStart", "sub fail", onFailure),
-//                () -> Log.i("ApiQuickStart", "Sub fulfilled")
-//        );
+        ApiOperation subscription = Amplify.API.subscribe(
+                ModelSubscription.onCreate(Task.class),
+                onEstablished -> Log.i("Sub works", "Sub connected"),
+                taskDiscovered -> {
+                    Log.i("ApiQuickStart", "Here's the ticking work: " + ((Task) taskDiscovered.getData()).getTaskTitle()
+                    );
+                    Task newTask = (Task) taskDiscovered.getData();
+//                    TODO: Add team preference logic.
+                    tasks.add(newTask);
+                    handlerOfThisSingleItemAdded.sendEmptyMessage(1);
+                },
+                onFailure -> Log.e("ApiQuickStart", "sub fail", onFailure),
+                () -> Log.i("ApiQuickStart", "Sub fulfilled")
+        );
 
 
         Button goToAddTask = MainActivity.this.findViewById(R.id.addTask);
