@@ -57,7 +57,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TasksToDoViewH
     }
 
     public static interface OnInteractWithTasksToDoListener {
-        public void tasksToDoListener(Task taskLocal);
+        public void tasksToDoListener(Task task);
     }
 
     @Override

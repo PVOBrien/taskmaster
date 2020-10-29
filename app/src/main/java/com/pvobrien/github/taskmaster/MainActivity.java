@@ -30,16 +30,20 @@ import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.api.graphql.model.ModelSubscription;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.Task;
+import com.amplifyframework.datastore.generated.model.Team;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInteractWithTasksToDoListener {
 
-    YourUniqueDatabase yourUniqueDatabase;
+//    YourUniqueDatabase yourUniqueDatabase;
     NotificationChannel channel;
     NotificationManager notificationManager;
     ArrayList<Task> tasks;
     RecyclerView recyclerView;
+    ArrayList<Team> teams;
+    Handler handler;
+    Handler handlerOfThisSingleItemAdded;
 
     @Override
     public void onResume() {
@@ -57,6 +61,27 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Handler handler = new Handler(Looper.getMainLooper(),
+
+                new Handler.Callback() {
+                    @Override
+                    public boolean handleMessage(@NonNull Message message) {
+                        recyclerView.getAdapter().notifyDataSetChanged();
+                        return false;
+                    }
+                });
+
+        Handler handlerOfThisSingleItemAdded = new Handler(Looper.getMainLooper(),
+                (message -> {
+                    recyclerView.getAdapter().notifyItemInserted(tasks.size() - 1);
+                    // TODO: make toast here.
+                    Toast.makeText(
+                            this,
+                            tasks.get(tasks.size() - 1).taskTitle + " is now a task added.",
+                            Toast.LENGTH_SHORT).show();
+                    return false;
+                }));
+
         // Amazon AWS Setup details ===============================
 
         // this can be reconfigured to callback functions.
@@ -70,26 +95,18 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
             Log.e("MyAmplifyApp", "Could not initialize Amplify", error);
         }
 
-        yourUniqueDatabase = Room.databaseBuilder(getApplicationContext(), YourUniqueDatabase.class, "taskDatabase")
-                .fallbackToDestructiveMigration()
-                .allowMainThreadQueries()
-                .build();
+//        yourUniqueDatabase = Room.databaseBuilder(getApplicationContext(), YourUniqueDatabase.class, "taskDatabase")
+//                .fallbackToDestructiveMigration()
+//                .allowMainThreadQueries()
+//                .build();
 
-        ArrayList<Task> tasks = (ArrayList<Task>) yourUniqueDatabase.taskDao().getAllTasks();
+//        ArrayList<Task> tasks = (ArrayList<Task>) yourUniqueDatabase.taskDao().getAllTasks();
 
         RecyclerView recyclerView = findViewById(R.id.tasksRv);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new TaskAdapter(tasks, this));
 
-        Handler handler = new Handler(Looper.getMainLooper(),
 
-                new Handler.Callback() {
-                    @Override
-                    public boolean handleMessage(@NonNull Message message) {
-                        recyclerView.getAdapter().notifyDataSetChanged();
-                        return false;
-                    }
-                });
 
         Amplify.API.query(
                 ModelQuery.list(Task.class),
@@ -102,16 +119,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
                 },
                 error -> Log.i("Amplify.queryItems", "Did not receive tasks"));
 
-        Handler handlerOfThisSingleItemAdded = new Handler(Looper.getMainLooper(),
-                (message -> {
-                    recyclerView.getAdapter().notifyItemInserted(tasks.size() - 1);
-                    // TODO: make toast here.
-                    Toast.makeText(
-                            this,
-                            tasks.get(tasks.size() - 1).taskTitle + " is now a task added.",
-                            Toast.LENGTH_SHORT).show();
-                    return false;
-                }));
+
 
         ApiOperation subscription = Amplify.API.subscribe(
                 ModelSubscription.onCreate(Task.class),
@@ -145,7 +153,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
             MainActivity.this.startActivity(goToAllTasksNow);
         });
 
-
         ImageButton goToSettings = MainActivity.this.findViewById(R.id.homeToSettingsButton);
         goToSettings.setOnClickListener((view) -> {
             System.out.println("heading to settings.");
@@ -166,4 +173,38 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
         intent.putExtra("taskState", task.getTaskStateOfDoing());
         this.startActivity(intent);
     }
+
+    public void setupTheTeams(){
+        Team teamOne = Team.builder()
+                .name("Charizard")
+                .build();
+
+        Team teamTwo = Team.builder()
+                .name("Blastoise")
+                .build();
+
+        Team teamThree = Team.builder()
+                .name("Venusaur")
+                .build();
+
+        String AMPTAG = "Amplify";
+        String STOREADD = "Store added";
+        String STOREFAIL = "failed to add store";
+
+        Amplify.API.mutate(ModelMutation.create(teamOne),
+                response -> Log.i(AMPTAG, STOREADD),
+                error -> Log.e(AMPTAG,STOREFAIL)
+        );
+
+        Amplify.API.mutate(ModelMutation.create(teamTwo),
+                response -> Log.i(AMPTAG, STOREADD),
+                error -> Log.e(AMPTAG, STOREFAIL)
+        );
+
+        Amplify.API.mutate(ModelMutation.create(teamThree),
+                response -> Log.i(AMPTAG, STOREADD),
+                error -> Log.e(AMPTAG, STOREADD)
+        );
+    }
+
 }

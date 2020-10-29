@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 public class AllTasks extends AppCompatActivity implements TaskAdapter.OnInteractWithTasksToDoListener {
 
-    YourUniqueDatabase yourUniqueDatabase;
+//    YourUniqueDatabase yourUniqueDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,37 +42,37 @@ public class AllTasks extends AppCompatActivity implements TaskAdapter.OnInterac
             Log.e("MyAmplifyApp", "Could not initialize Amplify", error);
         }
 
-        yourUniqueDatabase = Room.databaseBuilder(getApplicationContext(), YourUniqueDatabase.class, "taskDatabase")
-                .fallbackToDestructiveMigration()
-                .allowMainThreadQueries()
-                .build();
+//        yourUniqueDatabase = Room.databaseBuilder(getApplicationContext(), YourUniqueDatabase.class, "taskDatabase")
+//                .fallbackToDestructiveMigration()
+//                .allowMainThreadQueries()
+//                .build();
 
-        ArrayList<Task> tasks = (ArrayList<Task>) yourUniqueDatabase.taskDao().getAllTasks();
+//        ArrayList<Task> tasks = (ArrayList<Task>) yourUniqueDatabase.taskDao().getAllTasks();
 
-        RecyclerView recyclerView = findViewById(R.id.tasksRv);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new TaskAdapter(tasks, this));
+//        RecyclerView recyclerView = findViewById(R.id.tasksRv);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        recyclerView.setAdapter(new TaskAdapter(tasks, this));
 
-        Handler handler = new Handler(Looper.getMainLooper(),
-
-                new Handler.Callback() {
-                    @Override
-                    public boolean handleMessage(@NonNull Message message) {
-                        recyclerView.getAdapter().notifyDataSetChanged();
-                        return false;
-                    }
-                });
-
-        Amplify.API.query(
-                ModelQuery.list(Task.class),
-                response -> {
-                    for (Task task : response.getData()) {
-                        tasks.add(task);
-                    }
-                    handler.sendEmptyMessage(1);
-                    Log.i("amplify.queryItems", "Got this many: " + tasks.size());
-                },
-                error -> Log.i("Ampligy.queryItems", "Did not receive tasks"));
+//        Handler handler = new Handler(Looper.getMainLooper(),
+//
+//                new Handler.Callback() {
+//                    @Override
+//                    public boolean handleMessage(@NonNull Message message) {
+//                        recyclerView.getAdapter().notifyDataSetChanged();
+//                        return false;
+//                    }
+//                });
+//
+//        Amplify.API.query(
+//                ModelQuery.list(Task.class),
+//                response -> {
+//                    for (Task task : response.getData()) {
+//                        tasks.add(task);
+//                    }
+//                    handler.sendEmptyMessage(1);
+//                    Log.i("amplify.queryItems", "Got this many: " + tasks.size());
+//                },
+//                error -> Log.i("Amplify.queryItems", "Did not receive tasks"));
 
 
         Intent intent = getIntent();

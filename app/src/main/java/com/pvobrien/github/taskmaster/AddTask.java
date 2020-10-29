@@ -15,10 +15,11 @@ import androidx.room.Room;
 
 import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.core.Amplify;
+import com.amplifyframework.datastore.generated.model.Task;
 
 public class AddTask extends AppCompatActivity {
 
-    YourUniqueDatabase yourUniqueDatabase; // this is looking specifically for YOUR yourUniqueDatabase class name/potato
+//    YourUniqueDatabase yourUniqueDatabase; // this is looking specifically for YOUR yourUniqueDatabase class name/potato
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,9 +28,9 @@ public class AddTask extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        yourUniqueDatabase = Room.databaseBuilder(getApplicationContext(), YourUniqueDatabase.class, "taskDatabase") // this YourUniqueDatabase.class is looking for YOUR yourUniqueDatabase class name/potato.
-                    .allowMainThreadQueries()
-                    .build();
+//        yourUniqueDatabase = Room.databaseBuilder(getApplicationContext(), YourUniqueDatabase.class, "taskDatabase") // this YourUniqueDatabase.class is looking for YOUR yourUniqueDatabase class name/potato.
+//                    .allowMainThreadQueries()
+//                    .build();
 
         TextView taskTitleTv = AddTask.this.findViewById(R.id.taskName);
         TextView taskDetailsTv  = AddTask.this.findViewById(R.id.taskDetails);
@@ -40,7 +41,7 @@ public class AddTask extends AppCompatActivity {
         int duration = Toast.LENGTH_LONG;
         Toast toast = Toast.makeText(context, text, duration);
 
-        TaskLocal taskLocalToAdd = new TaskLocal(taskTitleTv.getText().toString(), taskDetailsTv.getText().toString(), taskStatusTv.getText().toString());
+//        Task taskToAdd = new Task(taskTitleTv.getText().toString(), taskDetailsTv.getText().toString(), taskStatusTv.getText().toString()); TODO: Reinstate
 
         Button addButton = AddTask.this.findViewById(R.id.addTaskButton);
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -52,7 +53,7 @@ public class AddTask extends AppCompatActivity {
                 TextView taskDetailsTv  = AddTask.this.findViewById(R.id.taskDetails);
                 TextView taskStatusTv = AddTask.this.findViewById(R.id.taskStatusTv);
 
-                TaskLocal taskLocalToAdd = new TaskLocal(taskTitleTv.getText().toString(), taskDetailsTv.getText().toString(), taskStatusTv.getText().toString());
+//                Task taskToAdd = new Task(taskTitleTv.getText().toString(), taskDetailsTv.getText().toString(), taskStatusTv.getText().toString()); TODO: Reinstate
 
                 // CREATE TASK via TaskLocal.builder()...
 
@@ -66,8 +67,6 @@ public class AddTask extends AppCompatActivity {
                     ModelMutation.create(newTask),
                     response -> Log.i("Amplify", "success!"),
                     error -> Log.e("Amplify", "Failure", error)); // must be completely built and entirely correct in order to not be grumpy. Ie it's red from the get-go, and only after the ; is in place with all details in order does it quiet down.
-
-
 
 //                yourUniqueDatabase.taskDao().saveTheThing(taskLocalToAdd);
 
