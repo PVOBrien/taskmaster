@@ -83,7 +83,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
                 },
                 error -> Log.i("Amplify.queryItems", "Did not receive tasks")
         );
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -97,12 +96,10 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
                 new Handler.Callback() {
                     @Override
                     public boolean handleMessage(@NonNull Message message) {
-//                        connectAdapterToRecyclerView();
                         recyclerView.getAdapter().notifyDataSetChanged();
                         return true;
                     }
                 });
-
 
         try {
             Amplify.addPlugin(new AWSApiPlugin());  // this is provided by implementation 'com.amplifyframework:aws-api:1.4.1'
@@ -112,14 +109,15 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
 //            setupTheTeams();
 
         } catch (AmplifyException error) {
-            if (error.getMessage().equals("message=The client tried to add a plugin after calling configure()., cause=null, recoverySuggestion=Plugins may not be added or removed after configure(...) is called.")) {
+            String errorMsg = error.getLocalizedMessage();
+            if (errorMsg.contentEquals("The client tried to add a plugin after calling configure().")) { // it's not just .equals(), it is .content(*cs*) to match a String
                 Log.i("MyAmplifyApp", "Tried reinitializing Amplify."); //TODO find the actual string or use contains().
             } else {
             Log.e("MyAmplifyApp", "Could not initialize Amplify", error);
             }
         }
 
-        tasks = new ArrayList<Task>();
+        tasks = new ArrayList<>();
 
         System.out.println("This is in the Task API query");
 
@@ -136,9 +134,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
                 error -> Log.e("Amplify", "failure to retrieve")
         );
 
-
-
-
         recyclerView = findViewById(R.id.tasksRv);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new TaskAdapter(tasks, this));
@@ -150,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
 
 //        ArrayList<Task> tasks = (ArrayList<Task>) yourUniqueDatabase.taskDao().getAllTasks();
 
-        Handler handlerOfThisSingleItemAdded = new Handler(Looper.getMainLooper(),
+        handlerOfThisSingleItemAdded = new Handler(Looper.getMainLooper(),
                 (message -> {
                     recyclerView.getAdapter().notifyItemInserted(tasks.size() - 1);
                     // TODO: make toast here.
@@ -169,15 +164,18 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
                 taskDiscovered -> {
                     Log.i("ApiQuickStart", "Here's the ticking work: " + ((Task) taskDiscovered.getData()).getTaskTitle()
                     );
-                    Task newTask = (Task) taskDiscovered.getData();
+                    Task newTask = taskDiscovered.getData();
 //                    TODO: Add team preference logic.
-                    tasks.add(newTask);
+//                    if (newTask.getApartOf().getName() == preferences.getString("savedTeam", "NA")) {
+                        tasks.add(newTask);
+//                    }
                     handlerOfThisSingleItemAdded.sendEmptyMessage(1);
                 },
                 onFailure -> Log.e("ApiQuickStart", "sub fail", onFailure),
                 () -> Log.i("ApiQuickStart", "Sub fulfilled")
         );
 
+// ====================================================
 
         Button goToAddTask = MainActivity.this.findViewById(R.id.addTask);
         goToAddTask.setOnClickListener(new View.OnClickListener() {
@@ -189,13 +187,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
             }
         });
 
-        Button goToAllTasks = MainActivity.this.findViewById(R.id.allTasks);
-        goToAllTasks.setOnClickListener((view) -> {
-            System.out.println("Seeing all the taskLocals now.");
-            Intent goToAllTasksNow = new Intent(MainActivity.this, RecyclerViewGeneric.class);
-            MainActivity.this.startActivity(goToAllTasksNow);
-        });
-
         ImageButton goToSettings = MainActivity.this.findViewById(R.id.homeToSettingsButton);
         goToSettings.setOnClickListener((view) -> {
             System.out.println("heading to settings.");
@@ -203,8 +194,8 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
             MainActivity.this.startActivity(goToSettingPage);
         });
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        final SharedPreferences.Editor preferenceEditor = preferences.edit();
+//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+//        final SharedPreferences.Editor preferenceEditor = preferences.edit();
     }
 
     @Override
@@ -248,5 +239,4 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
                 error -> Log.e(AMPTAG, STOREADD)
         );
     }
-
 }
