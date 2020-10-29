@@ -5,6 +5,7 @@
 
     <uses-permission android:name="android.permission.WAKE_LOCK" /> // Added for AWS amplify
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> // Added for AWS amplify
+    <uses-permission android:name="android.permission.INTERNET" /> // This now gives the app the internet. BUT: if you need to do this mid-app, it requires a full re-install of the app. Can't just turn it on and off.
 
     <application
         android:allowBackup="true"

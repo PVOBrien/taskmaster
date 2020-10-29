@@ -20,11 +20,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amplifyframework.AmplifyException;
+import com.amplifyframework.api.ApiOperation;
 import com.amplifyframework.api.aws.AWSApiPlugin;
 import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.api.graphql.model.ModelQuery;
+import com.amplifyframework.api.graphql.model.ModelSubscription;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.Task;
 
@@ -97,9 +100,32 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
                     handler.sendEmptyMessage(1);
                     Log.i("amplify.queryItems", "Got this many: " + tasks.size());
                 },
-                error -> Log.i("Ampligy.queryItems", "Did not receive tasks"));
+                error -> Log.i("Amplify.queryItems", "Did not receive tasks"));
 
+        Handler handlerOfThisSingleItemAdded = new Handler(Looper.getMainLooper(),
+                (message -> {
+                    recyclerView.getAdapter().notifyItemInserted(tasks.size() - 1);
+                    // TODO: make toast here.
+                    Toast.makeText(
+                            this,
+                            tasks.get(tasks.size() - 1).taskTitle + " is now a task added.",
+                            Toast.LENGTH_SHORT).show();
+                    return false;
+                }));
 
+        ApiOperation subscription = Amplify.API.subscribe(
+                ModelSubscription.onCreate(Task.class),
+                onEstablished -> Log.i("Sub works", "Sub connected"),
+                taskDiscovered -> {
+                    Log.i("ApiQuickStart","Here's the ticking work: " + ((Task) taskDiscovered.getData()).getTaskTitle()
+                    );
+                    Task newTask = (Task) taskDiscovered.getData();
+                    tasks.add(newTask);
+                    handlerOfThisSingleItemAdded.sendEmptyMessage(1);
+                },
+                onFailure -> Log.e("ApiQuickStart", "sub fail", onFailure),
+                () -> Log.i("ApiQuickStart", "Sub fulfilled")
+        );
         // AWS Setup ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
         Button goToAddTask = MainActivity.this.findViewById(R.id.addTask);
