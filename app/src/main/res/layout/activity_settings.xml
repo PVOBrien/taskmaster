@@ -48,4 +48,36 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_menu_save" />
+
+    <RadioGroup
+        android:id="@+id/usersTeamChoices"
+        android:layout_width="357dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="84dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/usernameText">
+
+        <RadioButton
+            android:id="@+id/Venusaur"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Venusaur" />
+
+        <RadioButton
+            android:id="@+id/Blastoise"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:layout_weight="1"
+            android:text="Blastoise" />
+
+        <RadioButton
+            android:id="@+id/Charizard"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:layout_weight="1"
+            android:text="Charizard" />
+    </RadioGroup>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -47,15 +47,24 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
     Handler handler;
     Handler handlerOfThisSingleItemAdded;
     int teamWeAreOnIndex = 0;
+    SharedPreferences preferences;
 
     @Override
     public void onResume() {
         super.onResume();
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
         TextView myTaskTitle = findViewById(R.id.myTasksTitle);
-        String greeting = String.format("%s's taskLocals", preferences.getString("savedUsername", "My Tasks"));
+        String greeting = String.format("%s's tasks", preferences.getString("savedUsername", "User's"));
         myTaskTitle.setText(greeting);
 //        SharedPreferences.Editor preferenceEditor = preferences.edit();
+
+//        Team chosenTeam = null;
+//
+//        for (int i = 0; i < teams.size(); i++) {
+//            if(teams.get(i).getName().equals(preferences.getString("savedTeam", "Charizard"))) {
+//                chosenTeam = teams.get(i);
+//            }
+//        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -63,9 +72,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // Amazon AWS Setup details ===============================
-        // this can be reconfigured to callback functions.
 
         Handler handler = new Handler(Looper.getMainLooper(),
 
@@ -92,27 +98,40 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
 
         tasks = new ArrayList<Task>();
 
+        System.out.println("This is in the Task API query");
+
+        Amplify.API.query(
+                ModelQuery.list(Team.class),
+                response -> {
+                    teams = new ArrayList<Team>();
+                    for(Team team : response.getData()) {
+                        teams.add(team);
+                    }
+                    System.out.println("here are teams" + teams);
+                    handler.sendEmptyMessage(1);
+                },
+                error -> Log.e("Amplify", "failure to retrieve")
+        );
+
         Amplify.API.query(
                 ModelQuery.list(Task.class),
                 response -> {
                     for (Task task : response.getData()) {
-                        tasks.add(task);
+                        if (preferences.contains("savedTeam")) {
+                            if (task.getApartOf().getName().equals(preferences.getString("savedTeam", "NA"))) {
+                                tasks.add(task);
+                            }
+                        } else { tasks.add(task); }
                     }
                     handler.sendEmptyMessage(1);
                     Log.i("amplify.queryItems", "Got this many: " + tasks.size());
                 },
-                error -> Log.i("Amplify.queryItems", "Did not receive tasks"));
+                error -> Log.i("Amplify.queryItems", "Did not receive tasks")
+        );
 
         recyclerView = findViewById(R.id.tasksRv);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new TaskAdapter(tasks, this));
-
-//
-
-//        for (Task task : teams.get(teamWeAreOnIndex).getTasks()) {
-//            tasks.add(task);
-//        }
-
 
 //        yourUniqueDatabase = Room.databaseBuilder(getApplicationContext(), YourUniqueDatabase.class, "taskDatabase")
 //                .fallbackToDestructiveMigration()
@@ -121,19 +140,16 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
 
 //        ArrayList<Task> tasks = (ArrayList<Task>) yourUniqueDatabase.taskDao().getAllTasks();
 
-//        Amplify.API.query(
-//                ModelQuery.list(Team.class),
-//                response -> {
-//                    teams = new ArrayList<Team>();
-//                    for(Team team : response.getData()) {
-//                        teams.add(team);
-//                    }
-//                    handler.sendEmptyMessage(1);
-//                },
-//                error -> Log.e("Amplify", "failure to retrieve")
-//        );
-
-
+        Handler handlerOfThisSingleItemAdded = new Handler(Looper.getMainLooper(),
+                (message -> {
+                    recyclerView.getAdapter().notifyItemInserted(tasks.size() - 1);
+                    // TODO: make toast here.
+                    Toast.makeText(
+                            this,
+                            tasks.get(tasks.size() - 1).taskTitle + " is now a task added.",
+                            Toast.LENGTH_SHORT).show();
+                    return false;
+                }));
 
 // ===== AWS subscription detail =====================
 
@@ -178,12 +194,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         final SharedPreferences.Editor preferenceEditor = preferences.edit();
-
-    }
-
-
-    public void findTaskSize(){
-        System.out.println("Here should be 7? tasks." + tasks.size());
     }
 
     @Override
@@ -194,17 +204,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
         intent.putExtra("taskState", task.getTaskStateOfDoing());
         this.startActivity(intent);
     }
-
-//    Handler handlerOfThisSingleItemAdded = new Handler(Looper.getMainLooper(),
-//            (message -> {
-//                recyclerView.getAdapter().notifyItemInserted(tasks.size() - 1);
-//                // TODO: make toast here.
-//                Toast.makeText(
-//                        this,
-//                        tasks.get(tasks.size() - 1).taskTitle + " is now a task added.",
-//                        Toast.LENGTH_SHORT).show();
-//                return false;
-//            }));
 
     public void setupTheTeams() {
         Team teamOne = Team.builder()
