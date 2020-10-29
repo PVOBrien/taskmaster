@@ -120,7 +120,8 @@ public class AddTask extends AppCompatActivity {
                 toast.show();
 
 //                finish(); // this "closes out" the activity, sends us back to where we are.
-                onBackPressed(); // this basically does the same thing.
+//                onBackPressed(); // this basically does the same thing.
+                finish();
 
 //                Intent addTaskToAllTasks = new Intent(AddTask.this, MainActivity.class);
 //                AddTask.this.startActivity(addTaskToAllTasks);

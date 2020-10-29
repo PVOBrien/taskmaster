@@ -113,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
                 error -> Log.e("Amplify", "failure to retrieve")
         );
 
+
         Amplify.API.query(
                 ModelQuery.list(Task.class),
                 response -> {
