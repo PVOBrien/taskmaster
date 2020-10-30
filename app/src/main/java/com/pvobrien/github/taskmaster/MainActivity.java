@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
     RecyclerView recyclerView;
     Handler handler;
     Handler handlerOfThisSingleItemAdded;
-    int teamWeAreOnIndex = 0;
     SharedPreferences preferences;
 
     @Override
@@ -65,58 +64,12 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
 //                chosenTeam = teams.get(i);
 //            }
 //        }
-    }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        Handler handler = new Handler(Looper.getMainLooper(),
-
-                new Handler.Callback() {
-                    @Override
-                    public boolean handleMessage(@NonNull Message message) {
-//                        connectAdapterToRecyclerView();
-                        recyclerView.getAdapter().notifyDataSetChanged();
-                        return true;
-                    }
-                });
-
-
-        try {
-            Amplify.addPlugin(new AWSApiPlugin());  // this is provided by implementation 'com.amplifyframework:aws-api:1.4.1'
-            Amplify.configure(getApplicationContext());
-            Log.i("MyAmplifyApp", "Initialized Amplify");
-
-//            setupTheTeams();
-
-        } catch (AmplifyException error) {
-            Log.e("MyAmplifyApp", "Could not initialize Amplify", error);
-        }
-
-        tasks = new ArrayList<Task>();
-
-        System.out.println("This is in the Task API query");
-
-        Amplify.API.query(
-                ModelQuery.list(Team.class),
-                response -> {
-                    teams = new ArrayList<Team>();
-                    for(Team team : response.getData()) {
-                        teams.add(team);
-                    }
-                    System.out.println("here are teams" + teams);
-                    handler.sendEmptyMessage(1);
-                },
-                error -> Log.e("Amplify", "failure to retrieve")
-        );
-
-
+        System.out.println("About to Query database.");
         Amplify.API.query(
                 ModelQuery.list(Task.class),
                 response -> {
+                    tasks.clear(); // keeps the same array list, but empties it.
                     for (Task task : response.getData()) {
                         if (preferences.contains("savedTeam")) {
                             if (task.getApartOf().getName().equals(preferences.getString("savedTeam", "NA"))) {
@@ -128,6 +81,44 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
                     Log.i("amplify.queryItems", "Got this many: " + tasks.size());
                 },
                 error -> Log.i("Amplify.queryItems", "Did not receive tasks")
+        );
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        handler = new Handler(Looper.getMainLooper(),
+
+                new Handler.Callback() {
+                    @Override
+                    public boolean handleMessage(@NonNull Message message) {
+                        recyclerView.getAdapter().notifyDataSetChanged();
+                        return true;
+                    }
+                });
+
+//      setupTheTeams();
+
+        configureAWS();
+
+        tasks = new ArrayList<>(); // TODO necessary?
+
+        System.out.println("This is in the Task API query");
+
+        Amplify.API.query(
+                ModelQuery.list(Team.class),
+                response -> {
+                    teams = new ArrayList<>();
+                    for(Team team : response.getData()) {
+                        teams.add(team);
+                    }
+                    System.out.println("here are teams" + teams);
+                    handler.sendEmptyMessage(1);
+                },
+                error -> Log.e("Amplify", "failure to retrieve")
         );
 
         recyclerView = findViewById(R.id.tasksRv);
@@ -141,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
 
 //        ArrayList<Task> tasks = (ArrayList<Task>) yourUniqueDatabase.taskDao().getAllTasks();
 
-        Handler handlerOfThisSingleItemAdded = new Handler(Looper.getMainLooper(),
+        handlerOfThisSingleItemAdded = new Handler(Looper.getMainLooper(),
                 (message -> {
                     recyclerView.getAdapter().notifyItemInserted(tasks.size() - 1);
                     // TODO: make toast here.
@@ -154,20 +145,29 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
 
 // ===== AWS subscription detail =====================
 
-//        ApiOperation subscription = Amplify.API.subscribe(
-//                ModelSubscription.onCreate(Task.class),
-//                onEstablished -> Log.i("Sub works", "Sub connected"),
-//                taskDiscovered -> {
-//                    Log.i("ApiQuickStart", "Here's the ticking work: " + ((Task) taskDiscovered.getData()).getTaskTitle()
-//                    );
-//                    Task newTask = (Task) taskDiscovered.getData();
-//                    tasks.add(newTask);
-//                    handlerOfThisSingleItemAdded.sendEmptyMessage(1);
-//                },
-//                onFailure -> Log.e("ApiQuickStart", "sub fail", onFailure),
-//                () -> Log.i("ApiQuickStart", "Sub fulfilled")
-//        );
+        ApiOperation subscription = Amplify.API.subscribe(
+                ModelSubscription.onCreate(Task.class),
+                onEstablished -> Log.i("Sub works", "Sub connected"),
+                taskDiscovered -> {
+                    Log.i("ApiQuickStart", "Here's the ticking work: " + ((Task) taskDiscovered.getData()).getTaskTitle()
+                    );
 
+                    Task newTask = taskDiscovered.getData();
+                    if (preferences.contains("savedTeam")) {
+                        System.out.println("There is a team: " + preferences.getString("savedTeam", "NA"));
+                        if (newTask.getApartOf().getName() == preferences.getString("savedTeam", "NA")) {
+//                          TODO: Add team preference logic.
+                            System.out.println(newTask.apartOf.getName());
+                            tasks.add(newTask);
+                            handlerOfThisSingleItemAdded.sendEmptyMessage(1);
+                        }
+                    }
+                },
+                onFailure -> Log.e("ApiQuickStart", "sub fail", onFailure),
+                () -> Log.i("ApiQuickStart", "Sub fulfilled")
+        );
+
+// ====================================================
 
         Button goToAddTask = MainActivity.this.findViewById(R.id.addTask);
         goToAddTask.setOnClickListener(new View.OnClickListener() {
@@ -179,22 +179,30 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
             }
         });
 
-        Button goToAllTasks = MainActivity.this.findViewById(R.id.allTasks);
-        goToAllTasks.setOnClickListener((view) -> {
-            System.out.println("Seeing all the taskLocals now.");
-            Intent goToAllTasksNow = new Intent(MainActivity.this, RecyclerViewGeneric.class);
-            MainActivity.this.startActivity(goToAllTasksNow);
-        });
-
         ImageButton goToSettings = MainActivity.this.findViewById(R.id.homeToSettingsButton);
         goToSettings.setOnClickListener((view) -> {
             System.out.println("heading to settings.");
             Intent goToSettingPage = new Intent(MainActivity.this, Settings.class);
             MainActivity.this.startActivity(goToSettingPage);
         });
+    }
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        final SharedPreferences.Editor preferenceEditor = preferences.edit();
+    public void configureAWS() {
+
+        try {
+            Amplify.addPlugin(new AWSApiPlugin());  // this is provided by implementation 'com.amplifyframework:aws-api:1.4.1'
+            Amplify.configure(getApplicationContext());
+            Log.i("MyAmplifyApp", "Initialized Amplify");
+
+
+        } catch (AmplifyException error) {
+            String errorMsg = error.getLocalizedMessage();
+            if (errorMsg.contentEquals("The client tried to add a plugin after calling configure().")) { // it's not just .equals(), it is .content(*cs*) to match a String
+                Log.i("MyAmplifyApp", "Tried reinitializing Amplify."); //TODO find the actual string or use contains().
+            } else {
+                Log.e("MyAmplifyApp", "Could not initialize Amplify", error);
+            }
+        }
     }
 
     @Override
@@ -210,11 +218,9 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
         Team teamOne = Team.builder()
                 .name("Charizard")
                 .build();
-
         Team teamTwo = Team.builder()
                 .name("Blastoise")
                 .build();
-
         Team teamThree = Team.builder()
                 .name("Venusaur")
                 .build();
@@ -238,5 +244,4 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
                 error -> Log.e(AMPTAG, STOREADD)
         );
     }
-
 }

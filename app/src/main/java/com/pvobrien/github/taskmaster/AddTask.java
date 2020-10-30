@@ -3,12 +3,16 @@ package com.pvobrien.github.taskmaster;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +30,8 @@ import java.util.ArrayList;
 public class AddTask extends AppCompatActivity {
 
 //    YourUniqueDatabase yourUniqueDatabase; // this is looking specifically for YOUR yourUniqueDatabase class name/potato
+    ArrayList<Team> teams = new ArrayList<Team>();
+    Handler handleCreation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +44,10 @@ public class AddTask extends AppCompatActivity {
 //                    .allowMainThreadQueries()
 //                    .build();
 
-        ArrayList<Team> teams = new ArrayList<Team>();
-
-        RadioButton radioButtonOne = this.findViewById(R.id.RadButOne);
-        RadioButton radioButtonTwo = this.findViewById(R.id.RadButTwo);
-        RadioButton radioButtonThree = this.findViewById(R.id.RadButThree);
+        handleCreation = new Handler(Looper.getMainLooper(), message -> {
+           setupSpinner();
+           return false;
+        });
 
         Amplify.API.query(
                 ModelQuery.list(Team.class),
@@ -52,9 +57,7 @@ public class AddTask extends AppCompatActivity {
                     }
                     System.out.println("How many teams: " + teams.size());
 
-                    radioButtonOne.setText(teams.get(0).getName());
-                    radioButtonTwo.setText(teams.get(1).getName());
-                    radioButtonThree.setText(teams.get(2).getName());
+                    handleCreation.sendEmptyMessage(1);
 
                     Log.i ("Amplify", "Teams is built.");
                 },
@@ -80,11 +83,8 @@ public class AddTask extends AppCompatActivity {
 
                 //  === find the Team ===
 
-                RadioGroup teamRadGroup = AddTask.this.findViewById(R.id.teamRadG);
-                RadioButton selectedTeam = AddTask.this.findViewById(teamRadGroup.getCheckedRadioButtonId());
-
-                String teamName = selectedTeam.getText().toString();
-
+                Spinner teamNameSpinner = findViewById(R.id.teamSpinner);
+                String teamName = teamNameSpinner.getSelectedItem().toString();
                 Team chosenTeam = null;
 
                 for (int i = 0; i < teams.size(); i++) {
@@ -94,7 +94,7 @@ public class AddTask extends AppCompatActivity {
                 }
 
                 TextView taskTitleTv = AddTask.this.findViewById(R.id.taskName);
-                TextView taskDetailsTv  = AddTask.this.findViewById(R.id.taskDetails);
+                TextView taskDetailsTv = AddTask.this.findViewById(R.id.taskDetails);
                 TextView taskStatusTv = AddTask.this.findViewById(R.id.taskStatusTv);
 
 //                Task taskToAdd = new Task(taskTitleTv.getText().toString(), taskDetailsTv.getText().toString(), taskStatusTv.getText().toString()); TODO: Reinstate
@@ -119,12 +119,11 @@ public class AddTask extends AppCompatActivity {
 
                 toast.show();
 
-//                finish(); // this "closes out" the activity, sends us back to where we are.
-//                onBackPressed(); // this basically does the same thing.
-                finish();
+//              onBackPressed(); // this basically does the same thing.
+                finish(); // this "closes out" the activity, sends us back to where we are.
 
-//                Intent addTaskToAllTasks = new Intent(AddTask.this, MainActivity.class);
-//                AddTask.this.startActivity(addTaskToAllTasks);
+//              Intent addTaskToAllTasks = new Intent(AddTask.this, MainActivity.class);
+//              AddTask.this.startActivity(addTaskToAllTasks);
 
             }
         });
@@ -135,4 +134,19 @@ public class AddTask extends AppCompatActivity {
         startActivityForResult(mtIntent, 0);
         return true;
     }
+
+    public void setupSpinner(){
+        String[] teamNames = new String[teams.size()];
+        for (int i = 0; i < teams.size(); i++) {
+            teamNames[i] = teams.get(i).getName();
+        } // put the teams' names into an arraylist.
+
+        Spinner spinner = (Spinner) findViewById(R.id.teamSpinner); // create a spinner object to put following things to...
+
+        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, teamNames);  // Specify layout - AKA simple_spinner_item to use when choice list come in...
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // adapt the adapter for a spinner.
+
+        spinner.setAdapter(adapter); // set the spinner to the adapter for a spinner.
+    }
+
 }

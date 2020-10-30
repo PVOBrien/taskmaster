@@ -21,8 +21,8 @@
         android:id="@+id/homeToSettingsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="60dp"
-        android:layout_marginBottom="28dp"
+        android:layout_marginEnd="96dp"
+        android:layout_marginBottom="88dp"
         android:contentDescription="to settings save button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,16 +49,5 @@
         android:text="Add Task"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/allTasks"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="89dp"
-        android:text="All Tasks"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.427"
-        app:layout_constraintStart_toEndOf="@+id/addTask" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

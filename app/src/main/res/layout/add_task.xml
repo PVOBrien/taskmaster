@@ -89,75 +89,23 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="49dp"
-        android:text="Total Tasks:"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/teamRadG" />
-
-    <TextView
-        android:id="@+id/taskCount"
-        android:layout_width="16dp"
-        android:layout_height="24dp"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="200dp"
-        android:text="0"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.013"
-        app:layout_constraintStart_toEndOf="@+id/textView7"
-        app:layout_constraintTop_toBottomOf="@+id/teamRadG" />
-
-    <RadioGroup
-        android:id="@+id/teamRadG"
-        android:layout_width="328dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="28dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/taskStatusTv">
-
-        <RadioButton
-            android:id="@+id/RadButOne"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="RadOne"
-            android:textAlignment="viewStart"
-            android:textSize="10sp"
-            tools:text="WrenchT 1" />
-
-        <RadioButton
-            android:id="@+id/RadButTwo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="RadTwo"
-            android:textAlignment="viewStart"
-            android:textSize="10sp" />
-
-        <RadioButton
-            android:id="@+id/RadButThree"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="RadThree"
-            android:textAlignment="viewStart"
-            android:textSize="10sp" />
-    </RadioGroup>
-
-    <TextView
         android:id="@+id/TeamSelectText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
+        android:layout_marginBottom="6dp"
         android:text="Task Team Select"
-        app:layout_constraintBottom_toTopOf="@+id/teamRadG"
+        app:layout_constraintBottom_toTopOf="@+id/teamSpinner"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Spinner
+        android:id="@+id/teamSpinner"
+        android:layout_width="154dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.163"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/taskStatusTv" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
