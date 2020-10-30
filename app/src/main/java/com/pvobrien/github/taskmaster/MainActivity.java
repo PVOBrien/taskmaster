@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
     RecyclerView recyclerView;
     Handler handler;
     Handler handlerOfThisSingleItemAdded;
-    int teamWeAreOnIndex = 0;
     SharedPreferences preferences;
 
     @Override
@@ -101,30 +100,18 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
                     }
                 });
 
-        try {
-            Amplify.addPlugin(new AWSApiPlugin());  // this is provided by implementation 'com.amplifyframework:aws-api:1.4.1'
-            Amplify.configure(getApplicationContext());
-            Log.i("MyAmplifyApp", "Initialized Amplify");
+//      setupTheTeams();
 
-//            setupTheTeams();
+        configureAWS();
 
-        } catch (AmplifyException error) {
-            String errorMsg = error.getLocalizedMessage();
-            if (errorMsg.contentEquals("The client tried to add a plugin after calling configure().")) { // it's not just .equals(), it is .content(*cs*) to match a String
-                Log.i("MyAmplifyApp", "Tried reinitializing Amplify."); //TODO find the actual string or use contains().
-            } else {
-            Log.e("MyAmplifyApp", "Could not initialize Amplify", error);
-            }
-        }
-
-        tasks = new ArrayList<>();
+        tasks = new ArrayList<>(); // TODO necessary?
 
         System.out.println("This is in the Task API query");
 
         Amplify.API.query(
                 ModelQuery.list(Team.class),
                 response -> {
-                    teams = new ArrayList<Team>();
+                    teams = new ArrayList<>();
                     for(Team team : response.getData()) {
                         teams.add(team);
                     }
@@ -164,12 +151,17 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
                 taskDiscovered -> {
                     Log.i("ApiQuickStart", "Here's the ticking work: " + ((Task) taskDiscovered.getData()).getTaskTitle()
                     );
+
                     Task newTask = taskDiscovered.getData();
-//                    TODO: Add team preference logic.
-//                    if (newTask.getApartOf().getName() == preferences.getString("savedTeam", "NA")) {
-                        tasks.add(newTask);
-//                    }
-                    handlerOfThisSingleItemAdded.sendEmptyMessage(1);
+                    if (preferences.contains("savedTeam")) {
+                        System.out.println("There is a team: " + preferences.getString("savedTeam", "NA"));
+                        if (newTask.getApartOf().getName() == preferences.getString("savedTeam", "NA")) {
+//                          TODO: Add team preference logic.
+                            System.out.println(newTask.apartOf.getName());
+                            tasks.add(newTask);
+                            handlerOfThisSingleItemAdded.sendEmptyMessage(1);
+                        }
+                    }
                 },
                 onFailure -> Log.e("ApiQuickStart", "sub fail", onFailure),
                 () -> Log.i("ApiQuickStart", "Sub fulfilled")
@@ -193,9 +185,24 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
             Intent goToSettingPage = new Intent(MainActivity.this, Settings.class);
             MainActivity.this.startActivity(goToSettingPage);
         });
+    }
 
-//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-//        final SharedPreferences.Editor preferenceEditor = preferences.edit();
+    public void configureAWS() {
+
+        try {
+            Amplify.addPlugin(new AWSApiPlugin());  // this is provided by implementation 'com.amplifyframework:aws-api:1.4.1'
+            Amplify.configure(getApplicationContext());
+            Log.i("MyAmplifyApp", "Initialized Amplify");
+
+
+        } catch (AmplifyException error) {
+            String errorMsg = error.getLocalizedMessage();
+            if (errorMsg.contentEquals("The client tried to add a plugin after calling configure().")) { // it's not just .equals(), it is .content(*cs*) to match a String
+                Log.i("MyAmplifyApp", "Tried reinitializing Amplify."); //TODO find the actual string or use contains().
+            } else {
+                Log.e("MyAmplifyApp", "Could not initialize Amplify", error);
+            }
+        }
     }
 
     @Override
@@ -211,11 +218,9 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
         Team teamOne = Team.builder()
                 .name("Charizard")
                 .build();
-
         Team teamTwo = Team.builder()
                 .name("Blastoise")
                 .build();
-
         Team teamThree = Team.builder()
                 .name("Venusaur")
                 .build();
