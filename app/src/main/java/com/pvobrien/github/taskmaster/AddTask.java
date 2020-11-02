@@ -45,7 +45,7 @@ public class AddTask extends AppCompatActivity {
 //                    .build();
 
         handleCreation = new Handler(Looper.getMainLooper(), message -> {
-           setupSpinner();
+           setupTeamSpinner();
            return false;
         });
 
@@ -64,9 +64,11 @@ public class AddTask extends AppCompatActivity {
                 error -> Log.e ("Amplify", "failed to retrieve team")
         );
 
+        setupStatusSpinner();
+
         TextView taskTitleTv = AddTask.this.findViewById(R.id.taskName);
         TextView taskDetailsTv  = AddTask.this.findViewById(R.id.taskDetails);
-        TextView taskStatusTv = AddTask.this.findViewById(R.id.taskStatusTv);
+//        TextView taskStatusTv = AddTask.this.findViewById(R.id.taskStatusTv);
 
         Context context = getApplicationContext();
         CharSequence text = "Task Entered";
@@ -93,9 +95,12 @@ public class AddTask extends AppCompatActivity {
                     }
                 }
 
+                Spinner statusSpinner = findViewById(R.id.statusSpinner);
+                String statusSelected = statusSpinner.getSelectedItem().toString();
+
                 TextView taskTitleTv = AddTask.this.findViewById(R.id.taskName);
                 TextView taskDetailsTv = AddTask.this.findViewById(R.id.taskDetails);
-                TextView taskStatusTv = AddTask.this.findViewById(R.id.taskStatusTv);
+//                TextView taskStatusTv = AddTask.this.findViewById(R.id.taskStatusTv);
 
 //                Task taskToAdd = new Task(taskTitleTv.getText().toString(), taskDetailsTv.getText().toString(), taskStatusTv.getText().toString()); TODO: Reinstate
 
@@ -103,7 +108,7 @@ public class AddTask extends AppCompatActivity {
 
             Task newTask = Task.builder()
                     .taskDetails(taskDetailsTv.getText().toString())
-                    .taskStateOfDoing(taskStatusTv.getText().toString())
+                    .taskStateOfDoing(statusSelected)
                     .taskTitle(taskTitleTv.getText().toString())
                     .apartOf(chosenTeam)
                     .build();
@@ -135,18 +140,25 @@ public class AddTask extends AppCompatActivity {
         return true;
     }
 
-    public void setupSpinner(){
+    public void setupTeamSpinner(){
+
         String[] teamNames = new String[teams.size()];
         for (int i = 0; i < teams.size(); i++) {
             teamNames[i] = teams.get(i).getName();
         } // put the teams' names into an arraylist.
 
         Spinner spinner = (Spinner) findViewById(R.id.teamSpinner); // create a spinner object to put following things to...
-
         ArrayAdapter<CharSequence> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, teamNames);  // Specify layout - AKA simple_spinner_item to use when choice list come in...
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // adapt the adapter for a spinner.
-
         spinner.setAdapter(adapter); // set the spinner to the adapter for a spinner.
+    }
+
+    public void setupStatusSpinner() {
+        String[] stati = {"new","assigned","in progress", "complete"};
+        Spinner spinner = (Spinner) findViewById(R.id.statusSpinner);
+        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, stati);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
     }
 
 }

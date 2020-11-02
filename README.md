@@ -10,7 +10,8 @@ A taskLocal app to learn the ins and outs of Android app development.
 General Work: significant refactor, zombie code removed, helper methods created.
 =======
 - Add Task Activity now has spinner for Team selection
-<img src="https://github.com/PVOBrien/taskmaster/blob/main/screenshots/2020-10-29%20newAddTaskLayout.png?raw=true" width="200"/>
+- Add Task Activity now has spinner for Status selection
+<img src="https://github.com/PVOBrien/taskmaster/blob/main/screenshots/2020-10-29%20newAddTaskLayout.png_2.png?raw=true" width="200"/>
 =======
 <br/><br/>
 ### 2020-10-28
