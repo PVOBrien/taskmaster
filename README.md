@@ -18,9 +18,11 @@ Incorporate Cognito: Sign up and login via Amazon Amplify Cognito now in place.
 <img src="https://github.com/PVOBrien/taskmaster/blob/main/screenshots/2020-11-03%20tm%20Login.png?raw=true" width="200"/>
 <br/><br/>
 ==== Current Signed In Experience ====
+<br/><br/>
 <img src="https://github.com/PVOBrien/taskmaster/blob/main/screenshots/2020-11-03%20tm%20Signed_In.png?raw=true" width="200"/>
 <br/><br/>
 ==== Functioning Logout Capability ====
+<br/><br/>
 <img src="https://github.com/PVOBrien/taskmaster/blob/main/screenshots/2020-11-03%20tm_clear.png?raw=true" width="200"/>
 <br/><br/>
 ###
