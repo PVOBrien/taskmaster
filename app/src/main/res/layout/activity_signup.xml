@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity_signup">
+    tools:context=".Signup">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/signUpTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="56dp"
-        android:text="Login"
+        android:text="Sign Up"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,10 +24,10 @@
         android:layout_marginTop="44dp"
         android:text="Username"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/editTextTextPersonName4"
+        app:layout_constraintBottom_toTopOf="@+id/usernameCreate"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/signUpTV"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
@@ -37,50 +37,51 @@
         android:layout_marginTop="48dp"
         android:text="Email"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/editTextTextPersonName5"
+        app:layout_constraintBottom_toTopOf="@+id/userSigninEmail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName4" />
+        app:layout_constraintTop_toBottomOf="@+id/usernameCreate"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/textView6"
-        android:layout_width="81dp"
-        android:layout_height="23dp"
+        android:layout_width="154dp"
+        android:layout_height="25dp"
         android:layout_marginTop="49dp"
-        android:text="Password"
+        android:text="Create Password"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/password_field"
+        app:layout_constraintBottom_toTopOf="@+id/passwordCreate"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName5" />
+        app:layout_constraintTop_toBottomOf="@+id/userSigninEmail" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName4"
+        android:id="@+id/usernameCreate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="159dp"
+        android:layout_marginTop="152dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName5"
+        android:id="@+id/userSigninEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="417dp"
         android:ems="10"
-        android:inputType="textPersonName"
+        android:inputType="textWebEmailAddress"
         android:text="Email here"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/password_field"
+        android:id="@+id/passwordCreate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="296dp"
@@ -91,7 +92,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/signUp"
+        android:id="@+id/signUpButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="233dp"

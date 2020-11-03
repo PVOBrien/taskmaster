@@ -13,8 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Taskmaster">
-        <activity android:name=".activity_signUpConfirm"></activity>
-        <activity android:name=".activity_signup" />
+        <activity android:name=".Login"></activity>
+        <activity android:name=".SignUpConfirm" />
+        <activity android:name=".Signup" />
         <activity android:name=".RecyclerViewGeneric" />
         <activity android:name=".Settings" />
         <activity android:name=".TaskDetail" /> <!-- <activity android:name=".AllTasks" /> -->
