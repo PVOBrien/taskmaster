@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "taskmastercd53153b_identitypool_cd53153b",
+    "identityPoolName": "taskmasterf73dd38e_identitypool_f73dd38e",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "taskmacd53153b",
-    "userPoolName": "taskmastercd53153b_userpool_cd53153b",
+    "resourceNameTruncated": "taskmaf73dd38e",
+    "userPoolName": "taskmasterf73dd38e_userpool_f73dd38e",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -28,10 +28,10 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "taskmacd53153b_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "taskmaf73dd38e_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "cd53153b",
-    "resourceName": "taskmastercd53153b",
+    "sharedId": "f73dd38e",
+    "resourceName": "taskmasterf73dd38e",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
@@ -46,9 +46,6 @@
         ]
     },
     "useDefault": "default",
-    "usernameAttributes": [
-        "email, phone_number"
-    ],
     "userPoolGroupList": [],
     "serviceName": "Cognito",
     "dependsOn": []

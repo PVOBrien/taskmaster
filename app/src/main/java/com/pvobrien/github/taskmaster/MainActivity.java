@@ -60,6 +60,8 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
 
         System.out.println("About to Query database.");
 
+        getIsSignedIn();
+
         Amplify.API.query(
                 ModelQuery.list(Task.class),
                 response -> {
@@ -165,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
                 Log.i("Amplify.user is: ", Amplify.Auth.getCurrentUser().getUsername());
 
                 TextView myTaskTitle = findViewById(R.id.myTasksTitle);
-                String greeting = String.format("%s's tasks", preferences.getString("savedUsername", "User's"));
+                String greeting = String.format("%s's tasks", Amplify.Auth.getCurrentUser().getUsername());
                 myTaskTitle.setText(greeting);
 
             } else {
@@ -176,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
             return false;
         });
 
-// ====================================================
+// ====  buttons below here  ====================================================
 
         Button goToAddTask = MainActivity.this.findViewById(R.id.addTask);
         goToAddTask.setOnClickListener(new View.OnClickListener() {
@@ -195,6 +197,16 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
             MainActivity.this.startActivity(goToSettingPage);
         });
 
+        ((Button) findViewById(R.id.signUpMain)).setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, Signup.class);
+            MainActivity.this.startActivity(intent);
+        });
+
+        ((Button) findViewById(R.id.loginMain)).setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, Login.class);
+            MainActivity.this.startActivity(intent);
+        });
+
         ((Button) findViewById(R.id.signOutMain)).setOnClickListener(view -> {
             Amplify.Auth.signOut(
                     () -> Log.i("Amplify.Signout", "sign out successful"),
@@ -204,6 +216,9 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
             startActivity(intent);
         });
     }
+
+
+    // ==================== buttons above here =========
 
     public void configureAWS() {
 

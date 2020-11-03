@@ -18,7 +18,7 @@
     }
   },
   "auth": {
-    "taskmastercd53153b": {
+    "taskmasterf73dd38e": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
