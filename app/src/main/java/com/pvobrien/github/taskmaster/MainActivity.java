@@ -30,6 +30,7 @@ import com.amplifyframework.api.aws.AWSApiPlugin;
 import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.api.graphql.model.ModelSubscription;
+import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.Task;
 import com.amplifyframework.datastore.generated.model.Team;
@@ -55,17 +56,9 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
         TextView myTaskTitle = findViewById(R.id.myTasksTitle);
         String greeting = String.format("%s's tasks", preferences.getString("savedUsername", "User's"));
         myTaskTitle.setText(greeting);
-//        SharedPreferences.Editor preferenceEditor = preferences.edit();
-
-//        Team chosenTeam = null;
-//
-//        for (int i = 0; i < teams.size(); i++) {
-//            if(teams.get(i).getName().equals(preferences.getString("savedTeam", "Charizard"))) {
-//                chosenTeam = teams.get(i);
-//            }
-//        }
 
         System.out.println("About to Query database.");
+
         Amplify.API.query(
                 ModelQuery.list(Task.class),
                 response -> {
@@ -124,13 +117,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
         recyclerView = findViewById(R.id.tasksRv);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new TaskAdapter(tasks, this));
-
-//        yourUniqueDatabase = Room.databaseBuilder(getApplicationContext(), YourUniqueDatabase.class, "taskDatabase")
-//                .fallbackToDestructiveMigration()
-//                .allowMainThreadQueries()
-//                .build();
-
-//        ArrayList<Task> tasks = (ArrayList<Task>) yourUniqueDatabase.taskDao().getAllTasks();
 
         handlerOfThisSingleItemAdded = new Handler(Looper.getMainLooper(),
                 (message -> {
@@ -191,6 +177,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
 
         try {
             Amplify.addPlugin(new AWSApiPlugin());  // this is provided by implementation 'com.amplifyframework:aws-api:1.4.1'
+            Amplify.addPlugin(new AWSCognitoAuthPlugin());
             Amplify.configure(getApplicationContext());
             Log.i("MyAmplifyApp", "Initialized Amplify");
 
