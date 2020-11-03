@@ -74,7 +74,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TasksToDoViewH
 
     @Override
     public int getItemCount() {
-        System.out.println("Here!");
+//        System.out.println("Here!"); // Was pinging to ensure reaching location.
         return tasksToDo.size();
     }
 }

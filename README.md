@@ -7,6 +7,23 @@ A taskLocal app to learn the ins and outs of Android app development.
 ## Ongoing Work:
 
 ###
+Incorporate Cognito: Sign up and login via Amazon Amplify Cognito now in place.
+
+==== Sign Up Screens ====
+<br/><br/>
+<img src="https://github.com/PVOBrien/taskmaster/blob/main/screenshots/2020-11-03%20tm%20SignUp.png?raw=true" width="200"/>
+<br/><br/>
+<img src="https://github.com/PVOBrien/taskmaster/blob/main/screenshots/2020-11-03%20tm%20Confirm.png?raw=true" width="200"/>
+<br/><br/>
+<img src="https://github.com/PVOBrien/taskmaster/blob/main/screenshots/2020-11-03%20tm%20Login.png?raw=true" width="200"/>
+<br/><br/>
+==== Current Signed In Experience ====
+<img src="https://github.com/PVOBrien/taskmaster/blob/main/screenshots/2020-11-03%20tm%20Signed_In.png?raw=true" width="200"/>
+<br/><br/>
+==== Functioning Logout Capability ====
+<img src="https://github.com/PVOBrien/taskmaster/blob/main/screenshots/2020-11-03%20tm_clear.png?raw=true" width="200"/>
+<br/><br/>
+###
 General Work: significant refactor, zombie code removed, helper methods created.
 =======
 - Add Task Activity now has spinner for Team selection

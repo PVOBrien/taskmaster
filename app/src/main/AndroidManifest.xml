@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.pvobrien.github.taskmaster"
-    >
+    package="com.pvobrien.github.taskmaster">
 
-    <uses-permission android:name="android.permission.WAKE_LOCK" /> // Added for AWS amplify
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> // Added for AWS amplify
-    <uses-permission android:name="android.permission.INTERNET" /> // This now gives the app the internet. BUT: if you need to do this mid-app, it requires a full re-install of the app. Can't just turn it on and off.
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -14,10 +13,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Taskmaster">
-        <activity android:name=".RecyclerViewGeneric"></activity>
+        <activity android:name=".Login"></activity>
+        <activity android:name=".SignUpConfirm" />
+        <activity android:name=".Signup" />
+        <activity android:name=".RecyclerViewGeneric" />
         <activity android:name=".Settings" />
-        <activity android:name=".TaskDetail" />
-        <activity android:name=".AllTasks" />
+        <activity android:name=".TaskDetail" /> <!-- <activity android:name=".AllTasks" /> -->
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,5 +30,3 @@
     </application>
 
 </manifest>
-
-<!--    android:name=".MainActivity" TODO: what is the name to go here?-->

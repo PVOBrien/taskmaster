@@ -30,6 +30,7 @@ import com.amplifyframework.api.aws.AWSApiPlugin;
 import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.api.graphql.model.ModelSubscription;
+import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.Task;
 import com.amplifyframework.datastore.generated.model.Team;
@@ -47,25 +48,20 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
     Handler handler;
     Handler handlerOfThisSingleItemAdded;
     SharedPreferences preferences;
+    Handler handleCheckedLogin;
 
     @Override
     public void onResume() {
         super.onResume();
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        TextView myTaskTitle = findViewById(R.id.myTasksTitle);
-        String greeting = String.format("%s's tasks", preferences.getString("savedUsername", "User's"));
-        myTaskTitle.setText(greeting);
-//        SharedPreferences.Editor preferenceEditor = preferences.edit();
-
-//        Team chosenTeam = null;
-//
-//        for (int i = 0; i < teams.size(); i++) {
-//            if(teams.get(i).getName().equals(preferences.getString("savedTeam", "Charizard"))) {
-//                chosenTeam = teams.get(i);
-//            }
-//        }
+//        TextView myTaskTitle = findViewById(R.id.myTasksTitle);
+//        String greeting = String.format("%s's tasks", preferences.getString("savedUsername", "User's"));
+//        myTaskTitle.setText(greeting);
 
         System.out.println("About to Query database.");
+
+        getIsSignedIn();
+
         Amplify.API.query(
                 ModelQuery.list(Task.class),
                 response -> {
@@ -100,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
                     }
                 });
 
+
 //      setupTheTeams();
 
         configureAWS();
@@ -125,23 +122,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new TaskAdapter(tasks, this));
 
-//        yourUniqueDatabase = Room.databaseBuilder(getApplicationContext(), YourUniqueDatabase.class, "taskDatabase")
-//                .fallbackToDestructiveMigration()
-//                .allowMainThreadQueries()
-//                .build();
 
-//        ArrayList<Task> tasks = (ArrayList<Task>) yourUniqueDatabase.taskDao().getAllTasks();
-
-        handlerOfThisSingleItemAdded = new Handler(Looper.getMainLooper(),
-                (message -> {
-                    recyclerView.getAdapter().notifyItemInserted(tasks.size() - 1);
-                    // TODO: make toast here.
-                    Toast.makeText(
-                            this,
-                            tasks.get(tasks.size() - 1).taskTitle + " is now a task added.",
-                            Toast.LENGTH_SHORT).show();
-                    return false;
-                }));
 
 // ===== AWS subscription detail =====================
 
@@ -167,7 +148,37 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
                 () -> Log.i("ApiQuickStart", "Sub fulfilled")
         );
 
-// ====================================================
+        handlerOfThisSingleItemAdded = new Handler(Looper.getMainLooper(),
+                (message -> {
+                    recyclerView.getAdapter().notifyItemInserted(tasks.size() - 1);
+                    // TODO: make toast here.
+                    Toast.makeText(
+                            this,
+                            tasks.get(tasks.size() - 1).taskTitle + " is now a task added.",
+                            Toast.LENGTH_SHORT).show();
+                    return false;
+                }));
+
+        handleCheckedLogin = new Handler(Looper.getMainLooper(), message -> { // TODO create this
+            if (message.arg1 == 0){
+                Log.i("Amplify.login", "handler: UNlogged user.");
+            } else if(message.arg1 == 1) {
+                Log.i("Amplify.login", "handler: Logged IN");
+                Log.i("Amplify.user is: ", Amplify.Auth.getCurrentUser().getUsername());
+
+                TextView myTaskTitle = findViewById(R.id.myTasksTitle);
+                String greeting = String.format("%s's tasks", Amplify.Auth.getCurrentUser().getUsername());
+                myTaskTitle.setText(greeting);
+
+            } else {
+                Log.i("Amplify:login", "T/F plz");
+            }
+
+            // TODO add in on screen TEXT.
+            return false;
+        });
+
+// ====  buttons below here  ====================================================
 
         Button goToAddTask = MainActivity.this.findViewById(R.id.addTask);
         goToAddTask.setOnClickListener(new View.OnClickListener() {
@@ -185,12 +196,35 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
             Intent goToSettingPage = new Intent(MainActivity.this, Settings.class);
             MainActivity.this.startActivity(goToSettingPage);
         });
+
+        ((Button) findViewById(R.id.signUpMain)).setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, Signup.class);
+            MainActivity.this.startActivity(intent);
+        });
+
+        ((Button) findViewById(R.id.loginMain)).setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, Login.class);
+            MainActivity.this.startActivity(intent);
+        });
+
+        ((Button) findViewById(R.id.signOutMain)).setOnClickListener(view -> {
+            Amplify.Auth.signOut(
+                    () -> Log.i("Amplify.Signout", "sign out successful"),
+                    error -> Log.e ("Amplify.Signout", error.toString())
+            );
+            Intent intent = new Intent(MainActivity.this, MainActivity.class);
+            startActivity(intent);
+        });
     }
+
+
+    // ==================== buttons above here =========
 
     public void configureAWS() {
 
         try {
             Amplify.addPlugin(new AWSApiPlugin());  // this is provided by implementation 'com.amplifyframework:aws-api:1.4.1'
+            Amplify.addPlugin(new AWSCognitoAuthPlugin()); // If this gives you grief, wipe the emulator via the AVD Manager and try again. https://stackoverflow.com/questions/42816127/waiting-for-target-device-to-come-online
             Amplify.configure(getApplicationContext());
             Log.i("MyAmplifyApp", "Initialized Amplify");
 
@@ -242,6 +276,23 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
         Amplify.API.mutate(ModelMutation.create(teamThree),
                 response -> Log.i(AMPTAG, STOREADD),
                 error -> Log.e(AMPTAG, STOREADD)
+        );
+    }
+
+    public void getIsSignedIn() {
+        Amplify.Auth.fetchAuthSession(
+            result -> {
+                Log.i("Amplify.Login", result.toString());
+                Message message = new Message();
+
+                if (result.isSignedIn()) {
+                    message.arg1 = 1;
+                } else {
+                    message.arg1 = 0;
+                }
+                handleCheckedLogin.sendMessage(message);
+            },
+            error -> Log.e("Amplify.Login", error.toString())
         );
     }
 }
