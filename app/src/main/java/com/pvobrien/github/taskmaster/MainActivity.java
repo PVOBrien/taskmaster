@@ -34,6 +34,7 @@ import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.Task;
 import com.amplifyframework.datastore.generated.model.Team;
+import com.amplifyframework.storage.s3.AWSS3StoragePlugin;
 
 import java.util.ArrayList;
 
@@ -223,8 +224,10 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
     public void configureAWS() {
 
         try {
-            Amplify.addPlugin(new AWSApiPlugin());  // this is provided by implementation 'com.amplifyframework:aws-api:1.4.1'
-            Amplify.addPlugin(new AWSCognitoAuthPlugin()); // If this gives you grief, wipe the emulator via the AVD Manager and try again. https://stackoverflow.com/questions/42816127/waiting-for-target-device-to-come-online
+            Amplify.addPlugin(new AWSApiPlugin());              // this is provided by implementation 'com.amplifyframework:aws-api:1.4.1'
+            Amplify.addPlugin(new AWSCognitoAuthPlugin());      // If this gives you grief, wipe the emulator via the AVD Manager and try again. https://stackoverflow.com/questions/42816127/waiting-for-target-device-to-come-online
+            Amplify.addPlugin(new AWSCognitoAuthPlugin());      // for S3 storage
+            Amplify.addPlugin(new AWSS3StoragePlugin());        // for S3 storage
             Amplify.configure(getApplicationContext());
             Log.i("MyAmplifyApp", "Initialized Amplify");
 
