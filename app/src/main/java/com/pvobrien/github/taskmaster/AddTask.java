@@ -2,7 +2,10 @@ package com.pvobrien.github.taskmaster;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.FileUtils;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -10,21 +13,32 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
+import com.amazonaws.util.IOUtils;
 import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.Task;
 import com.amplifyframework.datastore.generated.model.Team;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
 
 public class AddTask extends AppCompatActivity {
@@ -32,6 +46,7 @@ public class AddTask extends AppCompatActivity {
 //    YourUniqueDatabase yourUniqueDatabase; // this is looking specifically for YOUR yourUniqueDatabase class name/potato
     ArrayList<Team> teams = new ArrayList<Team>();
     Handler handleCreation;
+    String lastFileIUploaded;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +71,7 @@ public class AddTask extends AppCompatActivity {
                         teams.add(team);
                     }
                     System.out.println("How many teams: " + teams.size());
-
                     handleCreation.sendEmptyMessage(1);
-
                     Log.i ("Amplify", "Teams is built.");
                 },
                 error -> Log.e ("Amplify", "failed to retrieve team")
@@ -77,14 +90,13 @@ public class AddTask extends AppCompatActivity {
 
 //        Task taskToAdd = new Task(taskTitleTv.getText().toString(), taskDetailsTv.getText().toString(), taskStatusTv.getText().toString()); TODO: Reinstate
 
+        addListenerToAddPicButton();
+
         Button addButton = AddTask.this.findViewById(R.id.addTaskButton);
         addButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
-
                 //  === find the Team ===
-
                 Spinner teamNameSpinner = findViewById(R.id.teamSpinner);
                 String teamName = teamNameSpinner.getSelectedItem().toString();
                 Team chosenTeam = null;
@@ -113,6 +125,7 @@ public class AddTask extends AppCompatActivity {
                     .apartOf(chosenTeam)
                     .build();
 
+
             Amplify.API.mutate( // https://docs.amplify.aws/lib/graphqlapi/mutate-data/q/platform/android
                     ModelMutation.create(newTask),
                     response -> Log.i("Amplify", "success!"),
@@ -134,6 +147,73 @@ public class AddTask extends AppCompatActivity {
         });
     }
 
+    public void addListenerToAddPicButton(){
+        Button addPicture = findViewById(R.id.addPicture_addTaskView);
+        addPicture.setOnClickListener((view -> retrieveFile()));
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 2020) { // the number is POTATO
+
+            Log.i("Amplify.pickImage", "Image has been retrieved."); // This will know, well enough
+
+
+            File fileCopy = new File(getFilesDir(), "theFileToGet"); // Todo: that child is WRONG.
+
+            try {
+                InputStream inStream = getContentResolver().openInputStream(data.getData()); // https://stackoverflow.com/questions/11501418/is-it-possible-to-create-a-file-object-from-inputstream
+
+                copy(inStream, fileCopy); // TODO: find the work around.
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.e("Amplify.pickImage", e.toString());
+            }
+
+            uploadFile(fileCopy, fileCopy.getName() + Math.random()); // Todo: why uploadFile angry at me?
+        } else if (requestCode == 2) {
+            Log.i("Amplify.neverHere", "Go! Be Free!");
+        } else {
+            Log.i("Amplify.pickImage", "where you coming from?");
+        }
+    }
+
+    public void uploadFile(File f, String key) {
+        lastFileIUploaded = key;
+        Amplify.Storage.uploadFile(
+                key,
+                f,
+                result -> {
+                    Log.i("Amplify.s3", "Successfully uploade: " + result.getKey());
+                    downloadFile(key);
+                },
+                storageFailure -> Log.e("Amplify.s3", "Upload:Failure.", storageFailure)
+        );
+    }
+
+    public void downloadFile(String fileKey){
+        Amplify.Storage.downloadFile(
+                fileKey,
+                new File(getApplicationContext().getFilesDir() + "/" + fileKey + ".txt"),
+                result -> {
+                    Log.i("Amplify.s3down", "Successfully downloaded: " + result.getFile().getName());
+                    ImageView image = findViewById(R.id.uploadedPic);
+                    image.setImageBitmap(BitmapFactory.decodeFile(result.getFile().getPath()));
+                },
+                error -> Log.e("Amplify.s3down", "Download:Failed.", error)
+        );
+    }
+
+    public void retrieveFile(){
+        Intent getPicIntent = new Intent((Intent.ACTION_GET_CONTENT));
+        getPicIntent.setType("*/*");
+        startActivityForResult(getPicIntent, 2020);
+    }
+
+
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent mtIntent = new Intent(getApplicationContext(), MainActivity.class);
         startActivityForResult(mtIntent, 0);
@@ -141,7 +221,6 @@ public class AddTask extends AppCompatActivity {
     }
 
     public void setupTeamSpinner(){
-
         String[] teamNames = new String[teams.size()];
         for (int i = 0; i < teams.size(); i++) {
             teamNames[i] = teams.get(i).getName();
@@ -159,6 +238,40 @@ public class AddTask extends AppCompatActivity {
         ArrayAdapter<CharSequence> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, stati);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+    }
+
+    public void copyFile(File src, File dst) throws IOException { // https://stackoverflow.com/questions/9292954/how-to-make-a-copy-of-a-file-in-android
+        InputStream in = null;
+        OutputStream out = null;
+        try {
+            in = new FileInputStream(src);
+            out = new FileOutputStream(dst);
+            IOUtils.copy(in, out);
+        } catch (IOException ioe) {
+            Log.e("CopyFileForPic", "IOException Done Happened: " + ioe);
+        } finally {
+            IOUtils.closeQuietly(out);
+            IOUtils.closeQuietly(in);
+        }
+    }
+
+//    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static void copy(File origin, File dest) throws IOException {
+        InputStream in  = new FileInputStream(origin);
+        try {
+            OutputStream out = new FileOutputStream(dest);
+            try {
+                byte[] buf = new byte[1024];
+                int len;
+                while ((len = in.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
+            } finally {
+                out.close();
+            }
+        } finally {
+            in.close();
+        }
     }
 
 }
