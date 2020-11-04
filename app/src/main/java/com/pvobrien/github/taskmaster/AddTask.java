@@ -46,8 +46,7 @@ public class AddTask extends AppCompatActivity {
 //    YourUniqueDatabase yourUniqueDatabase; // this is looking specifically for YOUR yourUniqueDatabase class name/potato
     ArrayList<Team> teams = new ArrayList<Team>();
     Handler handleCreation;
-    String lastFileIUploaded;
-    File outfile = null;
+    String lastFileIUploaded = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,10 +112,9 @@ public class AddTask extends AppCompatActivity {
 
                 TextView taskTitleTv = AddTask.this.findViewById(R.id.taskName);
                 TextView taskDetailsTv = AddTask.this.findViewById(R.id.taskDetails);
+
 //                TextView taskStatusTv = AddTask.this.findViewById(R.id.taskStatusTv);
-
 //                Task taskToAdd = new Task(taskTitleTv.getText().toString(), taskDetailsTv.getText().toString(), taskStatusTv.getText().toString()); TODO: Reinstate
-
                 // CREATE TASK via TaskLocal.builder()...
 
             Task newTask = Task.builder()
@@ -124,6 +122,7 @@ public class AddTask extends AppCompatActivity {
                     .taskStateOfDoing(statusSelected)
                     .taskTitle(taskTitleTv.getText().toString())
                     .apartOf(chosenTeam)
+                    .filekey(lastFileIUploaded)
                     .build();
 
 
@@ -162,7 +161,7 @@ public class AddTask extends AppCompatActivity {
 
             Log.i("Amplify.pickImage", "Image has been retrieved."); // This will know, well enough
 
-            File fileCopy = new File(getFilesDir(), "theFileToGet"); // Todo: that child is WRONG.
+            File fileCopy = new File(getFilesDir(), "fileUpload"); // Todo: that child is WRONG.
 
             try {
                 InputStream inStream = getContentResolver().openInputStream(data.getData()); // https://stackoverflow.com/questions/11501418/is-it-possible-to-create-a-file-object-from-inputstream

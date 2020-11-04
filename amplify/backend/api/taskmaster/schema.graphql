@@ -3,20 +3,14 @@ type Task @model {
   taskDetails: String!
   taskTitle: String
   taskStateOfDoing: String
+  filekey: String
   apartOf: Team @connection(name: "teamTasks")
-  file: NewFile @connection(name: "fileToAdd")
 }
 
 type Team @model {
   id: ID!
   name: String
   tasks: [Task] @connection(name: "teamTasks")
-}
-
-type NewFile @model{
-  id: ID!
-  name: String
-  belongsTo: Task! @connection(name: "fileToAdd")
 }
 
 # amplify codegen models to rebuild

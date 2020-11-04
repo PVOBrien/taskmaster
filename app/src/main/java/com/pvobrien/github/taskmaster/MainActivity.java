@@ -133,6 +133,8 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
                 taskDiscovered -> {
                     Log.i("ApiQuickStart", "Here's the ticking work: " + ((Task) taskDiscovered.getData()).getTaskTitle()
                     );
+                    Log.i("ApiQuickStart", "Here's the photo *key*: " + ((Task) taskDiscovered.getData()).getFilekey()
+                    );
 
                     Task newTask = taskDiscovered.getData();
                     if (preferences.contains("savedTeam")) {
@@ -248,6 +250,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
         intent.putExtra("taskTitle", task.getTaskTitle());
         intent.putExtra("taskDetails", task.getTaskDetails());
         intent.putExtra("taskState", task.getTaskStateOfDoing());
+        intent.putExtra("fileKey", task.getFilekey());
         this.startActivity(intent);
     }
 

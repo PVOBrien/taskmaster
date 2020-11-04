@@ -7,12 +7,35 @@
     android:scrollbars="horizontal"
     tools:context=".TaskDetail">
 
+    <ImageView
+        android:id="@+id/attachedPic"
+        android:layout_width="98dp"
+        android:layout_height="89dp"
+        android:layout_marginTop="68dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/taskDescriptionTv"
+        app:srcCompat="@android:drawable/picture_frame" />
+
+    <TextView
+        android:id="@+id/editTextTextPersonName"
+        android:layout_width="166dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginBottom="12dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Task Name"
+        app:layout_constraintBottom_toTopOf="@+id/taskDetailsTitle"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <TextView
         android:id="@+id/taskDetailsTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginBottom="29dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginBottom="12dp"
         android:text="Task Name"
         android:textSize="34dp"
         app:layout_constraintBottom_toTopOf="@+id/editTextTextPersonName3"
@@ -21,7 +44,7 @@
     <TextView
         android:id="@+id/statusTv"
         android:layout_width="99dp"
-        android:layout_height="142dp"
+        android:layout_height="57dp"
         android:layout_marginTop="124dp"
         android:layout_marginEnd="62dp"
         android:text="Status"
@@ -31,10 +54,10 @@
 
     <TextView
         android:id="@+id/taskDescriptionTv"
-        android:layout_width="291dp"
-        android:layout_height="312dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginBottom="144dp"
+        android:layout_width="302dp"
+        android:layout_height="141dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginBottom="356dp"
         android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Blandit turpis cursus in hac habitasse platea dictumst. Semper viverra nam libero justo laoreet sit. Egestas tellus rutrum tellus pellentesque eu tincidunt. Bibendum arcu vitae elementum curabitur vitae nunc. Tempus urna et pharetra pharetra massa massa ultricies. In hac habitasse platea dictumst quisque sagittis purus sit. Dui sapien eget mi proin sed. Dolor magna eget est lorem ipsum dolor sit amet. Scelerisque fermentum dui faucibus in ornare quam viverra. Mauris pellentesque pulvinar pellentesque habitant morbi tristique senectus et. Aliquam ultrices sagittis orci a.  Leo integer malesuada nunc vel risus commodo viverra maecenas accumsan. Magnis dis parturient montes nascetur ridiculus mus mauris. Lectus sit amet est placerat in egestas erat. Amet aliquam id diam maecenas ultricies mi eget mauris pharetra. Curabitur vitae nunc sed velit dignissim. Tincidunt dui ut ornare lectus sit amet est placerat. Consectetur adipiscing elit pellentesque habitant morbi tristique. Nulla facilisi nullam vehicula ipsum a arcu cursus. Ornare massa eget egestas purus viverra accumsan. Facilisi etiam dignissim diam quis enim lobortis scelerisque fermentum dui. Porttitor rhoncus dolor purus non enim praesent elementum facilisis. Mattis ullamcorper velit sed ullamcorper. Tincidunt tortor aliquam nulla facilisi cras fermentum odio eu. Ac feugiat sed lectus vestibulum mattis ullamcorper velit sed. Senectus et netus et malesuada fames ac turpis egestas integer. Nulla facilisi morbi tempus iaculis urna id volutpat. At augue eget arcu dictum varius duis at consectetur. Nec ullamcorper sit amet risus nullam eget felis."
         android:textAlignment="viewStart"
         android:textSize="18dp"
@@ -42,22 +65,11 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/editTextTextPersonName"
-        android:layout_width="166dp"
-        android:layout_height="22dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginBottom="4dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Task Name"
-        app:layout_constraintBottom_toTopOf="@+id/taskDetailsTitle"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
         android:id="@+id/editTextTextPersonName3"
         android:layout_width="164dp"
         android:layout_height="44dp"
-        android:layout_marginStart="60dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginBottom="8dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Task Details"

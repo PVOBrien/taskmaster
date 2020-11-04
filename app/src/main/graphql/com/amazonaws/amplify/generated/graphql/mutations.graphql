@@ -8,25 +8,12 @@ mutation CreateTask(
     taskDetails
     taskTitle
     taskStateOfDoing
+    filekey
     apartOf {
       id
       name
       tasks {
         nextToken
-      }
-      createdAt
-      updatedAt
-    }
-    file {
-      id
-      name
-      belongsTo {
-        id
-        taskDetails
-        taskTitle
-        taskStateOfDoing
-        createdAt
-        updatedAt
       }
       createdAt
       updatedAt
@@ -44,25 +31,12 @@ mutation UpdateTask(
     taskDetails
     taskTitle
     taskStateOfDoing
+    filekey
     apartOf {
       id
       name
       tasks {
         nextToken
-      }
-      createdAt
-      updatedAt
-    }
-    file {
-      id
-      name
-      belongsTo {
-        id
-        taskDetails
-        taskTitle
-        taskStateOfDoing
-        createdAt
-        updatedAt
       }
       createdAt
       updatedAt
@@ -80,25 +54,12 @@ mutation DeleteTask(
     taskDetails
     taskTitle
     taskStateOfDoing
+    filekey
     apartOf {
       id
       name
       tasks {
         nextToken
-      }
-      createdAt
-      updatedAt
-    }
-    file {
-      id
-      name
-      belongsTo {
-        id
-        taskDetails
-        taskTitle
-        taskStateOfDoing
-        createdAt
-        updatedAt
       }
       createdAt
       updatedAt
@@ -120,6 +81,7 @@ mutation CreateTeam(
         taskDetails
         taskTitle
         taskStateOfDoing
+        filekey
         createdAt
         updatedAt
       }
@@ -142,6 +104,7 @@ mutation UpdateTeam(
         taskDetails
         taskTitle
         taskStateOfDoing
+        filekey
         createdAt
         updatedAt
       }
@@ -164,103 +127,11 @@ mutation DeleteTeam(
         taskDetails
         taskTitle
         taskStateOfDoing
+        filekey
         createdAt
         updatedAt
       }
       nextToken
-    }
-    createdAt
-    updatedAt
-  }
-}
-mutation CreateNewFile(
-  $input: CreateNewFileInput!
-  $condition: ModelNewFileConditionInput
-) {
-  createNewFile(input: $input, condition: $condition) {
-    id
-    name
-    belongsTo {
-      id
-      taskDetails
-      taskTitle
-      taskStateOfDoing
-      apartOf {
-        id
-        name
-        createdAt
-        updatedAt
-      }
-      file {
-        id
-        name
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-    createdAt
-    updatedAt
-  }
-}
-mutation UpdateNewFile(
-  $input: UpdateNewFileInput!
-  $condition: ModelNewFileConditionInput
-) {
-  updateNewFile(input: $input, condition: $condition) {
-    id
-    name
-    belongsTo {
-      id
-      taskDetails
-      taskTitle
-      taskStateOfDoing
-      apartOf {
-        id
-        name
-        createdAt
-        updatedAt
-      }
-      file {
-        id
-        name
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-    createdAt
-    updatedAt
-  }
-}
-mutation DeleteNewFile(
-  $input: DeleteNewFileInput!
-  $condition: ModelNewFileConditionInput
-) {
-  deleteNewFile(input: $input, condition: $condition) {
-    id
-    name
-    belongsTo {
-      id
-      taskDetails
-      taskTitle
-      taskStateOfDoing
-      apartOf {
-        id
-        name
-        createdAt
-        updatedAt
-      }
-      file {
-        id
-        name
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
     }
     createdAt
     updatedAt
