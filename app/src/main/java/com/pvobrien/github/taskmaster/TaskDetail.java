@@ -56,7 +56,7 @@ public class TaskDetail extends AppCompatActivity {
         return true;
     }
 
-    public void downloadFile(String fileKey) { // fileKey will be coming from intent atm }
+    public void downloadFile(String fileKey) { // fileKey will be coming from intent atm } // code direction from Jack Nelson https://github.com/jnelsonjava/taskmaster/blob/main/app/src/main/java/com/jnelsonjava/taskmaster/AddTask.java
         Amplify.Storage.downloadFile(
                 fileKey,
                 new File(getApplicationContext().getFilesDir() + "/" + fileKey + ".txt"),
@@ -68,5 +68,7 @@ public class TaskDetail extends AppCompatActivity {
                 error -> Log.e("Amplify.s3down", "Download Fail", error)
         );
     }
+
+//    TODO: create DELETE option via transcribing code from JS to java from here https://aws.amazon.com/getting-started/hands-on/build-android-app-amplify/module-four/
 
 }
