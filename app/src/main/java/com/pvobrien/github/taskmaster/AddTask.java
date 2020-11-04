@@ -47,6 +47,7 @@ public class AddTask extends AppCompatActivity {
     ArrayList<Team> teams = new ArrayList<Team>();
     Handler handleCreation;
     String lastFileIUploaded;
+    File outfile = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,13 +162,15 @@ public class AddTask extends AppCompatActivity {
 
             Log.i("Amplify.pickImage", "Image has been retrieved."); // This will know, well enough
 
-
             File fileCopy = new File(getFilesDir(), "theFileToGet"); // Todo: that child is WRONG.
 
             try {
                 InputStream inStream = getContentResolver().openInputStream(data.getData()); // https://stackoverflow.com/questions/11501418/is-it-possible-to-create-a-file-object-from-inputstream
+                FileOutputStream out = new FileOutputStream(fileCopy);
+                copyStream(inStream, out);
 
-                copy(inStream, fileCopy); // TODO: find the work around.
+//                FileUtils.copy(outfile, new FileOutputStream(fileCopy)); // COMPLETED: find the work around.
+
             } catch (IOException e) {
                 e.printStackTrace();
                 Log.e("Amplify.pickImage", e.toString());
@@ -240,37 +243,30 @@ public class AddTask extends AppCompatActivity {
         spinner.setAdapter(adapter);
     }
 
-    public void copyFile(File src, File dst) throws IOException { // https://stackoverflow.com/questions/9292954/how-to-make-a-copy-of-a-file-in-android
-        InputStream in = null;
-        OutputStream out = null;
-        try {
-            in = new FileInputStream(src);
-            out = new FileOutputStream(dst);
-            IOUtils.copy(in, out);
-        } catch (IOException ioe) {
-            Log.e("CopyFileForPic", "IOException Done Happened: " + ioe);
-        } finally {
-            IOUtils.closeQuietly(out);
-            IOUtils.closeQuietly(in);
-        }
-    }
-
 //    @RequiresApi(api = Build.VERSION_CODES.O)
-    public static void copy(File origin, File dest) throws IOException {
-        InputStream in  = new FileInputStream(origin);
-        try {
-            OutputStream out = new FileOutputStream(dest);
-            try {
-                byte[] buf = new byte[1024];
-                int len;
-                while ((len = in.read(buf)) > 0) {
-                    out.write(buf, 0, len);
-                }
-            } finally {
-                out.close();
-            }
-        } finally {
-            in.close();
+//    public static void copy(File origin, File dest) throws IOException {
+//        InputStream in  = new FileInputStream(origin);
+//        try {
+//            OutputStream out = new FileOutputStream(dest);
+//            try {
+//                byte[] buf = new byte[1024];
+//                int len;
+//                while ((len = in.read(buf)) > 0) {
+//                    out.write(buf, 0, len);
+//                }
+//            } finally {
+//                out.close();
+//            }
+//        } finally {
+//            in.close();
+//        }
+//    }
+
+    public static void copyStream(InputStream in, OutputStream out) throws IOException { // https://stackoverflow.com/questions/9292954/how-to-make-a-copy-of-a-file-in-android
+        byte[] buffer = new byte[1024];
+        int read;
+        while((read = in.read(buffer)) != -1) {
+            out.write(buffer, 0, read);
         }
     }
 
