@@ -25,17 +25,11 @@ public final class Team implements Model {
   public final @ModelField(targetType="ID", isRequired = true) String id;
   public final @ModelField(targetType="String") String name;
   public final @ModelField(targetType="Task") @HasMany(associatedWith = "apartOf", type = Task.class) List<Task> tasks = null;
-  public String getId() {
-      return id;
-  }
+  public String getId() { return id; }
   
-  public String getName() {
-      return name;
-  }
+  public String getName() { return name; }
   
-  public List<Task> getTasks() {
-      return tasks;
-  }
+  public List<Task> getTasks() { return tasks; }
 
   public Team(String id, String name) {
     this.id = id;
