@@ -1,15 +1,13 @@
 package com.amplifyframework.datastore.generated.model;
 
 import com.amplifyframework.core.model.annotations.BelongsTo;
+import com.amplifyframework.core.model.annotations.HasOne;
 
 import java.util.List;
 import java.util.UUID;
 import java.util.Objects;
 
-import androidx.annotation.NonNull;
 import androidx.core.util.ObjectsCompat;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 import com.amplifyframework.core.model.Model;
 import com.amplifyframework.core.model.annotations.Index;
@@ -21,7 +19,6 @@ import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 
 /** This is an auto generated class representing the Task type in your schema. */
 @SuppressWarnings("all")
-@Entity
 @ModelConfig(pluralName = "Tasks")
 public final class Task implements Model {
   public static final QueryField ID = field("id");
@@ -29,22 +26,37 @@ public final class Task implements Model {
   public static final QueryField TASK_TITLE = field("taskTitle");
   public static final QueryField TASK_STATE_OF_DOING = field("taskStateOfDoing");
   public static final QueryField APART_OF = field("taskApartOfId");
-
-  @NonNull
-  @PrimaryKey
-  public final @ModelField(targetType="ID", isRequired = true) String id;
-  public final @ModelField(targetType="String", isRequired = true) String taskDetails;
-  public final @ModelField(targetType="String") String taskTitle;
-  public final @ModelField(targetType="String") String taskStateOfDoing;
-  public final @ModelField(targetType="Team") @BelongsTo(targetName = "taskApartOfId", type = Team.class) Team apartOf;
-
-  public String getId() { return id; }
-  public String getTaskDetails() { return taskDetails; }
-  public String getTaskTitle() { return taskTitle; }
-  public String getTaskStateOfDoing() { return taskStateOfDoing; }
-  public Team getApartOf() { return apartOf; }
-
-  public Task(String id, String taskDetails, String taskTitle, String taskStateOfDoing, Team apartOf) {
+  private final @ModelField(targetType="ID", isRequired = true) String id;
+  private final @ModelField(targetType="String", isRequired = true) String taskDetails;
+  private final @ModelField(targetType="String") String taskTitle;
+  private final @ModelField(targetType="String") String taskStateOfDoing;
+  private final @ModelField(targetType="Team") @BelongsTo(targetName = "taskApartOfId", type = Team.class) Team apartOf;
+  private final @ModelField(targetType="NewFile") @HasOne(associatedWith = "belongsTo", type = NewFile.class) NewFile file = null;
+  public String getId() {
+      return id;
+  }
+  
+  public String getTaskDetails() {
+      return taskDetails;
+  }
+  
+  public String getTaskTitle() {
+      return taskTitle;
+  }
+  
+  public String getTaskStateOfDoing() {
+      return taskStateOfDoing;
+  }
+  
+  public Team getApartOf() {
+      return apartOf;
+  }
+  
+  public NewFile getFile() {
+      return file;
+  }
+  
+  private Task(String id, String taskDetails, String taskTitle, String taskStateOfDoing, Team apartOf) {
     this.id = id;
     this.taskDetails = taskDetails;
     this.taskTitle = taskTitle;
