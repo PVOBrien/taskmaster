@@ -6,6 +6,17 @@ A taskLocal app to learn the ins and outs of Android app development.
 
 ## Ongoing Work:
 
+### 2020-11-04 Setup systems for simple Push Notifications from AWS Pinpoint and Google Firebase
+ <br/><br/>
+ <img src="https://github.com/PVOBrien/taskmaster/blob/main/screenshots/2020-11-04%20Phone%20Notifications.png.png?raw=true" width="200"/>
+ <br/><br/>
+(Details of notifications from the respective consoles below)
+<br/><br/>
+ <img src="https://github.com/PVOBrien/taskmaster/blob/main/screenshots/2020-11-04%20Amazon%20PinPoint%20-%20small.png?raw=true" width="200"/>
+ <br/><br/>
+  <img src="https://github.com/PVOBrien/taskmaster/blob/main/screenshots/2020-11-04%20FireBase%20Notification%20Support%20-%20small.png?raw=true" width="200"/>
+ <br/><br/>
+
 ### 2020-11-03 Upload and display a photo (with integration to Amazon s3 storage)
 ~NOTE: saving photo as a one to one relationship with a task ongoing. Did not reach the end goal on 2020-11-03.~
 Update: refactored. no longer attempting a 1-1 relationship, but key is now stored as value in the Task object (and accordingly reflected in the dynamoDB).
