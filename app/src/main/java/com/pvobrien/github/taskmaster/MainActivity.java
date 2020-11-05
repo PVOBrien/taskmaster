@@ -301,6 +301,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
         intent.putExtra("taskDetails", task.getTaskDetails());
         intent.putExtra("taskState", task.getTaskStateOfDoing());
         intent.putExtra("fileKey", task.getFilekey());
+        intent.putExtra("taskId", task.getId());
         this.startActivity(intent);
     }
 
