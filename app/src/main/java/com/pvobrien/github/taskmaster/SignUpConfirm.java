@@ -38,6 +38,18 @@ public class SignUpConfirm extends AppCompatActivity {
 //                        TODO: add handler here
                         message.arg1 = 123;
                         toastHandler.sendMessage(message);
+
+                        Intent intent = getIntent();
+                        String username = intent.getExtras().getString("username");
+                        String password = intent.getExtras().getString("password");
+
+                        Amplify.Auth.signIn(
+                                username,
+                                password,
+                                newResult -> this.startActivity(new Intent(SignUpConfirm.this, MainActivity.class)),
+                                error -> Log.e("Auth.Result", "failure")
+                        );
+
                     },
                     error -> Log.e("Amplify.confirm", error.toString())
                 );
