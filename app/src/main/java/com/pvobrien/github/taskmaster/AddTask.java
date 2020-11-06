@@ -104,8 +104,6 @@ public class AddTask extends AppCompatActivity {
                     }
                 }
 
-
-
                 AnalyticsEvent taskCreated = AnalyticsEvent.builder() // the basic pinpoint event builder. build'em as you need them,
                         .name("TaskCreate")
                         .addProperty("time", Long.toString(new Date().getTime())) // using java.util for Date(), not sql
@@ -171,7 +169,7 @@ public class AddTask extends AppCompatActivity {
 
             Log.i("Amplify.pickImage", "Image has been retrieved."); // This will know, well enough
 
-            File fileCopy = new File(getFilesDir(), "fileUpload"); // Todo: that child is WRONG.
+            File fileCopy = new File(getFilesDir(), "fileUpload"); // Todo: what is this child?
 
             try {
                 InputStream inStream = getContentResolver().openInputStream(data.getData()); // https://stackoverflow.com/questions/11501418/is-it-possible-to-create-a-file-object-from-inputstream

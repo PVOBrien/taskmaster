@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -46,6 +47,9 @@ public class TaskDetail extends AppCompatActivity {
         TextView taskTitleTv = TaskDetail.this.findViewById(R.id.taskDetailsTitle);
         TextView taskDetailsTv = TaskDetail.this.findViewById(R.id.taskDescriptionTv);
         TextView taskStateTv = TaskDetail.this.findViewById(R.id.statusTv);
+        Button deleteButton = findViewById(R.id.deleteButton);
+
+//        deleteButton.setOnClickListener();
 
         taskTitleTv.setText(intent.getExtras().getString("taskTitle"));
         taskDetailsTv.setText(intent.getExtras().getString("taskDetails"));
@@ -63,17 +67,10 @@ public class TaskDetail extends AppCompatActivity {
                 ModelQuery.get(Task.class, taskIdOnPage),
                 response -> {
                     taskOfPage = response;
+                    Log.i("Amplify.queryItems", "This task is now available: " + taskOfPage);
                 },
                 error -> Log.i("Amplify.queryItems", "Did not receive any task via ID")
         );
-
-//        Amplify.API.query(
-//                ModelQuery.get(Task.class, taskIdOnPage),
-//                response -> {
-//                    taskOfPage = response;
-//                },
-//                error -> Log.i("Amplify.queryItems", "Did not receive any task via ID")
-//        );
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -81,10 +78,6 @@ public class TaskDetail extends AppCompatActivity {
         startActivityForResult(mtIntent, 0);
         return true;
     }
-
-//    public boolean getSpecificTask(String taskId) {
-
-//    }
 
 
     public void downloadFile(String fileKey) { // fileKey will be coming from intent atm } // code direction from Jack Nelson https://github.com/jnelsonjava/taskmaster/blob/main/app/src/main/java/com/jnelsonjava/taskmaster/AddTask.java
