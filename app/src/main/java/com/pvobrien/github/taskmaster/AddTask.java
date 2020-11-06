@@ -25,6 +25,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
 import com.amazonaws.util.IOUtils;
+import com.amplifyframework.analytics.AnalyticsEvent;
 import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.core.Amplify;
@@ -40,6 +41,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class AddTask extends AppCompatActivity {
 
@@ -83,11 +85,6 @@ public class AddTask extends AppCompatActivity {
         TextView taskDetailsTv  = AddTask.this.findViewById(R.id.taskDetails);
 //        TextView taskStatusTv = AddTask.this.findViewById(R.id.taskStatusTv);
 
-        Context context = getApplicationContext();
-        CharSequence text = "Task Entered";
-        int duration = Toast.LENGTH_LONG;
-        Toast toast = Toast.makeText(context, text, duration);
-
 //        Task taskToAdd = new Task(taskTitleTv.getText().toString(), taskDetailsTv.getText().toString(), taskStatusTv.getText().toString()); TODO: Reinstate
 
         addListenerToAddPicButton();
@@ -106,6 +103,15 @@ public class AddTask extends AppCompatActivity {
                         chosenTeam = teams.get(i);
                     }
                 }
+
+
+
+                AnalyticsEvent taskCreated = AnalyticsEvent.builder() // the basic pinpoint event builder. build'em as you need them,
+                        .name("TaskCreate")
+                        .addProperty("time", Long.toString(new Date().getTime())) // using java.util for Date(), not sql
+                        .addProperty("ItemIn", "going places")
+                        .build();
+                Amplify.Analytics.recordEvent(taskCreated);
 
                 Spinner statusSpinner = findViewById(R.id.statusSpinner);
                 String statusSelected = statusSpinner.getSelectedItem().toString();
@@ -135,6 +141,10 @@ public class AddTask extends AppCompatActivity {
 
                 System.out.println(String.format("You have a new task called %s and you'll be %s all days long", taskTitleTv.getText().toString(), taskDetailsTv.getText().toString()));
 
+                Context context = getApplicationContext();
+                CharSequence text = "Task Entered";
+                int duration = Toast.LENGTH_LONG;
+                Toast toast = Toast.makeText(context, text, duration);
                 toast.show();
 
 //              onBackPressed(); // this basically does the same thing.

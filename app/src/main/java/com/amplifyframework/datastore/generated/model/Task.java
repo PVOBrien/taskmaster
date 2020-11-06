@@ -26,6 +26,8 @@ public final class Task implements Model {
   public static final QueryField TASK_STATE_OF_DOING = field("taskStateOfDoing");
   public static final QueryField FILEKEY = field("filekey");
   public static final QueryField APART_OF = field("taskApartOfId");
+
+//  need to add addtl things if adding to room also.
   public final @ModelField(targetType="ID", isRequired = true) String id;
   public final @ModelField(targetType="String", isRequired = true) String taskDetails;
   public final @ModelField(targetType="String") String taskTitle;
