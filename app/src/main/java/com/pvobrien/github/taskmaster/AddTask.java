@@ -250,24 +250,6 @@ public class AddTask extends AppCompatActivity {
         spinner.setAdapter(adapter);
     }
 
-//    @RequiresApi(api = Build.VERSION_CODES.O)
-//    public static void copy(File origin, File dest) throws IOException {
-//        InputStream in  = new FileInputStream(origin);
-//        try {
-//            OutputStream out = new FileOutputStream(dest);
-//            try {
-//                byte[] buf = new byte[1024];
-//                int len;
-//                while ((len = in.read(buf)) > 0) {
-//                    out.write(buf, 0, len);
-//                }
-//            } finally {
-//                out.close();
-//            }
-//        } finally {
-//            in.close();
-//        }
-//    }
 
     public static void copyStream(InputStream in, OutputStream out) throws IOException { // https://stackoverflow.com/questions/9292954/how-to-make-a-copy-of-a-file-in-android
         byte[] buffer = new byte[1024];

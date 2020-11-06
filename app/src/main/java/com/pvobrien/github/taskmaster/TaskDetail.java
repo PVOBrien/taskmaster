@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -32,6 +33,17 @@ public class TaskDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_detail);
 
+        taskIdOnPage = getIntent().getExtras().getString("taskId");
+
+        Amplify.API.query(
+                ModelQuery.get(Task.class, taskIdOnPage),
+                response -> {
+                    taskOfPage = response;
+                    Log.i("Amplify.queryItems", "This task is now available: " + taskOfPage);
+                },
+                error -> Log.i("Amplify.queryItems", "Did not receive any task via ID")
+        );
+
         AnalyticsEvent onTaskPage = AnalyticsEvent.builder() // the basic pinpoint event builder. build'em as you need them,
                 .name("onTaskPage")
                 .addProperty("time", Long.toString(new Date().getTime())) // using java.util for Date(), not sql
@@ -49,7 +61,17 @@ public class TaskDetail extends AppCompatActivity {
         TextView taskStateTv = TaskDetail.this.findViewById(R.id.statusTv);
         Button deleteButton = findViewById(R.id.deleteButton);
 
-//        deleteButton.setOnClickListener();
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Log.i("System.Task", "Here's the graphQL Task: " + taskOfPage);
+
+                deleteTask(taskOfPage);
+
+                startActivity(new Intent(TaskDetail.this, MainActivity.class));
+            }
+        });
 
         taskTitleTv.setText(intent.getExtras().getString("taskTitle"));
         taskDetailsTv.setText(intent.getExtras().getString("taskDetails"));
@@ -63,14 +85,6 @@ public class TaskDetail extends AppCompatActivity {
             downloadFile(intent.getExtras().getString("fileKey"));
         }
 
-        Amplify.API.query(
-                ModelQuery.get(Task.class, taskIdOnPage),
-                response -> {
-                    taskOfPage = response;
-                    Log.i("Amplify.queryItems", "This task is now available: " + taskOfPage);
-                },
-                error -> Log.i("Amplify.queryItems", "Did not receive any task via ID")
-        );
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -96,14 +110,14 @@ public class TaskDetail extends AppCompatActivity {
 
 //    TODO: create DELETE option via transcribing code from JS to java from here https://aws.amazon.com/getting-started/hands-on/build-android-app-amplify/module-four/
 
-    public void deleteTask(Task task){
+    public void deleteTask(GraphQLResponse<Task> task){
         if (task == null) {
             return;
         }
 
         Amplify.API.mutate(
-                ModelMutation.delete(task),
-                response -> Log.i("Amplify.delete", "Successfully deleted:" + task.getTaskTitle()),
+                ModelMutation.delete(task.getData()), // why do I have to "getData"? Due to abstraction?
+                response -> Log.i("Amplify.delete", "Successfully deleted:" + task.getData().getTaskTitle()),
                 error -> Log.e ("Amplify.delete", "Failure to delete")
         );
     }

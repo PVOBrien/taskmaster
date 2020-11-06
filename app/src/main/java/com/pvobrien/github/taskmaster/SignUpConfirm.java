@@ -53,7 +53,7 @@ public class SignUpConfirm extends AppCompatActivity {
                     },
                     error -> Log.e("Amplify.confirm", error.toString())
                 );
-            Intent intent = new Intent(SignUpConfirm.this, Login.class);
+            Intent intent = new Intent(SignUpConfirm.this, MainActivity.class);
             this.startActivity(intent);
         });
 
