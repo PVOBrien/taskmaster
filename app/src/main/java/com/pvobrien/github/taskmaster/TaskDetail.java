@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.amplifyframework.analytics.AnalyticsEvent;
 import com.amplifyframework.api.graphql.GraphQLResponse;
 import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.api.graphql.model.ModelQuery;
@@ -17,6 +18,7 @@ import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.Task;
 
 import java.io.File;
+import java.util.Date;
 
 public class TaskDetail extends AppCompatActivity {
 
@@ -28,6 +30,13 @@ public class TaskDetail extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_detail);
+
+        AnalyticsEvent onTaskPage = AnalyticsEvent.builder() // the basic pinpoint event builder. build'em as you need them,
+                .name("onTaskPage")
+                .addProperty("time", Long.toString(new Date().getTime())) // using java.util for Date(), not sql
+                .addProperty("On The Page: ", "Task")
+                .build();
+        Amplify.Analytics.recordEvent(onTaskPage);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -66,9 +75,6 @@ public class TaskDetail extends AppCompatActivity {
 //                error -> Log.i("Amplify.queryItems", "Did not receive any task via ID")
 //        );
     }
-
-
-
 
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent mtIntent = new Intent(getApplicationContext(), MainActivity.class);

@@ -32,6 +32,8 @@ import com.amazonaws.mobile.config.AWSConfiguration;
 import com.amazonaws.mobileconnectors.pinpoint.PinpointConfiguration;
 import com.amazonaws.mobileconnectors.pinpoint.PinpointManager;
 import com.amplifyframework.AmplifyException;
+import com.amplifyframework.analytics.AnalyticsEvent;
+import com.amplifyframework.analytics.pinpoint.AWSPinpointAnalyticsPlugin;
 import com.amplifyframework.api.ApiOperation;
 import com.amplifyframework.api.aws.AWSApiPlugin;
 import com.amplifyframework.api.graphql.model.ModelMutation;
@@ -47,6 +49,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInteractWithTasksToDoListener {
 
@@ -234,10 +237,19 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
 
         Button goToAddTask = MainActivity.this.findViewById(R.id.addTask);
         goToAddTask.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 System.out.println("head to the taskLocals...");
                 Intent goToAddTasks = new Intent(MainActivity.this, AddTask.class);
+
+                AnalyticsEvent goToAddTaskEvent = AnalyticsEvent.builder() // the basic pinpoint event builder. build'em as you need them,
+                        .name("TaskAdd")
+                        .addProperty("time", Long.toString(new Date().getTime())) // using java.util for Date(), not sql
+                        .addProperty("Where to?", "going places")
+                        .build();
+                Amplify.Analytics.recordEvent(goToAddTaskEvent);
+
                 MainActivity.this.startActivity(goToAddTasks);
             }
         });
@@ -279,6 +291,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
             Amplify.addPlugin(new AWSCognitoAuthPlugin());      // If this gives you grief, wipe the emulator via the AVD Manager and try again. https://stackoverflow.com/questions/42816127/waiting-for-target-device-to-come-online
             Amplify.addPlugin(new AWSCognitoAuthPlugin());      // for S3 storage
             Amplify.addPlugin(new AWSS3StoragePlugin());        // for S3 storage
+            Amplify.addPlugin(new AWSPinpointAnalyticsPlugin(getApplication())); // TODO: is this correct?
 //            getPinpointManager(getApplicationContext());      // TODO: should be needed to for notification. Wasn't for me as of 2020-11-04
             Amplify.configure(getApplicationContext());
             Log.i("MyAmplifyApp", "Initialized Amplify");
@@ -287,7 +300,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
         } catch (AmplifyException error) {
             String errorMsg = error.getLocalizedMessage();
             if (errorMsg.contentEquals("The client tried to add a plugin after calling configure().")) { // it's not just .equals(), it is .content(*cs*) to match a String
-                Log.i("MyAmplifyApp", "Tried reinitializing Amplify."); //TODO find the actual string or use contains().
+                Log.i("MyAmplifyApp", "Tried reinitializing Amplify.");
             } else {
                 Log.e("MyAmplifyApp", "Could not initialize Amplify", error);
             }
@@ -321,7 +334,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
         String STOREFAIL = "failed to add store";
 
         Amplify.API.mutate(ModelMutation.create(teamOne),
-                response -> Log.i(AMPTAG, STOREADD),
+                response -> Log.i(AMPTAG + "store", STOREADD),
                 error -> Log.e(AMPTAG, STOREFAIL)
         );
 

@@ -55,9 +55,9 @@ dependencies {
     implementation 'com.amplifyframework:aws-api:1.4.1'             // core Amplify depend
     implementation 'com.amplifyframework:aws-auth-cognito:1.4.1'    // for cognito sign in
     implementation 'com.amplifyframework:aws-storage-s3:1.4.1'      // for s3 buckets
-    implementation 'com.amplifyframework:aws-auth-cognito:1.4.1'    // for s3 buckets
     implementation 'com.amazonaws:aws-android-sdk-pinpoint:2.11.+'  // for analytics
     implementation ('com.amazonaws:aws-android-sdk-mobile-client:2.19.0@aar'){ transitive = true} // unknown. something to do with mobile workings.
+    implementation 'com.amplifyframework:aws-analytics-pinpoint:1.4.1'
 
 // Google Mobile Integration Dependencies
     implementation 'com.google.android.gms:play-services-auth:18.1.0'
