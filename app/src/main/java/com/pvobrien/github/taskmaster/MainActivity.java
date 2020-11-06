@@ -352,7 +352,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
     public void getIsSignedIn() {
         Amplify.Auth.fetchAuthSession(
             result -> {
-                Log.i("Amplify.Login", result.toString());
+//                Log.i("Amplify.Login", result.toString()); // This result is ludicrously long.
                 Message message = new Message();
 
                 if (result.isSignedIn()) {

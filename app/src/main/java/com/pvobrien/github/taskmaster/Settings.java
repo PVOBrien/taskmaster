@@ -64,9 +64,9 @@ public class Settings extends AppCompatActivity {
                 String selectedTeamPrefToString = selectedTeamPref.getText().toString();
 
                 AnalyticsEvent settingsChanged = AnalyticsEvent.builder() // the basic pinpoint event builder. build'em as you need them,
-                        .name("onTaskPage")
+                        .name("SettingPage")
                         .addProperty("time", Long.toString(new Date().getTime())) // using java.util for Date(), not sql
-                        .addProperty("On The Page: ", "Task")
+                        .addProperty("On The Page: ", "Settings")
                         .build();
                 Amplify.Analytics.recordEvent(settingsChanged);
 

@@ -85,11 +85,6 @@ public class AddTask extends AppCompatActivity {
         TextView taskDetailsTv  = AddTask.this.findViewById(R.id.taskDetails);
 //        TextView taskStatusTv = AddTask.this.findViewById(R.id.taskStatusTv);
 
-        Context context = getApplicationContext();
-        CharSequence text = "Task Entered";
-        int duration = Toast.LENGTH_LONG;
-        Toast toast = Toast.makeText(context, text, duration);
-
 //        Task taskToAdd = new Task(taskTitleTv.getText().toString(), taskDetailsTv.getText().toString(), taskStatusTv.getText().toString()); TODO: Reinstate
 
         addListenerToAddPicButton();
@@ -146,6 +141,10 @@ public class AddTask extends AppCompatActivity {
 
                 System.out.println(String.format("You have a new task called %s and you'll be %s all days long", taskTitleTv.getText().toString(), taskDetailsTv.getText().toString()));
 
+                Context context = getApplicationContext();
+                CharSequence text = "Task Entered";
+                int duration = Toast.LENGTH_LONG;
+                Toast toast = Toast.makeText(context, text, duration);
                 toast.show();
 
 //              onBackPressed(); // this basically does the same thing.
