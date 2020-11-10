@@ -2,12 +2,15 @@ package com.pvobrien.github.taskmaster;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.FileUtils;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -60,6 +63,29 @@ public class AddTask extends AppCompatActivity {
 //        yourUniqueDatabase = Room.databaseBuilder(getApplicationContext(), YourUniqueDatabase.class, "taskDatabase") // this YourUniqueDatabase.class is looking for YOUR yourUniqueDatabase class name/potato.
 //                    .allowMainThreadQueries()
 //                    .build();
+
+        Intent intent = getIntent();
+        if (intent.getType() != null) {
+//            if (intent.getType().contentEquals("image/*")) {
+                Log.i("Amplify.addPic", "Within 'image/' This is what came across: " + intent.getClipData().getItemAt(0));
+                String justThePhotoUriInString = intent.getClipData().getItemAt(0).toString();
+                Uri imageFromIntent = Uri.parse(justThePhotoUriInString);
+            try {
+                Bitmap thisBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageFromIntent));
+                thisBitmap= MediaStore.Images.Media.getBitmap(getContentResolver(), imageFromIntent);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+//                Log.i("Image.intent","This is the imageFromIntent" + imageFromIntent);
+                ImageView image = findViewById(R.id.uploadedPic);
+//                image.setImageURI(imageFromIntent);
+                image.setImageBitmap(this);
+//                image.setImageBitmap(BitmapFactory.decodeFile(bitmap);
+//            }
+        }
+
+//        bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), mImageUri);
+
 
         handleCreation = new Handler(Looper.getMainLooper(), message -> {
            setupTeamSpinner();
