@@ -6,6 +6,14 @@ A taskLocal app to learn the ins and outs of Android app development.
 
 ## Ongoing Work:
 
+### 2020-11-09 image from Intent
+<br/><br/>
+Showcasing the "Share screen" from another activity
+ <img src="https://github.com/PVOBrien/taskmaster/blob/main/screenshots/2020-11-04%20Phone%20Notifications.png.png?raw=true" width="200"/>
+<br/><br/>
+Showcasing Result
+ <img src="https://github.com/PVOBrien/taskmaster/blob/main/screenshots/2020-11-04%20Phone%20Notifications.png.png?raw=true" width="200"/>
+<br/><br/>
 ### 2020-11-04 Setup systems for simple Push Notifications from AWS Pinpoint and Google Firebase
  <br/><br/>
  <img src="https://github.com/PVOBrien/taskmaster/blob/main/screenshots/2020-11-04%20Phone%20Notifications.png.png?raw=true" width="200"/>

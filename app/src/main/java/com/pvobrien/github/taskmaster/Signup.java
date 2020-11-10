@@ -33,6 +33,10 @@ public class Signup extends AppCompatActivity {
             );
 
             Intent intent = new Intent(this, SignUpConfirm.class);
+
+            intent.putExtra("username", userName.getText().toString());
+            intent.putExtra("password", userPasswordCreate.getText().toString());
+
             this.startActivity(intent);
         });
     }
