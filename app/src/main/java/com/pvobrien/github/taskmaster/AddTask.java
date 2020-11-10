@@ -51,7 +51,8 @@ public class AddTask extends AppCompatActivity {
 //    YourUniqueDatabase yourUniqueDatabase; // this is looking specifically for YOUR yourUniqueDatabase class name/potato
     ArrayList<Team> teams = new ArrayList<Team>();
     Handler handleCreation;
-    String lastFileIUploaded = "";
+    String lastFileIUploaded;
+    Uri imageFromIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,26 +66,15 @@ public class AddTask extends AppCompatActivity {
 //                    .build();
 
         Intent intent = getIntent();
-        if (intent.getType() != null) {
-//            if (intent.getType().contentEquals("image/*")) {
-                Log.i("Amplify.addPic", "Within 'image/' This is what came across: " + intent.getClipData().getItemAt(0));
-                String justThePhotoUriInString = intent.getClipData().getItemAt(0).toString();
-                Uri imageFromIntent = Uri.parse(justThePhotoUriInString);
-            try {
-                Bitmap thisBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageFromIntent));
-                thisBitmap= MediaStore.Images.Media.getBitmap(getContentResolver(), imageFromIntent);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-//                Log.i("Image.intent","This is the imageFromIntent" + imageFromIntent);
+        if (intent.getType() != null) { // https://www.programcreek.com/java-api-examples/?class=android.content.Intent&method=getClipData
+            Log.i("Amplify.addPic", "This is the full intent came across: " + intent.toString());
+//            if (intent.getType().equals("image/*")) { TODO: why doesn't this work?
+                Log.i("Amplify.addPic", "Within 'image/' : " + intent.getClipData().getItemAt(0));
+                imageFromIntent = intent.getClipData().getItemAt(0).getUri();
+                Log.i("Amplify.uri", "URI : " + imageFromIntent);
                 ImageView image = findViewById(R.id.uploadedPic);
-//                image.setImageURI(imageFromIntent);
-                image.setImageBitmap(this);
-//                image.setImageBitmap(BitmapFactory.decodeFile(bitmap);
-//            }
-        }
-
-//        bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), mImageUri);
+                image.setImageURI(imageFromIntent);
+            }
 
 
         handleCreation = new Handler(Looper.getMainLooper(), message -> {
@@ -147,6 +137,21 @@ public class AddTask extends AppCompatActivity {
 //                Task taskToAdd = new Task(taskTitleTv.getText().toString(), taskDetailsTv.getText().toString(), taskStatusTv.getText().toString()); TODO: Reinstate
                 // CREATE TASK via TaskLocal.builder()...
 
+
+                if (lastFileIUploaded == null) {
+                    File fileCopy = new File(getFilesDir(), "fromOutsideIntent");
+                    try {
+                        InputStream inStream = getContentResolver().openInputStream(imageFromIntent);
+                        FileOutputStream out = new FileOutputStream(fileCopy);
+                        copyStream(inStream, out);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e("Amplify.ImageUpload", e.toString());
+                    }
+                    uploadFile(fileCopy, fileCopy.getName() + Math.random());
+                }
+
+
             Task newTask = Task.builder()
                     .taskDetails(taskDetailsTv.getText().toString())
                     .taskStateOfDoing(statusSelected)
@@ -176,7 +181,6 @@ public class AddTask extends AppCompatActivity {
 
 //              Intent addTaskToAllTasks = new Intent(AddTask.this, MainActivity.class);
 //              AddTask.this.startActivity(addTaskToAllTasks);
-
             }
         });
     }
@@ -195,7 +199,7 @@ public class AddTask extends AppCompatActivity {
 
             Log.i("Amplify.pickImage", "Image has been retrieved."); // This will know, well enough
 
-            File fileCopy = new File(getFilesDir(), "fileUpload"); // Todo: what is this child?
+            File fileCopy = new File(getFilesDir(), "fileUpload"); // Todo: what is this child? It is the filename that is "appended to the front of the file.
 
             try {
                 InputStream inStream = getContentResolver().openInputStream(data.getData()); // https://stackoverflow.com/questions/11501418/is-it-possible-to-create-a-file-object-from-inputstream
@@ -209,7 +213,7 @@ public class AddTask extends AppCompatActivity {
                 Log.e("Amplify.pickImage", e.toString());
             }
 
-            uploadFile(fileCopy, fileCopy.getName() + Math.random()); // Todo: why uploadFile angry at me?
+            uploadFile(fileCopy, fileCopy.getName() + Math.random()); // TODO: refactor the if/else statement out.
         } else if (requestCode == 2) {
             Log.i("Amplify.neverHere", "Go! Be Free!");
         } else {
@@ -223,7 +227,7 @@ public class AddTask extends AppCompatActivity {
                 key,
                 f,
                 result -> {
-                    Log.i("Amplify.s3", "Successfully uploade: " + result.getKey());
+                    Log.i("Amplify.s3", "Successfully uploaded: " + result.getKey());
                     downloadFile(key);
                 },
                 storageFailure -> Log.e("Amplify.s3", "Upload:Failure.", storageFailure)
