@@ -6,6 +6,11 @@ A taskLocal app to learn the ins and outs of Android app development.
 
 ## Ongoing Work:
 
+### 2020-11-10 Location Services working
+<br/><br/>
+The location's address is in fact coming from the location info provided. Also, created a latitude and longitude "entity"/"model" that is fully formed and has a one-to-one relationship to a task, so I will (should) be able to get latitude and longitude easily enough.
+ <img src="https://github.com/PVOBrien/taskmaster/blob/main/screenshots/2020-11-10%20location.png?raw=true" width="200"/>
+<br/><br/>
 ### 2020-11-09 image from Intent
 <br/><br/>
 Showcasing the "Share screen" from another activity
