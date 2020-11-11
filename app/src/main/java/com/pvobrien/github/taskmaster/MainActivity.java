@@ -7,11 +7,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationProvider;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -44,6 +48,8 @@ import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.Task;
 import com.amplifyframework.datastore.generated.model.Team;
 import com.amplifyframework.storage.s3.AWSS3StoragePlugin;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
@@ -63,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
     Handler handlerOfThisSingleItemAdded;
     SharedPreferences preferences;
     Handler handleCheckedLogin;
+    FusedLocationProviderClient fusedLocationProviderClient;
 
     public static final String TAG = "Amplify";
 
@@ -139,8 +146,8 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        handler = new Handler(Looper.getMainLooper(),
 
+        handler = new Handler(Looper.getMainLooper(),
                 new Handler.Callback() {
                     @Override
                     public boolean handleMessage(@NonNull Message message) {
@@ -148,7 +155,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
                         return true;
                     }
                 });
-
 
 //      setupTheTeams();
 
@@ -281,7 +287,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
         });
     }
 
-
     // ==================== buttons above here =========
 
     public void configureAWS() {
@@ -349,6 +354,15 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
         );
     }
 
+    public void askForPermissionToUseLocation() {
+        String[] permissions = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
+        requestPermissions(permissions, 2); // Todo: add second param.
+    }
+
+    public void configureLocationServices(){
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+    }
+
     public void getIsSignedIn() {
         Amplify.Auth.fetchAuthSession(
             result -> {
@@ -365,4 +379,14 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
             error -> Log.e("Amplify.Login", error.toString())
         );
     }
+
 }
+
+
+// public void askForLocation(){
+// locationProviderClient.getLastLocation()
+// .addonSuccessListener(location -> Log.i()
+// .addonFailureListener(error -> Log.e()
+// .addOnCanceledListener(() -> Log.e())
+// .addOnCompleteListener(complete -> Log.i
+// }
