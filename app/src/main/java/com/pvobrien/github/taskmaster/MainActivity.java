@@ -3,16 +3,21 @@ package com.pvobrien.github.taskmaster;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationProvider;
@@ -49,13 +54,19 @@ import com.amplifyframework.datastore.generated.model.Task;
 import com.amplifyframework.datastore.generated.model.Team;
 import com.amplifyframework.storage.s3.AWSS3StoragePlugin;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInteractWithTasksToDoListener {
 
@@ -69,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
     Handler handlerOfThisSingleItemAdded;
     SharedPreferences preferences;
     Handler handleCheckedLogin;
-    FusedLocationProviderClient fusedLocationProviderClient;
+
 
     public static final String TAG = "Amplify";
 
@@ -145,7 +156,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         handler = new Handler(Looper.getMainLooper(),
                 new Handler.Callback() {
@@ -320,6 +330,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
         intent.putExtra("taskState", task.getTaskStateOfDoing());
         intent.putExtra("fileKey", task.getFilekey());
         intent.putExtra("taskId", task.getId());
+//        intent.putExtra("taskLocation", task.getLocation); // Todo: regen the schema.
         this.startActivity(intent);
     }
 
@@ -354,14 +365,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
         );
     }
 
-    public void askForPermissionToUseLocation() {
-        String[] permissions = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
-        requestPermissions(permissions, 2); // Todo: add second param.
-    }
-
-    public void configureLocationServices(){
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-    }
 
     public void getIsSignedIn() {
         Amplify.Auth.fetchAuthSession(
@@ -379,14 +382,4 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
             error -> Log.e("Amplify.Login", error.toString())
         );
     }
-
 }
-
-
-// public void askForLocation(){
-// locationProviderClient.getLastLocation()
-// .addonSuccessListener(location -> Log.i()
-// .addonFailureListener(error -> Log.e()
-// .addOnCanceledListener(() -> Log.e())
-// .addOnCompleteListener(complete -> Log.i
-// }

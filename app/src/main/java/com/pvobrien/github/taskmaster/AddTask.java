@@ -1,9 +1,14 @@
 package com.pvobrien.github.taskmaster;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,6 +30,7 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.room.Room;
 
 import com.amazonaws.util.IOUtils;
@@ -34,6 +40,11 @@ import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.Task;
 import com.amplifyframework.datastore.generated.model.Team;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -45,6 +56,8 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class AddTask extends AppCompatActivity {
 
@@ -53,6 +66,9 @@ public class AddTask extends AppCompatActivity {
     Handler handleCreation;
     String lastFileIUploaded;
     Uri imageFromIntent;
+    FusedLocationProviderClient fusedLocationProviderClient;
+    Location currentLocation;
+    String addressString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +80,10 @@ public class AddTask extends AppCompatActivity {
 //        yourUniqueDatabase = Room.databaseBuilder(getApplicationContext(), YourUniqueDatabase.class, "taskDatabase") // this YourUniqueDatabase.class is looking for YOUR yourUniqueDatabase class name/potato.
 //                    .allowMainThreadQueries()
 //                    .build();
+
+        askForPermissionToUseLocation();
+        configureLocationServices();
+        locationRequest();
 
         Intent intent = getIntent();
         if (intent.getType() != null) { // https://www.programcreek.com/java-api-examples/?class=android.content.Intent&method=getClipData
@@ -289,4 +309,61 @@ public class AddTask extends AppCompatActivity {
         }
     }
 
+    public void askForPermissionToUseLocation() {
+        String[] permissions = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
+        requestPermissions(permissions, 2); // Todo: add second param. What is the second param for?
+    }
+
+    public void configureLocationServices(){
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+    }
+
+    public void locationRequest() { // follow along from https://github.com/mdomeck/taskmaster/blob/labe-42/app/src/main/java/com/mdomeck/taskmaster/AddTask.java Thanks to mdomeck.
+
+        LocationRequest locationRequest;
+        LocationCallback locationCallback;
+
+        locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(60000);
+
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+            if (locationResult == null) {
+                return;
+            }
+            currentLocation = locationResult.getLastLocation();
+            Log.i("Amplify.location", "This is the currentLocation: " + currentLocation.toString());
+
+            Geocoder geocoder = new Geocoder(AddTask.this, Locale.getDefault());
+            try {
+                List<Address> addresses = geocoder.getFromLocation(currentLocation.getLatitude(), currentLocation.getLongitude(), 10);
+                addressString = addresses.get(0).getAddressLine(0);
+                Log.i("Amplify.location", "Here's the address: " + addressString);
+            } catch (IOException e) {
+//              e.printStackTrace();
+            }
+            }
+        };
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Toast t = new Toast(this);
+            t.setText("Please check your permissions");
+            t.setDuration(Toast.LENGTH_LONG);
+            t.show();
+            return;
+        }
+
+        fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, getMainLooper());
+    }
+
 }
+
+// public void askForLocation(){
+// locationProviderClient.getLastLocation()
+// .addonSuccessListener(location -> Log.i()
+// .addonFailureListener(error -> Log.e()
+// .addOnCanceledListener(() -> Log.e())
+// .addOnCompleteListener(complete -> Log.i
+// }

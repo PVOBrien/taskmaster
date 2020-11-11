@@ -1,9 +1,15 @@
 package com.pvobrien.github.taskmaster;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -18,15 +24,24 @@ import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.Task;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class TaskDetail extends AppCompatActivity {
 
 //    String filetoShow;
     String taskIdOnPage;
     GraphQLResponse<Task> taskOfPage;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +75,9 @@ public class TaskDetail extends AppCompatActivity {
         TextView taskDetailsTv = TaskDetail.this.findViewById(R.id.taskDescriptionTv);
         TextView taskStateTv = TaskDetail.this.findViewById(R.id.statusTv);
         Button deleteButton = findViewById(R.id.deleteButton);
+        TextView taskLocationTv = TaskDetail.this.findViewById(R.id.locationAdd);
+
+        taskLocationTv.setText(intent.getExtras().getString("taskLocation", "No Address"));
 
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
