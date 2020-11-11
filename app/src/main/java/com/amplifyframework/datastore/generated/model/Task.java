@@ -25,30 +25,58 @@ public final class Task implements Model {
   public static final QueryField TASK_TITLE = field("taskTitle");
   public static final QueryField TASK_STATE_OF_DOING = field("taskStateOfDoing");
   public static final QueryField FILEKEY = field("filekey");
+  public static final QueryField ADDRESS = field("address");
   public static final QueryField APART_OF = field("taskApartOfId");
-
-//  need to add addtl things if adding to room also.
-  public final @ModelField(targetType="ID", isRequired = true) String id;
-  public final @ModelField(targetType="String", isRequired = true) String taskDetails;
-  public final @ModelField(targetType="String") String taskTitle;
-  public final @ModelField(targetType="String") String taskStateOfDoing;
-  public final @ModelField(targetType="String") String filekey;
-  public final @ModelField(targetType="Team") @BelongsTo(targetName = "taskApartOfId", type = Team.class) Team apartOf;
-
-  public String getId() { return id; }
-  public String getTaskDetails() { return taskDetails; }
-  public String getTaskTitle() { return taskTitle; }
-  public String getTaskStateOfDoing() { return taskStateOfDoing; }
-  public String getFilekey() { return filekey; }
-  public Team getApartOf() { return apartOf; }
-
-  public Task(String id, String taskDetails, String taskTitle, String taskStateOfDoing, String filekey, Team apartOf) {
+  public static final QueryField LATLON = field("taskLatlonId");
+  private final @ModelField(targetType="ID", isRequired = true) String id;
+  private final @ModelField(targetType="String", isRequired = true) String taskDetails;
+  private final @ModelField(targetType="String") String taskTitle;
+  private final @ModelField(targetType="String") String taskStateOfDoing;
+  private final @ModelField(targetType="String") String filekey;
+  private final @ModelField(targetType="String") String address;
+  private final @ModelField(targetType="Team") @BelongsTo(targetName = "taskApartOfId", type = Team.class) Team apartOf;
+  private final @ModelField(targetType="Coordinates") @BelongsTo(targetName = "taskLatlonId", type = Coordinates.class) Coordinates latlon;
+  public String getId() {
+      return id;
+  }
+  
+  public String getTaskDetails() {
+      return taskDetails;
+  }
+  
+  public String getTaskTitle() {
+      return taskTitle;
+  }
+  
+  public String getTaskStateOfDoing() {
+      return taskStateOfDoing;
+  }
+  
+  public String getFilekey() {
+      return filekey;
+  }
+  
+  public String getAddress() {
+      return address;
+  }
+  
+  public Team getApartOf() {
+      return apartOf;
+  }
+  
+  public Coordinates getLatlon() {
+      return latlon;
+  }
+  
+  private Task(String id, String taskDetails, String taskTitle, String taskStateOfDoing, String filekey, String address, Team apartOf, Coordinates latlon) {
     this.id = id;
     this.taskDetails = taskDetails;
     this.taskTitle = taskTitle;
     this.taskStateOfDoing = taskStateOfDoing;
     this.filekey = filekey;
+    this.address = address;
     this.apartOf = apartOf;
+    this.latlon = latlon;
   }
   
   @Override
@@ -64,7 +92,9 @@ public final class Task implements Model {
               ObjectsCompat.equals(getTaskTitle(), task.getTaskTitle()) &&
               ObjectsCompat.equals(getTaskStateOfDoing(), task.getTaskStateOfDoing()) &&
               ObjectsCompat.equals(getFilekey(), task.getFilekey()) &&
-              ObjectsCompat.equals(getApartOf(), task.getApartOf());
+              ObjectsCompat.equals(getAddress(), task.getAddress()) &&
+              ObjectsCompat.equals(getApartOf(), task.getApartOf()) &&
+              ObjectsCompat.equals(getLatlon(), task.getLatlon());
       }
   }
   
@@ -76,7 +106,9 @@ public final class Task implements Model {
       .append(getTaskTitle())
       .append(getTaskStateOfDoing())
       .append(getFilekey())
+      .append(getAddress())
       .append(getApartOf())
+      .append(getLatlon())
       .toString()
       .hashCode();
   }
@@ -90,7 +122,9 @@ public final class Task implements Model {
       .append("taskTitle=" + String.valueOf(getTaskTitle()) + ", ")
       .append("taskStateOfDoing=" + String.valueOf(getTaskStateOfDoing()) + ", ")
       .append("filekey=" + String.valueOf(getFilekey()) + ", ")
-      .append("apartOf=" + String.valueOf(getApartOf()))
+      .append("address=" + String.valueOf(getAddress()) + ", ")
+      .append("apartOf=" + String.valueOf(getApartOf()) + ", ")
+      .append("latlon=" + String.valueOf(getLatlon()))
       .append("}")
       .toString();
   }
@@ -124,6 +158,8 @@ public final class Task implements Model {
       null,
       null,
       null,
+      null,
+      null,
       null
     );
   }
@@ -134,7 +170,9 @@ public final class Task implements Model {
       taskTitle,
       taskStateOfDoing,
       filekey,
-      apartOf);
+      address,
+      apartOf,
+      latlon);
   }
   public interface TaskDetailsStep {
     BuildStep taskDetails(String taskDetails);
@@ -147,7 +185,9 @@ public final class Task implements Model {
     BuildStep taskTitle(String taskTitle);
     BuildStep taskStateOfDoing(String taskStateOfDoing);
     BuildStep filekey(String filekey);
+    BuildStep address(String address);
     BuildStep apartOf(Team apartOf);
+    BuildStep latlon(Coordinates latlon);
   }
   
 
@@ -157,7 +197,9 @@ public final class Task implements Model {
     private String taskTitle;
     private String taskStateOfDoing;
     private String filekey;
+    private String address;
     private Team apartOf;
+    private Coordinates latlon;
     @Override
      public Task build() {
         String id = this.id != null ? this.id : UUID.randomUUID().toString();
@@ -168,7 +210,9 @@ public final class Task implements Model {
           taskTitle,
           taskStateOfDoing,
           filekey,
-          apartOf);
+          address,
+          apartOf,
+          latlon);
     }
     
     @Override
@@ -197,8 +241,20 @@ public final class Task implements Model {
     }
     
     @Override
+     public BuildStep address(String address) {
+        this.address = address;
+        return this;
+    }
+    
+    @Override
      public BuildStep apartOf(Team apartOf) {
         this.apartOf = apartOf;
+        return this;
+    }
+    
+    @Override
+     public BuildStep latlon(Coordinates latlon) {
+        this.latlon = latlon;
         return this;
     }
     
@@ -225,13 +281,15 @@ public final class Task implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String taskDetails, String taskTitle, String taskStateOfDoing, String filekey, Team apartOf) {
+    private CopyOfBuilder(String id, String taskDetails, String taskTitle, String taskStateOfDoing, String filekey, String address, Team apartOf, Coordinates latlon) {
       super.id(id);
       super.taskDetails(taskDetails)
         .taskTitle(taskTitle)
         .taskStateOfDoing(taskStateOfDoing)
         .filekey(filekey)
-        .apartOf(apartOf);
+        .address(address)
+        .apartOf(apartOf)
+        .latlon(latlon);
     }
     
     @Override
@@ -255,8 +313,18 @@ public final class Task implements Model {
     }
     
     @Override
+     public CopyOfBuilder address(String address) {
+      return (CopyOfBuilder) super.address(address);
+    }
+    
+    @Override
      public CopyOfBuilder apartOf(Team apartOf) {
       return (CopyOfBuilder) super.apartOf(apartOf);
+    }
+    
+    @Override
+     public CopyOfBuilder latlon(Coordinates latlon) {
+      return (CopyOfBuilder) super.latlon(latlon);
     }
   }
   

@@ -38,6 +38,7 @@ import com.amplifyframework.analytics.AnalyticsEvent;
 import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.core.Amplify;
+import com.amplifyframework.datastore.generated.model.Coordinates;
 import com.amplifyframework.datastore.generated.model.Task;
 import com.amplifyframework.datastore.generated.model.Team;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -171,6 +172,16 @@ public class AddTask extends AppCompatActivity {
                     uploadFile(fileCopy, fileCopy.getName() + Math.random());
                 }
 
+                Coordinates newCoordinates = Coordinates.builder()
+                        .latitude(25.464492f) // Todo: Find the real coordinates, not hardcoded lol.
+                        .longitude(-24.396790f)
+                        .build();
+
+                Amplify.API.mutate(
+                        ModelMutation.create(newCoordinates),
+                        response -> Log.i("Amplify.Coordinates", "success!" + newCoordinates.toString()),
+                        error -> Log.e("Amplify.Coordinates", "no dice." + error)
+                );
 
             Task newTask = Task.builder()
                     .taskDetails(taskDetailsTv.getText().toString())
@@ -178,6 +189,8 @@ public class AddTask extends AppCompatActivity {
                     .taskTitle(taskTitleTv.getText().toString())
                     .apartOf(chosenTeam)
                     .filekey(lastFileIUploaded)
+                    .address(addressString)
+                    .latlon(newCoordinates)
                     .build();
 
 

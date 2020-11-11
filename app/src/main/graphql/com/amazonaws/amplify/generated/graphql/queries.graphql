@@ -6,12 +6,20 @@ query GetTask($id: ID!) {
     taskTitle
     taskStateOfDoing
     filekey
+    address
     apartOf {
       id
       name
       tasks {
         nextToken
       }
+      createdAt
+      updatedAt
+    }
+    latlon {
+      id
+      latitude
+      longitude
       createdAt
       updatedAt
     }
@@ -31,9 +39,17 @@ query ListTasks(
       taskTitle
       taskStateOfDoing
       filekey
+      address
       apartOf {
         id
         name
+        createdAt
+        updatedAt
+      }
+      latlon {
+        id
+        latitude
+        longitude
         createdAt
         updatedAt
       }
@@ -54,6 +70,7 @@ query GetTeam($id: ID!) {
         taskTitle
         taskStateOfDoing
         filekey
+        address
         createdAt
         updatedAt
       }
@@ -75,6 +92,31 @@ query ListTeams(
       tasks {
         nextToken
       }
+      createdAt
+      updatedAt
+    }
+    nextToken
+  }
+}
+query GetCoordinates($id: ID!) {
+  getCoordinates(id: $id) {
+    id
+    latitude
+    longitude
+    createdAt
+    updatedAt
+  }
+}
+query ListCoordinatess(
+  $filter: ModelCoordinatesFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listCoordinatess(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      latitude
+      longitude
       createdAt
       updatedAt
     }

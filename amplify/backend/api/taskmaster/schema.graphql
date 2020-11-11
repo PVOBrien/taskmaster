@@ -19,8 +19,8 @@ type Coordinates @model {
   id: ID!
   latitude: Float
   longitude: Float
-
 }
 
-
 # amplify codegen models to rebuild
+
+# https://docs.amplify.aws/cli/graphql-transformer/connection#usage for relationship examples

@@ -9,12 +9,20 @@ mutation CreateTask(
     taskTitle
     taskStateOfDoing
     filekey
+    address
     apartOf {
       id
       name
       tasks {
         nextToken
       }
+      createdAt
+      updatedAt
+    }
+    latlon {
+      id
+      latitude
+      longitude
       createdAt
       updatedAt
     }
@@ -32,12 +40,20 @@ mutation UpdateTask(
     taskTitle
     taskStateOfDoing
     filekey
+    address
     apartOf {
       id
       name
       tasks {
         nextToken
       }
+      createdAt
+      updatedAt
+    }
+    latlon {
+      id
+      latitude
+      longitude
       createdAt
       updatedAt
     }
@@ -55,12 +71,20 @@ mutation DeleteTask(
     taskTitle
     taskStateOfDoing
     filekey
+    address
     apartOf {
       id
       name
       tasks {
         nextToken
       }
+      createdAt
+      updatedAt
+    }
+    latlon {
+      id
+      latitude
+      longitude
       createdAt
       updatedAt
     }
@@ -82,6 +106,7 @@ mutation CreateTeam(
         taskTitle
         taskStateOfDoing
         filekey
+        address
         createdAt
         updatedAt
       }
@@ -105,6 +130,7 @@ mutation UpdateTeam(
         taskTitle
         taskStateOfDoing
         filekey
+        address
         createdAt
         updatedAt
       }
@@ -128,11 +154,48 @@ mutation DeleteTeam(
         taskTitle
         taskStateOfDoing
         filekey
+        address
         createdAt
         updatedAt
       }
       nextToken
     }
+    createdAt
+    updatedAt
+  }
+}
+mutation CreateCoordinates(
+  $input: CreateCoordinatesInput!
+  $condition: ModelCoordinatesConditionInput
+) {
+  createCoordinates(input: $input, condition: $condition) {
+    id
+    latitude
+    longitude
+    createdAt
+    updatedAt
+  }
+}
+mutation UpdateCoordinates(
+  $input: UpdateCoordinatesInput!
+  $condition: ModelCoordinatesConditionInput
+) {
+  updateCoordinates(input: $input, condition: $condition) {
+    id
+    latitude
+    longitude
+    createdAt
+    updatedAt
+  }
+}
+mutation DeleteCoordinates(
+  $input: DeleteCoordinatesInput!
+  $condition: ModelCoordinatesConditionInput
+) {
+  deleteCoordinates(input: $input, condition: $condition) {
+    id
+    latitude
+    longitude
     createdAt
     updatedAt
   }

@@ -6,12 +6,20 @@ subscription OnCreateTask {
     taskTitle
     taskStateOfDoing
     filekey
+    address
     apartOf {
       id
       name
       tasks {
         nextToken
       }
+      createdAt
+      updatedAt
+    }
+    latlon {
+      id
+      latitude
+      longitude
       createdAt
       updatedAt
     }
@@ -26,12 +34,20 @@ subscription OnUpdateTask {
     taskTitle
     taskStateOfDoing
     filekey
+    address
     apartOf {
       id
       name
       tasks {
         nextToken
       }
+      createdAt
+      updatedAt
+    }
+    latlon {
+      id
+      latitude
+      longitude
       createdAt
       updatedAt
     }
@@ -46,12 +62,20 @@ subscription OnDeleteTask {
     taskTitle
     taskStateOfDoing
     filekey
+    address
     apartOf {
       id
       name
       tasks {
         nextToken
       }
+      createdAt
+      updatedAt
+    }
+    latlon {
+      id
+      latitude
+      longitude
       createdAt
       updatedAt
     }
@@ -70,6 +94,7 @@ subscription OnCreateTeam {
         taskTitle
         taskStateOfDoing
         filekey
+        address
         createdAt
         updatedAt
       }
@@ -90,6 +115,7 @@ subscription OnUpdateTeam {
         taskTitle
         taskStateOfDoing
         filekey
+        address
         createdAt
         updatedAt
       }
@@ -110,11 +136,39 @@ subscription OnDeleteTeam {
         taskTitle
         taskStateOfDoing
         filekey
+        address
         createdAt
         updatedAt
       }
       nextToken
     }
+    createdAt
+    updatedAt
+  }
+}
+subscription OnCreateCoordinates {
+  onCreateCoordinates {
+    id
+    latitude
+    longitude
+    createdAt
+    updatedAt
+  }
+}
+subscription OnUpdateCoordinates {
+  onUpdateCoordinates {
+    id
+    latitude
+    longitude
+    createdAt
+    updatedAt
+  }
+}
+subscription OnDeleteCoordinates {
+  onDeleteCoordinates {
+    id
+    latitude
+    longitude
     createdAt
     updatedAt
   }

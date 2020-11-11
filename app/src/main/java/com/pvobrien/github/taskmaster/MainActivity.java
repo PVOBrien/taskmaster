@@ -166,9 +166,9 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
                     }
                 });
 
-//      setupTheTeams();
 
         configureAWS();
+//        setupTheTeams();
 
         tasks = new ArrayList<>(); // TODO necessary?
 
@@ -209,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
                         System.out.println("There is a team: " + preferences.getString("savedTeam", "NA"));
                         if (newTask.getApartOf().getName() == preferences.getString("savedTeam", "NA")) {
 //                          TODO: Add team preference logic.
-                            System.out.println(newTask.apartOf.getName());
+                            System.out.println(newTask.getApartOf().getName());
                             tasks.add(newTask);
                             handlerOfThisSingleItemAdded.sendEmptyMessage(1);
                         }
@@ -225,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
                     // TODO: make toast here.
                     Toast.makeText(
                             this,
-                            tasks.get(tasks.size() - 1).taskTitle + " is now a task added.",
+                            tasks.get(tasks.size() - 1).getTaskTitle() + " is now a task added.",
                             Toast.LENGTH_SHORT).show();
                     return false;
                 }));
@@ -330,7 +330,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
         intent.putExtra("taskState", task.getTaskStateOfDoing());
         intent.putExtra("fileKey", task.getFilekey());
         intent.putExtra("taskId", task.getId());
-//        intent.putExtra("taskLocation", task.getLocation); // Todo: regen the schema.
+        intent.putExtra("taskLocation", task.getAddress()); // Todo: regen the schema.
         this.startActivity(intent);
     }
 
