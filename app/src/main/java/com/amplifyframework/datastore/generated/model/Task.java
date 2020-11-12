@@ -6,10 +6,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.Objects;
 
-import androidx.annotation.NonNull;
 import androidx.core.util.ObjectsCompat;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 import com.amplifyframework.core.model.Model;
 import com.amplifyframework.core.model.annotations.Index;
@@ -21,34 +18,36 @@ import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 
 /** This is an auto generated class representing the Task type in your schema. */
 @SuppressWarnings("all")
-@Entity
 @ModelConfig(pluralName = "Tasks")
 public final class Task implements Model {
   public static final QueryField ID = field("id");
   public static final QueryField TASK_DETAILS = field("taskDetails");
   public static final QueryField TASK_TITLE = field("taskTitle");
   public static final QueryField TASK_STATE_OF_DOING = field("taskStateOfDoing");
+  public static final QueryField FILEKEY = field("filekey");
   public static final QueryField APART_OF = field("taskApartOfId");
 
-  @NonNull
-  @PrimaryKey
+//  need to add addtl things if adding to room also.
   public final @ModelField(targetType="ID", isRequired = true) String id;
   public final @ModelField(targetType="String", isRequired = true) String taskDetails;
   public final @ModelField(targetType="String") String taskTitle;
   public final @ModelField(targetType="String") String taskStateOfDoing;
+  public final @ModelField(targetType="String") String filekey;
   public final @ModelField(targetType="Team") @BelongsTo(targetName = "taskApartOfId", type = Team.class) Team apartOf;
 
   public String getId() { return id; }
   public String getTaskDetails() { return taskDetails; }
   public String getTaskTitle() { return taskTitle; }
   public String getTaskStateOfDoing() { return taskStateOfDoing; }
+  public String getFilekey() { return filekey; }
   public Team getApartOf() { return apartOf; }
 
-  public Task(String id, String taskDetails, String taskTitle, String taskStateOfDoing, Team apartOf) {
+  public Task(String id, String taskDetails, String taskTitle, String taskStateOfDoing, String filekey, Team apartOf) {
     this.id = id;
     this.taskDetails = taskDetails;
     this.taskTitle = taskTitle;
     this.taskStateOfDoing = taskStateOfDoing;
+    this.filekey = filekey;
     this.apartOf = apartOf;
   }
   
@@ -64,6 +63,7 @@ public final class Task implements Model {
               ObjectsCompat.equals(getTaskDetails(), task.getTaskDetails()) &&
               ObjectsCompat.equals(getTaskTitle(), task.getTaskTitle()) &&
               ObjectsCompat.equals(getTaskStateOfDoing(), task.getTaskStateOfDoing()) &&
+              ObjectsCompat.equals(getFilekey(), task.getFilekey()) &&
               ObjectsCompat.equals(getApartOf(), task.getApartOf());
       }
   }
@@ -75,6 +75,7 @@ public final class Task implements Model {
       .append(getTaskDetails())
       .append(getTaskTitle())
       .append(getTaskStateOfDoing())
+      .append(getFilekey())
       .append(getApartOf())
       .toString()
       .hashCode();
@@ -88,6 +89,7 @@ public final class Task implements Model {
       .append("taskDetails=" + String.valueOf(getTaskDetails()) + ", ")
       .append("taskTitle=" + String.valueOf(getTaskTitle()) + ", ")
       .append("taskStateOfDoing=" + String.valueOf(getTaskStateOfDoing()) + ", ")
+      .append("filekey=" + String.valueOf(getFilekey()) + ", ")
       .append("apartOf=" + String.valueOf(getApartOf()))
       .append("}")
       .toString();
@@ -121,6 +123,7 @@ public final class Task implements Model {
       null,
       null,
       null,
+      null,
       null
     );
   }
@@ -130,6 +133,7 @@ public final class Task implements Model {
       taskDetails,
       taskTitle,
       taskStateOfDoing,
+      filekey,
       apartOf);
   }
   public interface TaskDetailsStep {
@@ -142,6 +146,7 @@ public final class Task implements Model {
     BuildStep id(String id) throws IllegalArgumentException;
     BuildStep taskTitle(String taskTitle);
     BuildStep taskStateOfDoing(String taskStateOfDoing);
+    BuildStep filekey(String filekey);
     BuildStep apartOf(Team apartOf);
   }
   
@@ -151,6 +156,7 @@ public final class Task implements Model {
     private String taskDetails;
     private String taskTitle;
     private String taskStateOfDoing;
+    private String filekey;
     private Team apartOf;
     @Override
      public Task build() {
@@ -161,6 +167,7 @@ public final class Task implements Model {
           taskDetails,
           taskTitle,
           taskStateOfDoing,
+          filekey,
           apartOf);
     }
     
@@ -180,6 +187,12 @@ public final class Task implements Model {
     @Override
      public BuildStep taskStateOfDoing(String taskStateOfDoing) {
         this.taskStateOfDoing = taskStateOfDoing;
+        return this;
+    }
+    
+    @Override
+     public BuildStep filekey(String filekey) {
+        this.filekey = filekey;
         return this;
     }
     
@@ -212,11 +225,12 @@ public final class Task implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String taskDetails, String taskTitle, String taskStateOfDoing, Team apartOf) {
+    private CopyOfBuilder(String id, String taskDetails, String taskTitle, String taskStateOfDoing, String filekey, Team apartOf) {
       super.id(id);
       super.taskDetails(taskDetails)
         .taskTitle(taskTitle)
         .taskStateOfDoing(taskStateOfDoing)
+        .filekey(filekey)
         .apartOf(apartOf);
     }
     
@@ -233,6 +247,11 @@ public final class Task implements Model {
     @Override
      public CopyOfBuilder taskStateOfDoing(String taskStateOfDoing) {
       return (CopyOfBuilder) super.taskStateOfDoing(taskStateOfDoing);
+    }
+    
+    @Override
+     public CopyOfBuilder filekey(String filekey) {
+      return (CopyOfBuilder) super.filekey(filekey);
     }
     
     @Override

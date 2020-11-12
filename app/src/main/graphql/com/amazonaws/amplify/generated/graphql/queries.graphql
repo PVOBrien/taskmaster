@@ -5,6 +5,7 @@ query GetTask($id: ID!) {
     taskDetails
     taskTitle
     taskStateOfDoing
+    filekey
     apartOf {
       id
       name
@@ -29,6 +30,7 @@ query ListTasks(
       taskDetails
       taskTitle
       taskStateOfDoing
+      filekey
       apartOf {
         id
         name
@@ -51,6 +53,7 @@ query GetTeam($id: ID!) {
         taskDetails
         taskTitle
         taskStateOfDoing
+        filekey
         createdAt
         updatedAt
       }

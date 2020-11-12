@@ -9,6 +9,7 @@ import androidx.room.Room;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -24,7 +25,15 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amazonaws.mobile.client.AWSMobileClient;
+import com.amazonaws.mobile.client.Callback;
+import com.amazonaws.mobile.client.UserStateDetails;
+import com.amazonaws.mobile.config.AWSConfiguration;
+import com.amazonaws.mobileconnectors.pinpoint.PinpointConfiguration;
+import com.amazonaws.mobileconnectors.pinpoint.PinpointManager;
 import com.amplifyframework.AmplifyException;
+import com.amplifyframework.analytics.AnalyticsEvent;
+import com.amplifyframework.analytics.pinpoint.AWSPinpointAnalyticsPlugin;
 import com.amplifyframework.api.ApiOperation;
 import com.amplifyframework.api.aws.AWSApiPlugin;
 import com.amplifyframework.api.graphql.model.ModelMutation;
@@ -34,8 +43,13 @@ import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.Task;
 import com.amplifyframework.datastore.generated.model.Team;
+import com.amplifyframework.storage.s3.AWSS3StoragePlugin;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInteractWithTasksToDoListener {
 
@@ -49,6 +63,45 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
     Handler handlerOfThisSingleItemAdded;
     SharedPreferences preferences;
     Handler handleCheckedLogin;
+
+    public static final String TAG = "Amplify";
+
+    private static PinpointManager pinpointManager;
+
+    public static PinpointManager getPinpointManager(final Context applicationContext) {
+        if (pinpointManager == null) {
+            final AWSConfiguration awsConfig = new AWSConfiguration(applicationContext);
+            AWSMobileClient.getInstance().initialize(applicationContext, awsConfig, new Callback<UserStateDetails>() {
+                @Override
+                public void onResult(UserStateDetails userStateDetails) {
+                    Log.i("INIT", userStateDetails.getUserState().toString());
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    Log.e("INIT", "Initialization error.", e);
+                }
+            });
+
+            PinpointConfiguration pinpointConfig = new PinpointConfiguration(
+                    applicationContext,
+                    AWSMobileClient.getInstance(),
+                    awsConfig);
+
+            pinpointManager = new PinpointManager(pinpointConfig);
+
+            FirebaseInstanceId.getInstance().getInstanceId()
+                    .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                        @Override
+                        public void onComplete(@NonNull com.google.android.gms.tasks.Task<InstanceIdResult> task) {
+                            final String token = task.getResult().getToken();
+                            Log.d(TAG, "Registering push notifications token: " + token);
+                            pinpointManager.getNotificationClient().registerDeviceToken(token);
+                        }
+                    });
+        }
+        return pinpointManager;
+    }
 
     @Override
     public void onResume() {
@@ -132,6 +185,8 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
                 taskDiscovered -> {
                     Log.i("ApiQuickStart", "Here's the ticking work: " + ((Task) taskDiscovered.getData()).getTaskTitle()
                     );
+                    Log.i("ApiQuickStart", "Here's the photo *key*: " + ((Task) taskDiscovered.getData()).getFilekey()
+                    );
 
                     Task newTask = taskDiscovered.getData();
                     if (preferences.contains("savedTeam")) {
@@ -182,10 +237,19 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
 
         Button goToAddTask = MainActivity.this.findViewById(R.id.addTask);
         goToAddTask.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 System.out.println("head to the taskLocals...");
                 Intent goToAddTasks = new Intent(MainActivity.this, AddTask.class);
+
+                AnalyticsEvent goToAddTaskEvent = AnalyticsEvent.builder() // the basic pinpoint event builder. build'em as you need them,
+                        .name("TaskAdd")
+                        .addProperty("time", Long.toString(new Date().getTime())) // using java.util for Date(), not sql
+                        .addProperty("Where to?", "going places")
+                        .build();
+                Amplify.Analytics.recordEvent(goToAddTaskEvent);
+
                 MainActivity.this.startActivity(goToAddTasks);
             }
         });
@@ -223,8 +287,12 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
     public void configureAWS() {
 
         try {
-            Amplify.addPlugin(new AWSApiPlugin());  // this is provided by implementation 'com.amplifyframework:aws-api:1.4.1'
-            Amplify.addPlugin(new AWSCognitoAuthPlugin()); // If this gives you grief, wipe the emulator via the AVD Manager and try again. https://stackoverflow.com/questions/42816127/waiting-for-target-device-to-come-online
+            Amplify.addPlugin(new AWSApiPlugin());              // this is provided by implementation 'com.amplifyframework:aws-api:1.4.1'
+            Amplify.addPlugin(new AWSCognitoAuthPlugin());      // If this gives you grief, wipe the emulator via the AVD Manager and try again. https://stackoverflow.com/questions/42816127/waiting-for-target-device-to-come-online
+            Amplify.addPlugin(new AWSCognitoAuthPlugin());      // for S3 storage
+            Amplify.addPlugin(new AWSS3StoragePlugin());        // for S3 storage
+            Amplify.addPlugin(new AWSPinpointAnalyticsPlugin(getApplication())); // TODO: is this correct?
+//            getPinpointManager(getApplicationContext());      // TODO: should be needed to for notification. Wasn't for me as of 2020-11-04
             Amplify.configure(getApplicationContext());
             Log.i("MyAmplifyApp", "Initialized Amplify");
 
@@ -232,7 +300,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
         } catch (AmplifyException error) {
             String errorMsg = error.getLocalizedMessage();
             if (errorMsg.contentEquals("The client tried to add a plugin after calling configure().")) { // it's not just .equals(), it is .content(*cs*) to match a String
-                Log.i("MyAmplifyApp", "Tried reinitializing Amplify."); //TODO find the actual string or use contains().
+                Log.i("MyAmplifyApp", "Tried reinitializing Amplify.");
             } else {
                 Log.e("MyAmplifyApp", "Could not initialize Amplify", error);
             }
@@ -245,6 +313,8 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
         intent.putExtra("taskTitle", task.getTaskTitle());
         intent.putExtra("taskDetails", task.getTaskDetails());
         intent.putExtra("taskState", task.getTaskStateOfDoing());
+        intent.putExtra("fileKey", task.getFilekey());
+        intent.putExtra("taskId", task.getId());
         this.startActivity(intent);
     }
 
@@ -264,7 +334,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
         String STOREFAIL = "failed to add store";
 
         Amplify.API.mutate(ModelMutation.create(teamOne),
-                response -> Log.i(AMPTAG, STOREADD),
+                response -> Log.i(AMPTAG + "store", STOREADD),
                 error -> Log.e(AMPTAG, STOREFAIL)
         );
 
@@ -282,7 +352,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
     public void getIsSignedIn() {
         Amplify.Auth.fetchAuthSession(
             result -> {
-                Log.i("Amplify.Login", result.toString());
+//                Log.i("Amplify.Login", result.toString()); // This result is ludicrously long.
                 Message message = new Message();
 
                 if (result.isSignedIn()) {

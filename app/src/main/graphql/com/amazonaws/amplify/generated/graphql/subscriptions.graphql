@@ -5,6 +5,7 @@ subscription OnCreateTask {
     taskDetails
     taskTitle
     taskStateOfDoing
+    filekey
     apartOf {
       id
       name
@@ -24,6 +25,7 @@ subscription OnUpdateTask {
     taskDetails
     taskTitle
     taskStateOfDoing
+    filekey
     apartOf {
       id
       name
@@ -43,6 +45,7 @@ subscription OnDeleteTask {
     taskDetails
     taskTitle
     taskStateOfDoing
+    filekey
     apartOf {
       id
       name
@@ -66,6 +69,7 @@ subscription OnCreateTeam {
         taskDetails
         taskTitle
         taskStateOfDoing
+        filekey
         createdAt
         updatedAt
       }
@@ -85,6 +89,7 @@ subscription OnUpdateTeam {
         taskDetails
         taskTitle
         taskStateOfDoing
+        filekey
         createdAt
         updatedAt
       }
@@ -104,6 +109,7 @@ subscription OnDeleteTeam {
         taskDetails
         taskTitle
         taskStateOfDoing
+        filekey
         createdAt
         updatedAt
       }

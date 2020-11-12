@@ -12,6 +12,10 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.amplifyframework.analytics.AnalyticsEvent;
+import com.amplifyframework.core.Amplify;
+
+import java.util.Date;
 import java.util.Set;
 
 public class Settings extends AppCompatActivity {
@@ -58,6 +62,13 @@ public class Settings extends AppCompatActivity {
                 RadioGroup userTeamPref = Settings.this.findViewById(R.id.usersTeamChoices);
                 RadioButton selectedTeamPref = Settings.this.findViewById(userTeamPref.getCheckedRadioButtonId());
                 String selectedTeamPrefToString = selectedTeamPref.getText().toString();
+
+                AnalyticsEvent settingsChanged = AnalyticsEvent.builder() // the basic pinpoint event builder. build'em as you need them,
+                        .name("SettingPage")
+                        .addProperty("time", Long.toString(new Date().getTime())) // using java.util for Date(), not sql
+                        .addProperty("On The Page: ", "Settings")
+                        .build();
+                Amplify.Analytics.recordEvent(settingsChanged);
 
                 EditText username = findViewById(R.id.usernameText);
                 System.out.println(selectedTeamPrefToString);

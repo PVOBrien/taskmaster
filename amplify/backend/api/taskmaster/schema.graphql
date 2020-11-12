@@ -3,6 +3,7 @@ type Task @model {
   taskDetails: String!
   taskTitle: String
   taskStateOfDoing: String
+  filekey: String
   apartOf: Team @connection(name: "teamTasks")
 }
 
@@ -11,3 +12,5 @@ type Team @model {
   name: String
   tasks: [Task] @connection(name: "teamTasks")
 }
+
+# amplify codegen models to rebuild

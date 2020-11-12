@@ -2,6 +2,8 @@ plugins {
     id 'com.android.application'
 }
 
+apply plugin: 'com.google.gms.google-services'
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
@@ -12,7 +14,6 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -49,11 +50,19 @@ dependencies {
     testImplementation "androidx.room:room-testing:$room_version"        //
 //=======================================================================//
 
-    // Amplify dependency
-    implementation 'com.amplifyframework:core:1.4.1'
-    implementation 'com.amplifyframework:aws-api:1.4.1'
-    implementation 'com.amplifyframework:aws-auth-cognito:1.4.1'
+    // Amplify Dependencies
+    implementation 'com.amplifyframework:core:1.4.1'                // core Amplify depend
+    implementation 'com.amplifyframework:aws-api:1.4.1'             // core Amplify depend
+    implementation 'com.amplifyframework:aws-auth-cognito:1.4.1'    // for cognito sign in
+    implementation 'com.amplifyframework:aws-storage-s3:1.4.1'      // for s3 buckets
+    implementation 'com.amazonaws:aws-android-sdk-pinpoint:2.11.+'  // for analytics
+    implementation ('com.amazonaws:aws-android-sdk-mobile-client:2.19.0@aar'){ transitive = true} // unknown. something to do with mobile workings.
+    implementation 'com.amplifyframework:aws-analytics-pinpoint:1.4.1'
 
+// Google Mobile Integration Dependencies
+    implementation 'com.google.android.gms:play-services-auth:18.1.0'
+    implementation 'com.google.firebase:firebase-core:18.0.0'
+    implementation 'com.google.firebase:firebase-messaging:21.0.0'
 
     // Support for Java 8 features
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.0.10'
