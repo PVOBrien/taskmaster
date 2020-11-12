@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "467434568883",
+    "firebase_url": "https://pvo2020-11-04.firebaseio.com",
+    "project_id": "pvo2020-11-04",
+    "storage_bucket": "pvo2020-11-04.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:467434568883:android:df52aa39de574934a444c6",
+        "android_client_info": {
+          "package_name": "com.pvobrien.github.taskmaster"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "467434568883-cualimg4dhpmpjriqvglo5lo0vq5r5en.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDaU283fKW80p06sLXfE4OPlTBJnn7zcjM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "467434568883-cualimg4dhpmpjriqvglo5lo0vq5r5en.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
