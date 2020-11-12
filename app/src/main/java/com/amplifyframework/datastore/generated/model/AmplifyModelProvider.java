@@ -13,7 +13,7 @@ import java.util.Set;
  */
 
 public final class AmplifyModelProvider implements ModelProvider {
-  private static final String AMPLIFY_MODEL_VERSION = "8d498b53280a96feb18a1d2844b88aff";
+  private static final String AMPLIFY_MODEL_VERSION = "998956362b29d3f402e1d5fdaff03ee1";
   private static AmplifyModelProvider amplifyGeneratedModelInstance;
   private AmplifyModelProvider() {
     
@@ -34,7 +34,7 @@ public final class AmplifyModelProvider implements ModelProvider {
   @Override
    public Set<Class<? extends Model>> models() {
     final Set<Class<? extends Model>> modifiableSet = new HashSet<>(
-          Arrays.<Class<? extends Model>>asList(Task.class, Team.class)
+          Arrays.<Class<? extends Model>>asList(Task.class, Team.class, Coordinates.class)
         );
     
         return Immutable.of(modifiableSet);

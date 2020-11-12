@@ -49,7 +49,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TasksToDoViewH
 
             @Override
             public void onClick(View view) {
-                System.out.println(viewHolder.tasks.taskTitle);
+                System.out.println(viewHolder.tasks.getTaskTitle());
                 listener.tasksToDoListener(viewHolder.tasks);
             }
         });
@@ -67,9 +67,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TasksToDoViewH
         TextView taskNameTextView = holder.itemView.findViewById(R.id.taskNameTextView);
         TextView taskDetailsTextView = holder.itemView.findViewById(R.id.taskDetailTextView);
         TextView taskState = holder.itemView.findViewById(R.id.taskStateTextView);
-        taskNameTextView.setText(holder.tasks.taskTitle);
-        taskDetailsTextView.setText(holder.tasks.taskDetails);
-        taskState.setText(holder.tasks.taskStateOfDoing);
+        taskNameTextView.setText(holder.tasks.getTaskTitle());
+        taskDetailsTextView.setText(holder.tasks.getTaskDetails());
+        taskState.setText(holder.tasks.getTaskStateOfDoing());
     }
 
     @Override

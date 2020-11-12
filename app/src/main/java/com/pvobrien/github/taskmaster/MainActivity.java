@@ -3,15 +3,24 @@ package com.pvobrien.github.taskmaster;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationProvider;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -44,12 +53,20 @@ import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.Task;
 import com.amplifyframework.datastore.generated.model.Team;
 import com.amplifyframework.storage.s3.AWSS3StoragePlugin;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInteractWithTasksToDoListener {
 
@@ -63,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
     Handler handlerOfThisSingleItemAdded;
     SharedPreferences preferences;
     Handler handleCheckedLogin;
+
 
     public static final String TAG = "Amplify";
 
@@ -140,7 +158,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
         setContentView(R.layout.activity_main);
 
         handler = new Handler(Looper.getMainLooper(),
-
                 new Handler.Callback() {
                     @Override
                     public boolean handleMessage(@NonNull Message message) {
@@ -150,9 +167,8 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
                 });
 
 
-//      setupTheTeams();
-
         configureAWS();
+//        setupTheTeams();
 
         tasks = new ArrayList<>(); // TODO necessary?
 
@@ -193,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
                         System.out.println("There is a team: " + preferences.getString("savedTeam", "NA"));
                         if (newTask.getApartOf().getName() == preferences.getString("savedTeam", "NA")) {
 //                          TODO: Add team preference logic.
-                            System.out.println(newTask.apartOf.getName());
+                            System.out.println(newTask.getApartOf().getName());
                             tasks.add(newTask);
                             handlerOfThisSingleItemAdded.sendEmptyMessage(1);
                         }
@@ -209,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
                     // TODO: make toast here.
                     Toast.makeText(
                             this,
-                            tasks.get(tasks.size() - 1).taskTitle + " is now a task added.",
+                            tasks.get(tasks.size() - 1).getTaskTitle() + " is now a task added.",
                             Toast.LENGTH_SHORT).show();
                     return false;
                 }));
@@ -281,7 +297,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
         });
     }
 
-
     // ==================== buttons above here =========
 
     public void configureAWS() {
@@ -315,6 +330,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
         intent.putExtra("taskState", task.getTaskStateOfDoing());
         intent.putExtra("fileKey", task.getFilekey());
         intent.putExtra("taskId", task.getId());
+        intent.putExtra("taskLocation", task.getAddress()); // Todo: regen the schema.
         this.startActivity(intent);
     }
 
@@ -348,6 +364,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
                 error -> Log.e(AMPTAG, STOREADD)
         );
     }
+
 
     public void getIsSignedIn() {
         Amplify.Auth.fetchAuthSession(

@@ -4,7 +4,9 @@ type Task @model {
   taskTitle: String
   taskStateOfDoing: String
   filekey: String
+  address: String
   apartOf: Team @connection(name: "teamTasks")
+  latlon: Coordinates @connection
 }
 
 type Team @model {
@@ -13,4 +15,11 @@ type Team @model {
   tasks: [Task] @connection(name: "teamTasks")
 }
 
+type Coordinates @model {
+  id: ID!
+  latitude: Float
+  longitude: Float
+}
+
 # amplify codegen models to rebuild
+# https://docs.amplify.aws/cli/graphql-transformer/connection#usage for relationship examples

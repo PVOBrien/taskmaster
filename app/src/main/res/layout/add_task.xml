@@ -6,16 +6,6 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/taskStatustext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="13dp"
-        android:text="Task Status"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/taskDetails" />
-
-    <TextView
         android:id="@+id/addTaskTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -25,13 +15,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.044" />
+        app:layout_constraintVertical_bias="0.022" />
 
     <Button
         android:id="@+id/addTaskButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="92dp"
+        android:layout_marginTop="60dp"
         android:text="Add Task"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.743"
@@ -42,38 +32,39 @@
         android:id="@+id/taskName"
         android:layout_width="327dp"
         android:layout_height="52dp"
-        android:layout_marginTop="164dp"
+        android:layout_marginTop="116dp"
         android:hint="My Task"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.476"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginBottom="8dp"
+        android:text="Task title"
+        app:layout_constraintBottom_toTopOf="@+id/taskName"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/taskDetails"
         android:layout_width="327dp"
         android:layout_height="52dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="28dp"
         android:hint="Do Something"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/taskName" />
 
     <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginBottom="4dp"
-        android:text="Task title"
-        app:layout_constraintBottom_toTopOf="@+id/taskName"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginBottom="8dp"
         android:text="Task Description"
         app:layout_constraintBottom_toTopOf="@+id/taskDetails"
         app:layout_constraintStart_toStartOf="parent" />
@@ -92,7 +83,7 @@
         android:id="@+id/teamSpinner"
         android:layout_width="141dp"
         android:layout_height="24dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="44dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TeamSelectText" />
@@ -101,18 +92,27 @@
         android:id="@+id/statusSpinner"
         android:layout_width="96dp"
         android:layout_height="24dp"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="11dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/taskStatustext" />
 
+    <TextView
+        android:id="@+id/taskStatustext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="12dp"
+        android:text="Task Status"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/taskDetails" />
+
     <ImageView
         android:id="@+id/uploadedPic"
-        android:layout_width="98dp"
-        android:layout_height="89dp"
-        android:layout_marginTop="116dp"
+        android:layout_width="181dp"
+        android:layout_height="277dp"
+        android:layout_marginTop="196dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/taskDetails"
         app:srcCompat="@android:drawable/picture_frame" />
@@ -121,8 +121,8 @@
         android:id="@+id/addPicture_addTaskView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="92dp"
-        android:layout_marginEnd="17dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="8dp"
         android:text="Add Picture"
         app:layout_constraintEnd_toStartOf="@+id/addTaskButton"
         app:layout_constraintTop_toTopOf="parent" />
