@@ -20,6 +20,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Taskmaster">
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID" <!--  For Admob -->
+            android:value="" /> <!-- For admob Todo: add in my ID -->
+
         <activity android:name=".Login" />
         <activity android:name=".SignUpConfirm" />
         <activity android:name=".Signup" />
