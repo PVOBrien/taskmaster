@@ -82,7 +82,7 @@ public class AddTask extends AppCompatActivity {
 //                    .allowMainThreadQueries()
 //                    .build();
 
-        askForPermissionToUseLocation();
+//        askForPermissionToUseLocation();
         configureLocationServices();
         locationRequest();
 
@@ -322,11 +322,11 @@ public class AddTask extends AppCompatActivity {
         }
     }
 
-    public void askForPermissionToUseLocation() {
-        String[] permissions = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
-        requestPermissions(permissions, 2); // Todo: add second param. What is the second param for?
-    }
-
+//    public void askForPermissionToUseLocation() {
+//        String[] permissions = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
+//        requestPermissions(permissions, 2); // Todo: add second param. What is the second param for?
+//    }
+//
     public void configureLocationServices(){
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
     }

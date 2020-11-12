@@ -84,6 +84,9 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
     SharedPreferences preferences;
     Handler handleCheckedLogin;
     AdView mAdView;
+    FusedLocationProviderClient fusedLocationProviderClient;
+    Location currentLocation;
+    String addressString;
 
 
     public static final String TAG = "Amplify";
@@ -173,6 +176,10 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
 
         configureAWS();
 //        setupTheTeams();
+
+        askForPermissionToUseLocation();
+        configureLocationServices();
+        locationRequest();
 
         tasks = new ArrayList<>(); // TODO necessary?
 
@@ -372,6 +379,51 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
         );
     }
 
+    public void askForPermissionToUseLocation() {
+        String[] permissions = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
+        requestPermissions(permissions, 2); // Todo: add second param. What is the second param for?
+    }
+
+    public void configureLocationServices(){
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+    }
+
+    public void locationRequest() { // follow along from https://github.com/mdomeck/taskmaster/blob/labe-42/app/src/main/java/com/mdomeck/taskmaster/AddTask.java Thanks to mdomeck.
+
+        LocationRequest locationRequest;
+        LocationCallback locationCallback;
+
+        locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(60000);
+
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                currentLocation = locationResult.getLastLocation();
+                Log.i("Amplify.location", "This is the currentLocation: " + currentLocation.toString());
+
+                Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
+                try {
+                    List<Address> addresses = geocoder.getFromLocation(currentLocation.getLatitude(), currentLocation.getLongitude(), 10);
+                    addressString = addresses.get(0).getAddressLine(0);
+                    Log.i("Amplify.location", "Here's the address: " + addressString);
+                } catch (IOException e) {
+//              e.printStackTrace();
+                }
+            }
+        };
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(getApplicationContext(), "Please Check Your Permissions.", Toast.LENGTH_LONG).show(); // A  "safer" means to make a toast, it would seem. Might also be easier.
+            return;
+        }
+
+        fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, getMainLooper());
+    }
 
     public void getIsSignedIn() {
         Amplify.Auth.fetchAuthSession(
