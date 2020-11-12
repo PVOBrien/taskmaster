@@ -53,6 +53,9 @@ import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.Task;
 import com.amplifyframework.datastore.generated.model.Team;
 import com.amplifyframework.storage.s3.AWSS3StoragePlugin;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -80,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
     Handler handlerOfThisSingleItemAdded;
     SharedPreferences preferences;
     Handler handleCheckedLogin;
+    AdView mAdView;
 
 
     public static final String TAG = "Amplify";
@@ -191,7 +195,10 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new TaskAdapter(tasks, this));
 
-
+        MobileAds.initialize(this);
+        mAdView = findViewById(R.id.adView); // Todo create the view element
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
 // ===== AWS subscription detail =====================
 
