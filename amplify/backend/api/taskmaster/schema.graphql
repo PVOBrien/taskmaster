@@ -22,7 +22,4 @@ type Coordinates @model {
 }
 
 # amplify codegen models to rebuild
-
 # https://docs.amplify.aws/cli/graphql-transformer/connection#usage for relationship examples
-
-# save point
