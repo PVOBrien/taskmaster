@@ -7,6 +7,9 @@ A taskLocal app to learn the ins and outs of Android app development.
 ## Ongoing Work:
 
 ### 2020-11-12 Upload to Google Play Console!
+
+I went through and created (and paid for) a Google Developer account. Cool stuff! I then went through many of the tasks necessary to release an app on the Google Play app store, everything excepting privacy, and having the program check my aab to see if it passes the checks (which it likely would not, currently).
+
 <br/><br/>
 <img src="https://github.com/PVOBrien/taskmaster/blob/main/screenshots/2020-11-12%20App%20bundle%20explorer_covered.jpg?raw=true" width="200"/>
 <br/><br/>
