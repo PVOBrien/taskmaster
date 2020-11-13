@@ -1,12 +1,10 @@
 package com.pvobrien.github.taskmaster;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -65,9 +63,4 @@ public class TaskFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_tasks, container, false);
     }
-
-    // TODO: two more lifecycle methods of a fragment in RV...
-    // onAttach - to set listeners
-    // onDetach = good for tracking user details.
-
 }

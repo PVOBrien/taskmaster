@@ -20,7 +20,6 @@ public class SignUpConfirm extends AppCompatActivity {
     Handler toastHandler;
     Message message = new Message();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,8 +56,6 @@ public class SignUpConfirm extends AppCompatActivity {
             this.startActivity(intent);
         });
 
-        // https://stackoverflow.com/questions/3875184/cant-create-handler-inside-thread-that-has-not-called-looper-prepare/16886486#16886486
-
         toastHandler = new Handler(Looper.getMainLooper(), message -> {
 
             if (message.arg1 == 123) {
@@ -70,27 +67,6 @@ public class SignUpConfirm extends AppCompatActivity {
             }
             return false; // always needs to be returning something (false is default, still needs to return it like so).
         });
-
     }
-
-
 }
 
-//        handleCheckedLogin = new Handler(Looper.getMainLooper(), message -> { // TODO create this
-//                if (message.arg1 == 0){
-//                Log.i("Amplify.login", "handler: UNlogged user.");
-//                } else if(message.arg1 == 1) {
-//                Log.i("Amplify.login", "handler: Logged IN");
-//                Log.i("Amplify.user is: ", Amplify.Auth.getCurrentUser().getUsername());
-//
-//                TextView myTaskTitle = findViewById(R.id.myTasksTitle);
-//                String greeting = String.format("%s's tasks", Amplify.Auth.getCurrentUser().getUsername());
-//                myTaskTitle.setText(greeting);
-//
-//                } else {
-//                Log.i("Amplify:login", "T/F plz");
-//                }
-//
-//                // TODO add in on screen TEXT.
-//                return false;
-//                });

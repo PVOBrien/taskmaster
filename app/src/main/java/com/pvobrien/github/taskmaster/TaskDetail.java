@@ -1,15 +1,8 @@
 package com.pvobrien.github.taskmaster;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -24,24 +17,13 @@ import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.Task;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
-
 import java.io.File;
-import java.io.IOException;
 import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 
 public class TaskDetail extends AppCompatActivity {
 
-//    String filetoShow;
     String taskIdOnPage;
     GraphQLResponse<Task> taskOfPage;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +93,6 @@ public class TaskDetail extends AppCompatActivity {
         return true;
     }
 
-
     public void downloadFile(String fileKey) { // fileKey will be coming from intent atm } // code direction from Jack Nelson https://github.com/jnelsonjava/taskmaster/blob/main/app/src/main/java/com/jnelsonjava/taskmaster/AddTask.java
         Amplify.Storage.downloadFile(
                 fileKey,
@@ -124,9 +105,6 @@ public class TaskDetail extends AppCompatActivity {
                 error -> Log.e("Amplify.s3down", "Download Fail", error)
         );
     }
-
-
-//    TODO: create DELETE option via transcribing code from JS to java from here https://aws.amazon.com/getting-started/hands-on/build-android-app-amplify/module-four/
 
     public void deleteTask(GraphQLResponse<Task> task){
         if (task == null) {

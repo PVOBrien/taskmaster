@@ -21,5 +21,3 @@ public interface TaskDao {
     public List<Task> getAllTasksReversed();
 
 }
-
-// https://developer.android.com/jetpack/androidx/releases/room
