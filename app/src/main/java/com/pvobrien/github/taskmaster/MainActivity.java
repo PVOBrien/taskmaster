@@ -6,10 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
-
 import android.Manifest;
-import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
@@ -19,8 +16,6 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationProvider;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -45,7 +40,6 @@ import com.amplifyframework.analytics.AnalyticsEvent;
 import com.amplifyframework.analytics.pinpoint.AWSPinpointAnalyticsPlugin;
 import com.amplifyframework.api.ApiOperation;
 import com.amplifyframework.api.aws.AWSApiPlugin;
-import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.api.graphql.model.ModelSubscription;
 import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
@@ -73,7 +67,6 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInteractWithTasksToDoListener {
 
-    //    YourUniqueDatabase yourUniqueDatabase;
     NotificationChannel channel;
     NotificationManager notificationManager;
     ArrayList<Task> tasks;
@@ -87,10 +80,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
     FusedLocationProviderClient fusedLocationProviderClient;
     Location currentLocation;
     String addressString;
-
-
     public static final String TAG = "Amplify";
-
     private static PinpointManager pinpointManager;
 
     public static PinpointManager getPinpointManager(final Context applicationContext) {
@@ -132,11 +122,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
     public void onResume() {
         super.onResume();
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
-//        TextView myTaskTitle = findViewById(R.id.myTasksTitle);
-//        String greeting = String.format("%s's tasks", preferences.getString("savedUsername", "User's"));
-//        myTaskTitle.setText(greeting);
-
-        System.out.println("About to Query database.");
 
         getIsSignedIn();
 
@@ -174,15 +159,10 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
                 });
 
         configureAWS();
-//        setupTheTeams();
-
         askForPermissionToUseLocation();
         configureLocationServices();
         locationRequest();
-
         tasks = new ArrayList<>(); // TODO necessary?
-
-        System.out.println("This is in the Task API query");
 
         Amplify.API.query(
                 ModelQuery.list(Team.class),
@@ -191,7 +171,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
                     for(Team team : response.getData()) {
                         teams.add(team);
                     }
-                    System.out.println("here are teams" + teams);
                     handler.sendEmptyMessage(1);
                 },
                 error -> Log.e("Amplify", "failure to retrieve")
@@ -253,11 +232,9 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
                 TextView myTaskTitle = findViewById(R.id.myTasksTitle);
                 String greeting = String.format("%s's tasks", Amplify.Auth.getCurrentUser().getUsername());
                 myTaskTitle.setText(greeting);
-
             } else {
                 Log.i("Amplify:login", "T/F plz");
             }
-
             // TODO add in on screen TEXT.
             return false;
         });
@@ -271,14 +248,12 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
             public void onClick(View view) {
                 System.out.println("head to the taskLocals...");
                 Intent goToAddTasks = new Intent(MainActivity.this, AddTask.class);
-
                 AnalyticsEvent goToAddTaskEvent = AnalyticsEvent.builder() // the basic pinpoint event builder. build'em as you need them,
                         .name("TaskAdd")
                         .addProperty("time", Long.toString(new Date().getTime())) // using java.util for Date(), not sql
                         .addProperty("Where to?", "going places")
                         .build();
                 Amplify.Analytics.recordEvent(goToAddTaskEvent);
-
                 MainActivity.this.startActivity(goToAddTasks);
             }
         });
@@ -320,10 +295,8 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
             Amplify.addPlugin(new AWSCognitoAuthPlugin());      // for S3 storage
             Amplify.addPlugin(new AWSS3StoragePlugin());        // for S3 storage
             Amplify.addPlugin(new AWSPinpointAnalyticsPlugin(getApplication())); // TODO: is this correct?
-//            getPinpointManager(getApplicationContext());      // TODO: should be needed to for notification. Wasn't for me as of 2020-11-04
             Amplify.configure(getApplicationContext());
             Log.i("MyAmplifyApp", "Initialized Amplify");
-
 
         } catch (AmplifyException error) {
             String errorMsg = error.getLocalizedMessage();
@@ -347,37 +320,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
         this.startActivity(intent);
     }
 
-    public void setupTheTeams() {
-        Team teamOne = Team.builder()
-                .name("Charizard")
-                .build();
-        Team teamTwo = Team.builder()
-                .name("Blastoise")
-                .build();
-        Team teamThree = Team.builder()
-                .name("Venusaur")
-                .build();
-
-        String AMPTAG = "Amplify";
-        String STOREADD = "Store added";
-        String STOREFAIL = "failed to add store";
-
-        Amplify.API.mutate(ModelMutation.create(teamOne),
-                response -> Log.i(AMPTAG + "store", STOREADD),
-                error -> Log.e(AMPTAG, STOREFAIL)
-        );
-
-        Amplify.API.mutate(ModelMutation.create(teamTwo),
-                response -> Log.i(AMPTAG, STOREADD),
-                error -> Log.e(AMPTAG, STOREFAIL)
-        );
-
-        Amplify.API.mutate(ModelMutation.create(teamThree),
-                response -> Log.i(AMPTAG, STOREADD),
-                error -> Log.e(AMPTAG, STOREADD)
-        );
-    }
-
     public void askForPermissionToUseLocation() {
         String[] permissions = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
         requestPermissions(permissions, 2); // Todo: add second param. What is the second param for?
@@ -391,7 +333,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
 
         LocationRequest locationRequest;
         LocationCallback locationCallback;
-
         locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setInterval(60000);
@@ -415,19 +356,16 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
                 }
             }
         };
-
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(getApplicationContext(), "Please Check Your Permissions.", Toast.LENGTH_LONG).show(); // A  "safer" means to make a toast, it would seem. Might also be easier.
             return;
         }
-
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, getMainLooper());
     }
 
     public void getIsSignedIn() {
         Amplify.Auth.fetchAuthSession(
             result -> {
-//                Log.i("Amplify.Login", result.toString()); // This result is ludicrously long.
                 Message message = new Message();
 
                 if (result.isSignedIn()) {

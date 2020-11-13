@@ -4,12 +4,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.amplifyframework.datastore.generated.model.Task;
-
 import java.util.ArrayList;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TasksToDoViewHolder> {
@@ -42,9 +39,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TasksToDoViewH
 
         TasksToDoViewHolder viewHolder = new TasksToDoViewHolder(view); // instantiation.
 
-        // Make it clickable! on below...
-        // gets attached to view.
-
         view.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -74,7 +68,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TasksToDoViewH
 
     @Override
     public int getItemCount() {
-//        System.out.println("Here!"); // Was pinging to ensure reaching location.
         return tasksToDo.size();
     }
 }

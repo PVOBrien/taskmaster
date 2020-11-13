@@ -64,7 +64,6 @@ import java.util.Locale;
 
 public class AddTask extends AppCompatActivity {
 
-//    YourUniqueDatabase yourUniqueDatabase; // this is looking specifically for YOUR yourUniqueDatabase class name/potato
     ArrayList<Team> teams = new ArrayList<Team>();
     Handler handleCreation;
     String lastFileIUploaded;
@@ -79,26 +78,18 @@ public class AddTask extends AppCompatActivity {
         setContentView(R.layout.add_task);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-//        yourUniqueDatabase = Room.databaseBuilder(getApplicationContext(), YourUniqueDatabase.class, "taskDatabase") // this YourUniqueDatabase.class is looking for YOUR yourUniqueDatabase class name/potato.
-//                    .allowMainThreadQueries()
-//                    .build();
-
-//        askForPermissionToUseLocation();
         configureLocationServices();
         locationRequest();
 
         Intent intent = getIntent();
         if (intent.getType() != null) { // https://www.programcreek.com/java-api-examples/?class=android.content.Intent&method=getClipData
             Log.i("Amplify.addPic", "This is the full intent came across: " + intent.toString());
-//            if (intent.getType().equals("image/*")) { TODO: why doesn't this work?
-                Log.i("Amplify.addPic", "Within 'image/' : " + intent.getClipData().getItemAt(0));
-                imageFromIntent = intent.getClipData().getItemAt(0).getUri();
-                Log.i("Amplify.uri", "URI : " + imageFromIntent);
-                ImageView image = findViewById(R.id.uploadedPic);
-                image.setImageURI(imageFromIntent);
-            }
-
+            Log.i("Amplify.addPic", "Within 'image/' : " + intent.getClipData().getItemAt(0));
+            imageFromIntent = intent.getClipData().getItemAt(0).getUri();
+            Log.i("Amplify.uri", "URI : " + imageFromIntent);
+            ImageView image = findViewById(R.id.uploadedPic);
+            image.setImageURI(imageFromIntent);
+        }
 
         handleCreation = new Handler(Looper.getMainLooper(), message -> {
            setupTeamSpinner();
@@ -122,9 +113,6 @@ public class AddTask extends AppCompatActivity {
 
         TextView taskTitleTv = AddTask.this.findViewById(R.id.taskName);
         TextView taskDetailsTv  = AddTask.this.findViewById(R.id.taskDetails);
-//        TextView taskStatusTv = AddTask.this.findViewById(R.id.taskStatusTv);
-
-//        Task taskToAdd = new Task(taskTitleTv.getText().toString(), taskDetailsTv.getText().toString(), taskStatusTv.getText().toString()); TODO: Reinstate
 
         addListenerToAddPicButton();
 
@@ -211,11 +199,7 @@ public class AddTask extends AppCompatActivity {
                 Toast toast = Toast.makeText(context, text, duration);
                 toast.show();
 
-//              onBackPressed(); // this basically does the same thing.
                 finish(); // this "closes out" the activity, sends us back to where we are.
-
-//              Intent addTaskToAllTasks = new Intent(AddTask.this, MainActivity.class);
-//              AddTask.this.startActivity(addTaskToAllTasks);
             }
         });
     }
@@ -231,12 +215,6 @@ public class AddTask extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 2020) { // the number is POTATO
-//            if (data.getData() != null) { return; }
-
-            Log.i("Amplify.pickImage", "Image has been retrieved."); // This will know, well enough
-
-            Boolean intentExists = data == null; // to catch if nothing is returned in the intent
-            Log.e("Amplify.pickImage", "Here's what was returned: " + intentExists.toString());
 
             File fileCopy = new File(getFilesDir(), "fileUpload"); // Todo: what is this child? It is the filename that is "appended to the front of the file.
 
@@ -246,9 +224,6 @@ public class AddTask extends AppCompatActivity {
                 InputStream inStream = getContentResolver().openInputStream(data.getData()); // https://stackoverflow.com/questions/11501418/is-it-possible-to-create-a-file-object-from-inputstream
                 FileOutputStream out = new FileOutputStream(fileCopy);
                 copyStream(inStream, out);
-
-//                FileUtils.copy(outfile, new FileOutputStream(fileCopy)); // COMPLETED: find the work around.
-
             } catch (IOException e) {
                 e.printStackTrace();
                 Log.e("Amplify.pickImage", e.toString());
@@ -294,7 +269,6 @@ public class AddTask extends AppCompatActivity {
         startActivityForResult(getPicIntent, 2020);
     }
 
-
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent mtIntent = new Intent(getApplicationContext(), MainActivity.class);
         startActivityForResult(mtIntent, 0);
@@ -305,7 +279,7 @@ public class AddTask extends AppCompatActivity {
         String[] teamNames = new String[teams.size()];
         for (int i = 0; i < teams.size(); i++) {
             teamNames[i] = teams.get(i).getName();
-        } // put the teams' names into an arraylist.
+        }
 
         Spinner spinner = (Spinner) findViewById(R.id.teamSpinner); // create a spinner object to put following things to...
         ArrayAdapter<CharSequence> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, teamNames);  // Specify layout - AKA simple_spinner_item to use when choice list come in...
@@ -330,11 +304,6 @@ public class AddTask extends AppCompatActivity {
         }
     }
 
-//    public void askForPermissionToUseLocation() {
-//        String[] permissions = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
-//        requestPermissions(permissions, 2); // Todo: add second param. What is the second param for?
-//    }
-//
     public void configureLocationServices(){
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
     }
@@ -343,7 +312,6 @@ public class AddTask extends AppCompatActivity {
 
         LocationRequest locationRequest;
         LocationCallback locationCallback;
-
         locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setInterval(60000);

@@ -3,12 +3,9 @@ package com.pvobrien.github.taskmaster;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
-
 import com.amplifyframework.datastore.generated.model.Task;
-
 import java.util.ArrayList;
 
 public class RecyclerViewGeneric extends AppCompatActivity implements TaskAdapter.OnInteractWithTasksToDoListener {
@@ -20,17 +17,7 @@ public class RecyclerViewGeneric extends AppCompatActivity implements TaskAdapte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recycler_view_generic);
 
-//        Task taskLocalToDb = new Task("into thedb", "do it!", "working on it");
-
         ArrayList<Task> tasks = new ArrayList<>();
-
-//        TaskLocal thingOne = new TaskLocal("a thing, one", "do the one thing", "In Progress");
-//        TaskLocal thingTwo = new TaskLocal("Second thing, one", "get to #2", "Completed");
-//        TaskLocal thingThree = new TaskLocal("That Third", "3 is waiting 4 u", "Not Started");
-//
-//        taskLocals.add(thingOne);
-//        taskLocals.add(thingTwo);
-//        taskLocals.add(thingThree);
 
         RecyclerView recyclerView = findViewById(R.id.tasksRv);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

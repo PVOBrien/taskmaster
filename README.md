@@ -6,6 +6,21 @@ A taskLocal app to learn the ins and outs of Android app development.
 
 ## Ongoing Work:
 
+### 2020-11-12 Upload to Google Play Console!
+
+I went through and created (and paid for) a Google Developer account. Cool stuff! I then went through many of the tasks necessary to release an app on the Google Play app store, everything excepting privacy, and having the program check my aab to see if it passes the checks (which it likely would not, currently).
+
+<br/><br/>
+<img src="https://github.com/PVOBrien/taskmaster/blob/main/screenshots/2020-11-12%20App%20bundle%20explorer_covered.jpg?raw=true" width="200"/>
+<br/><br/>
+What we have here is the potential 1.0 of Taskmaster! With enough polish, and care, it could be. Until then, it lies in wait here.
+<br/><br/>
+<img src="https://github.com/PVOBrien/taskmaster/blob/main/screenshots/taskmasterL.png?raw=true" width="200"/>
+<br/><br/>
+No app is complete without an icon. This is Taskmaster's official (stand-in) icon.
+<br/><br/>
+
+<br/><br/>
 ### 2020-11-10 adMob
 <br/><br/>
 Admob banner integration.
