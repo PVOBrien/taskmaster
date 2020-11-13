@@ -70,10 +70,10 @@ public class Settings extends AppCompatActivity {
                         .build();
                 Amplify.Analytics.recordEvent(settingsChanged);
 
-                EditText username = findViewById(R.id.usernameText);
+//                EditText username = findViewById(R.id.usernameText);
                 System.out.println(selectedTeamPrefToString);
                 preferenceEditor.putString("savedTeam", selectedTeamPref.getText().toString());
-                preferenceEditor.putString("savedUsername", username.getText().toString());
+//                preferenceEditor.putString("savedUsername", username.getText().toString());
                 preferenceEditor.apply();
             }
         });

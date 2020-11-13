@@ -1,6 +1,8 @@
 package com.pvobrien.github.taskmaster;
 
 import android.Manifest;
+import android.content.ContentProvider;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -229,10 +231,16 @@ public class AddTask extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 2020) { // the number is POTATO
+//            if (data.getData() != null) { return; }
 
             Log.i("Amplify.pickImage", "Image has been retrieved."); // This will know, well enough
 
+            Boolean intentExists = data == null; // to catch if nothing is returned in the intent
+            Log.e("Amplify.pickImage", "Here's what was returned: " + intentExists.toString());
+
             File fileCopy = new File(getFilesDir(), "fileUpload"); // Todo: what is this child? It is the filename that is "appended to the front of the file.
+
+            if (data == null) { return; }
 
             try {
                 InputStream inStream = getContentResolver().openInputStream(data.getData()); // https://stackoverflow.com/questions/11501418/is-it-possible-to-create-a-file-object-from-inputstream
@@ -372,11 +380,3 @@ public class AddTask extends AppCompatActivity {
     }
 
 }
-
-// public void askForLocation(){
-// locationProviderClient.getLastLocation()
-// .addonSuccessListener(location -> Log.i()
-// .addonFailureListener(error -> Log.e()
-// .addOnCanceledListener(() -> Log.e())
-// .addOnCompleteListener(complete -> Log.i
-// }
