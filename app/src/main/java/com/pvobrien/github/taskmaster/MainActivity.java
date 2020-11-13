@@ -173,7 +173,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnInt
                     }
                 });
 
-
         configureAWS();
 //        setupTheTeams();
 
