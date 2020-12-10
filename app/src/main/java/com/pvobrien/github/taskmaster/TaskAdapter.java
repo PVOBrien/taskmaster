@@ -1,5 +1,6 @@
 package com.pvobrien.github.taskmaster;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +58,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TasksToDoViewH
     @Override
     public void onBindViewHolder(@NonNull TasksToDoViewHolder holder, int position) { // Actually Attaches data! int position is position in/of arrayList.
         holder.tasks = tasksToDo.get(position);
+
+        Log.i("Android.holder", "This is a current-ish position: " + position);
 
         TextView taskNameTextView = holder.itemView.findViewById(R.id.taskNameTextView);
         TextView taskDetailsTextView = holder.itemView.findViewById(R.id.taskDetailTextView);

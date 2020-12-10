@@ -11,6 +11,7 @@
         android:layout_width="373dp"
         android:layout_height="381dp"
         android:layout_marginBottom="20dp"
+        android:background="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/addTask"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.571"
